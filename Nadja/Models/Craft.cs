@@ -44,9 +44,6 @@ namespace Nadja.Models
 
                 
             }
-
-            // Call this to add and display the craft on the current builder
-            // Must be recursive ?
         }
     }
 }
