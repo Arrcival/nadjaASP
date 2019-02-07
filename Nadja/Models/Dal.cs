@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Nadja.Command;
 
 namespace Nadja.Models
 {
@@ -364,7 +365,7 @@ namespace Nadja.Models
             objGet.ExecuteNonQuery();
         }
 
-        public static List<int> GetEverySearches()
+        public static List<double> GetEverySearches()
         {
             DoConnection();
             string sql = "SELECT SUM(Common), SUM(Uncommon), SUM(Rare), SUM(Epic) FROM users;";
@@ -372,7 +373,7 @@ namespace Nadja.Models
             MySqlDataReader objReader = objSelect.ExecuteReader();
             objReader.Read();
 
-            List<int> searches = new List<int>();
+            List<double> searches = new List<double>();
             for (int i = 0; i <= 3; i++)
                 searches.Add(int.Parse(objReader.GetValue(i).ToString()));
 
@@ -454,9 +455,119 @@ namespace Nadja.Models
             return location;
         }
 
-        public static void AddLegendary(string idUser, Legendary legendary)
+        public static Location GetLocationFromInt(int locationID)
         {
+            DoConnection();
 
+            string sql = "SELECT Name FROM locations WHERE ID = @val1;";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", locationID);
+            objGet.Prepare();
+            MySqlDataReader objReader = objGet.ExecuteReader();
+            string name = null;
+            while (objReader.Read())
+            {
+                name = objReader.GetValue(0).ToString();
+            }
+            objReader.Close();
+            CloseConnection();
+
+            if (name == null)
+                return null;
+            else
+                return GetLocation(name);
+        }
+
+        public static void AddItemFound(Helper.Rarity rarity, User user)
+        {
+            DoConnection();
+
+            MySqlCommand objGet;
+            string sql;
+
+            switch(rarity)
+            {
+                case Helper.Rarity.Common:
+                    sql = "UPDATE users SET Common = Common + 1 WHERE ID = '" + user.ID + "' ;";
+                    user.Common += 1;
+                    objGet = new MySqlCommand(sql, objMySqlCnx);
+                    objGet.ExecuteNonQuery();
+                    break;
+                case Helper.Rarity.Uncommon:
+                    sql = "UPDATE users SET Uncommon = Uncommon + 1 WHERE ID = '" + user.ID + "' ;";
+                    user.Uncommon += 1;
+                    objGet = new MySqlCommand(sql, objMySqlCnx);
+                    objGet.ExecuteNonQuery();
+                    break;
+                case Helper.Rarity.Rare:
+                    sql = "UPDATE users SET Rare = Rare + 1 WHERE ID = '" + user.ID + "' ;";
+                    user.Rare += 1;
+                    objGet = new MySqlCommand(sql, objMySqlCnx);
+                    objGet.ExecuteNonQuery();
+                    break;
+                case Helper.Rarity.Epic:
+                    sql = "UPDATE users SET Epic = Epic + 1 WHERE ID = '" + user.ID + "' ;";
+                    user.Epic += 1;
+                    objGet = new MySqlCommand(sql, objMySqlCnx);
+                    objGet.ExecuteNonQuery();
+                    break;
+                default:
+                    break;
+            }
+            CloseConnection();
+
+
+
+            
+        }
+        public static List<Legendary> GetEveryLegendaries()
+        {
+            DoConnection();
+            List<Legendary> legendaries = new List<Legendary>();
+            string sql = "SELECT * FROM legendaries;";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objGet.ExecuteReader();
+            while(objReader.Read())
+            {
+                Legendary legendary = new Legendary
+                {
+                    ID = int.Parse(objReader.GetValue(0).ToString()),
+                    Name = objReader.GetValue(1).ToString()
+                };
+                legendaries.Add(legendary);
+            }
+
+            objReader.Close();
+            CloseConnection();
+            return legendaries;
+            
+        }
+
+        public static void CreateUser(string idUser, string discordName)
+        {
+            DoConnection();
+            string sql = "INSERT INTO users(ID, DiscordID, DiscordName, Gems, Common, Uncommon, Rare, Epic) VALUES (NULL, '" + idUser + "', '" + discordName + "', 0, 0, 0, 0, 0);";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.ExecuteNonQuery();
+            CloseConnection();
+        }
+
+        public static void CreateServerUser(User user, string serverID)
+        {
+            DoConnection();
+            string sql = "INSERT INTO serverusers(ID, DiscordID, ServerID, DiscordServerName, Points) VALUES (NULL, '" + user.DiscordID + "', '" + serverID + "', '" + user.DiscordName + "', 0);";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.ExecuteNonQuery();
+            CloseConnection();
+        }
+
+        public static void AddLegendary(User user, Legendary legendary)
+        {
+            DoConnection();
+            string sql = "INSERT INTO possess(ID, UserID, LegendaryID) VALUES (NULL, '" + user.ID + "', '" + legendary.ID + "');";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.ExecuteNonQuery();
+            CloseConnection();
         }
 
         public static void AddSlang(int idItem, string slang)

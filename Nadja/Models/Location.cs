@@ -42,5 +42,16 @@ namespace Nadja.Models
             }
             builder.AddField($"Items in the location {Name} :", aString);
         }
+
+        public List<Item> GetEveryItems()
+        {
+            List<Item> list = new List<Item>();
+            foreach(Found found in Founds)
+            {
+                for (int i = 1; i <= found.Amount; i++)
+                    list.Add(found.Item);
+            }
+            return list;
+        }
     }
 }

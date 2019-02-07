@@ -19,7 +19,7 @@ namespace Nadja
         private CommandService _commands;
         private IServiceProvider _services;
         private InteractiveService _internalService;
-        private string prefix = "$";
+        private readonly string prefix = "$";
 
         public Bot()
         {

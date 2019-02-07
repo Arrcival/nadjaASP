@@ -46,15 +46,15 @@ namespace Nadja.Models
         {
             if (GetTotalSearchs() > 0)
             {
-                List<int> allSearches = Dal.GetEverySearches();
-                int allAmount = allSearches[0] + allSearches[1] + allSearches[2] + allSearches[3] + allSearches[4];
+                List<double> allSearches = Dal.GetEverySearches();
+                double allAmount = allSearches[0] + allSearches[1] + allSearches[2] + allSearches[3] + allSearches[4];
 
                 double coeff = 0;
-                coeff += Math.Pow((allSearches[0] / allAmount), -1) * Common;
-                coeff += Math.Pow((allSearches[1] / allAmount), -1) * Uncommon;
-                coeff += Math.Pow((allSearches[2] / allAmount), -1) * Rare;
-                coeff += Math.Pow((allSearches[3] / allAmount), -1) * Epic;
-                coeff += Math.Pow((allSearches[4] / allAmount), -1) * Legendaries.Count;
+                coeff += Math.Pow(((allSearches[0] + 1) / allAmount), -1) * Common;
+                coeff += Math.Pow(((allSearches[1] + 1) / allAmount), -1) * Uncommon;
+                coeff += Math.Pow(((allSearches[2] + 1) / allAmount), -1) * Rare;
+                coeff += Math.Pow(((allSearches[3] + 1) / allAmount), -1) * Epic;
+                coeff += Math.Pow(((allSearches[4] + 1) / allAmount), -1) * CountLegendaries();
                 coeff = (coeff - Math.Pow(GetTotalSearchs() / 10, 1.1)) / GetTotalSearchs();
 
                 return coeff;
@@ -70,16 +70,10 @@ namespace Nadja.Models
         {
             Dal.UpdateUserSearch(this);
         }
-
-        public void AddLegendary(Legendary legendary)
-        {
-            Legendaries.Add(legendary);
-            Dal.AddLegendary(DiscordID, legendary);
-        }
-
+        
         public int CountLegendaries()
         {
-            if (Legendaries == null)
+            if (Legendaries == null )
                 return 0;
             else
                 return Legendaries.Count;

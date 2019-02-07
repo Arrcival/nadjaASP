@@ -9,6 +9,7 @@ namespace Nadja
 {
     public static class Helper
     {
+        public enum Rarity { Common, Uncommon, Rare, Epic }
         public static Random rng = new Random();
 
         public static string DiscordPingDelimiter(string testString)
@@ -51,15 +52,15 @@ namespace Nadja
                     visual = "Fox";
                 switch (numero)
                 {
-                    case (1):
-                        visual += " I"; break;
-                    case (2):
-                        visual += " II"; break;
-                    case (3):
-                        visual += " III"; break;
-                    case (4):
-                        visual += " IV"; break;
                     case (0):
+                        visual += " I"; break;
+                    case (1):
+                        visual += " II"; break;
+                    case (2):
+                        visual += " III"; break;
+                    case (3):
+                        visual += " IV"; break;
+                    case (4):
                         visual += " V"; break;
                     default:
                         visual += " ?"; break;

@@ -78,13 +78,11 @@ namespace Nadja.Command
                 if (ownProfile)
                     builder.WithImageUrl(Context.User.GetAvatarUrl());
             }
-
-            Console.WriteLine(72);
+            
             List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             string rank = Helper.GetRank(everyServerUsers, serverUser);
-
-            Console.WriteLine(73);
+            
             if (serverUser.Points != 0)
             {
                 builder.WithTitle($"Profile of {serverUser.DiscordName}")
@@ -98,8 +96,7 @@ namespace Nadja.Command
                      .AddField("Score", "Never played", true);
             }
             builder.AddField("Gems", $":gem: {serverUser.Gems}", false);
-
-            Console.WriteLine(74);
+            
             if (serverUser.GetTotalSearchs() > 0)
             {
                 builder.AddField("Items found :",
@@ -108,8 +105,7 @@ namespace Nadja.Command
                     "\n:blue_heart: Rare items : " + serverUser.Rare +
                     "\n:purple_heart: Epic items : " + serverUser.Epic +
                     "\n:yellow_heart: Legendary items : " + serverUser.CountLegendaries(), true);
-
-                Console.WriteLine(741);
+                
                 string display = "";
                 if (serverUser.CountLegendaries() <= 0)
                     display = "No legendary item...";
@@ -118,15 +114,13 @@ namespace Nadja.Command
                     for (int i = 0; i < serverUser.CountLegendaries(); i++)
                         display += serverUser.Legendaries[i].Name + " \n";
                 }
-
-                Console.WriteLine(75);
+                
                 builder.AddField("Legendary items :", display, true);
 
                 //double luckCoeff = serverUser.GetLuck();
                 //builder.WithFooter($"Luck coefficient : {luckCoeff}");
             }
-
-            Console.WriteLine(76);
+            
             builder.WithColor(Color.Gold);
         }
 
