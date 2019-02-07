@@ -55,9 +55,9 @@ namespace Nadja.Models
                 coeff += Math.Pow(((allSearches[2] + 1) / allAmount), -1) * Rare;
                 coeff += Math.Pow(((allSearches[3] + 1) / allAmount), -1) * Epic;
                 coeff += Math.Pow(((allSearches[4] + 1) / allAmount), -1) * CountLegendaries();
-                coeff = (coeff - Math.Pow(GetTotalSearchs() / 10, 1.1)) / GetTotalSearchs();
+                double total = (coeff - Math.Pow(GetTotalSearchs() / 10, 1.1)) / this.GetTotalSearchs();
 
-                return coeff;
+                return Math.Round(total, 6);
             }
             else
             {

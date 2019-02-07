@@ -148,6 +148,127 @@ namespace Nadja.Command
             }
 
         }
+
+        [Command("loot")]
+        public async Task LootDefaultAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.AddField("To use command loot :", "-loot <location> [1 < quantity (default 10) < 25] [0 < rare item % (default 1) < 100]");
+            builder.WithColor(Color.DarkRed);
+            await ReplyAsync("", false, builder.Build());
+
+        }
+
+        [Command("loot")]
+        public async Task LootDefaultAsync(string place)
+        {
+            Location location = Dal.GetLocation(place);
+            EmbedBuilder builder = new EmbedBuilder();
+
+            if (location != null)
+                DoLoot(builder, location, -1, -1);
+            else
+                builder.WithTitle("Check the name of your location.");
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        [Command("loot")]
+        public async Task LootQtyAsync(string place, int qty)
+        {
+            Location location = Dal.GetLocation(place);
+
+            EmbedBuilder builder = new EmbedBuilder();
+
+            if (location != null)
+            {
+                if (qty > 0 && qty <= 25)
+                    DoLoot(builder, location, qty, -1);
+                else
+                    builder.WithTitle("Quantity have to be between 1 and 25.");
+
+            }
+            else
+                builder.WithTitle("Check the name of your location.");
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        [Command("loot")]
+        public async Task LootQtyRtyAsync(string place, int qty, float rare)
+        {
+            Location location = Dal.GetLocation(place);
+            EmbedBuilder builder = new EmbedBuilder();
+
+            if (location != null)
+            {
+                if (qty > 0 && qty <= 25)
+                    if (rare >= 0 && rare <= 100)
+                        DoLoot(builder, location, qty, rare);
+                    else
+                        builder.WithTitle("Rarity have to be between 0 and 100.");
+                else
+                    builder.WithTitle("Quantity have to be between 1 and 25.");
+            }
+            else
+            {
+                builder.WithTitle("Check the name of your location.");
+            }
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        public void DoLoot(EmbedBuilder builder, Location location, int quantity, float rarity)
+        {
+            Random rng = new Random();
+            string items = "";
+            List<int> itemAlreadyPicked = new List<int>();
+            if (quantity == -1)
+                quantity = defaultQty;
+            for (int i = 0; i < quantity; i++)
+            {
+                if (rarity == -1)
+                    rarity = defaultRarity;
+
+                if (rng.NextDouble() * 100 <= 100 - rarity)
+                {
+                    int idItemSelected = rng.Next(1, location.GetTotalItemsInArea() + 1);
+                    while (itemAlreadyPicked.Contains(idItemSelected))
+                    {
+                        idItemSelected = rng.Next(1, location.GetTotalItemsInArea() + 1);
+                    }
+
+                    Item itemSelected = new Item();
+
+                    int totalItemAmount = location.GetTotalItemsInArea();
+
+                    List<Item> everyItems = location.GetEveryItems();
+                    int amount = Helper.rng.Next(location.GetEveryItems().Count);
+
+                    itemSelected = everyItems[amount];
+
+                    itemAlreadyPicked.Add(idItemSelected);
+
+                    items += itemSelected.Name + " \n";
+
+                }
+                else
+                    items += randomItems[rng.Next(0, randomItems.Count)] + " \n";
+            }
+
+            if (quantity == 0)
+                builder.AddField($"{defaultQty} items in {location.Name} (Rare item : {defaultRarity}%)", items);
+            else
+            {
+                if (rarity == -1)
+                    builder.AddField($"{quantity} items in {location.Name} (Rare item : {defaultRarity}%)", items);
+                else
+                    builder.AddField($"{quantity} items in {location.Name} (Rare item : {rarity}%)", items);
+            }
+            builder.WithColor(Color.DarkRed);
+        }
+
+
         private List<string> randomItems = new List<string> { "Tree of Life", "Arcane Stone", "Holy Blood", "Mithril", "Jewel Sword", "Meteorite", "Muramasa", "Ogre Skin", "Water", "Bullets", "Tights", "Cookie", "Arrows", "Heartbeat Sensor" };
 
         private List<string> legendaryItems = new List<string> { "Tree of Life", "Arcane Stone", "Holy Blood", "Mithril", "Jewel Sword", "Meteorite", "Muramasa", "Ogre Skin", "Heartbeat Sensor" };
@@ -159,6 +280,79 @@ namespace Nadja.Command
 
         private List<string> uncommonItems = new List<string>{ "Lighter", "Honey", "Ice", "Pill", "Alcohol", "Coffee", "Orange", "Chocolate", "Thick Paper",
             "TV", "Cookie",  "Curry Powder", "Fabric Armor", "Glass Cup", "Ripped Scroll - 1", "Ripped Scroll - 2",  "Buddhist Scripture", "Wooden Fish", "Whetstone", "Ingram MAC-10"};
+
+        [Command("luck")]
+        public async Task LootAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            User user = Dal.GetUser(Context.User.Id.ToString());
+            builder.WithTitle($"{Context.User.Username}, your luck coefficient is {user.GetLuck()}")
+                            .WithColor(Color.DarkGreen);
+            await ReplyAsync("", false, builder.Build());
+
+        }
+
+        [Command("luck")]
+        public async Task LootPlayerAsync(string name)
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            name = Helper.DiscordPingDelimiter(name);
+
+            string idUser = Dal.GetIdUser(name);
+
+            if (idUser != null)
+            {
+                User user = Dal.GetUser(idUser);
+                builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
+                    .WithColor(Color.DarkGreen);
+            }
+            else
+            {
+                builder.WithTitle($"{name} does not exists...")
+                    .WithColor(Color.DarkGreen);
+            }
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        // Get total legendaries found?
+        // Top lucky players ?
+
+        [Command("search rc")]
+        public async Task SearchRCAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle($"{Context.User.Username} just found nothing in the Research Center...")
+                .WithColor(Color.LightGrey);
+            await ReplyAsync("", false, builder.Build());
+
+        }
+
+        [Command("search research center")]
+        public async Task SearchResearchAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle($"{Context.User.Username} just found nothing in the Research Center...")
+                .WithColor(Color.LightGrey);
+            await ReplyAsync("", false, builder.Build());
+
+        }
+
+        [Command("search legendary")]
+        public async Task SearchLegAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found a super legendary item !!!!! No seriously you really think this command work ? :clap: :yellow_heart: :clap:")
+                            .WithColor(Color.Gold);
+            await ReplyAsync("", false, builder.Build());
+
+        }
+
+
+
+
+
+
 
     }
 }

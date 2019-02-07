@@ -54,7 +54,7 @@ namespace Nadja.Command
             string aString = "";
             for (int i = 0; i < listRanks.Count; i++)
             {
-                aString += Helper.GetRank(i) + " : " + listRanks[i].ServerNameUser + "\n";
+                aString += Helper.GetRank(i + 1) + " : " + listRanks[i].ServerNameUser + "\n";
             }
 
             builder.WithDescription(aString);

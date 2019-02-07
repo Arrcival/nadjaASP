@@ -123,7 +123,7 @@ namespace Nadja.Models
         public static string GetIdUser(string name)
         {
             DoConnection();
-            string sql = "SELECT users.DiscordID,  FROM users," +
+            string sql = "SELECT users.DiscordID FROM users " +
                 "WHERE users.DiscordName = '" + name + "';";
             MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
             MySqlDataReader objReader = objSelect.ExecuteReader();
@@ -338,18 +338,20 @@ namespace Nadja.Models
         }
         public static void UpdateUserSearch(User user)
         {
-            string sql = "UPDATE users " +
-                "SET users.DiscordName = @val1 " +
-                " SET users.Gems = " + user.Gems +
-                " SET users.Common = " + user.Common +
-                " SET users.Uncommon = " + user.Uncommon +
-                " SET users.Rare = " + user.Rare +
-                " SET users.Epic = " + user.Epic +
-                " WHERE users.DiscordID = '" + user.DiscordID + "';";
+            DoConnection();
+            string sql = "UPDATE users" +
+                " SET users.DiscordName = @val1" +
+                ", users.Gems = " + user.Gems +
+                ", users.Common = " + user.Common +
+                ", users.Uncommon = " + user.Uncommon +
+                ", users.Rare = " + user.Rare +
+                ", users.Epic = " + user.Epic +
+                " WHERE users.ID = '" + user.ID + "';";
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
             objGet.Parameters.AddWithValue("@val1", user.DiscordName);
             objGet.Prepare();
             objGet.ExecuteNonQuery();
+            CloseConnection();
         }
 
         public static void UpdateUserQuiz(ServerUser serverUser)
@@ -480,42 +482,25 @@ namespace Nadja.Models
 
         public static void AddItemFound(Helper.Rarity rarity, User user)
         {
-            DoConnection();
-
-            MySqlCommand objGet;
-            string sql;
-
             switch(rarity)
             {
                 case Helper.Rarity.Common:
-                    sql = "UPDATE users SET Common = Common + 1 WHERE ID = '" + user.ID + "' ;";
                     user.Common += 1;
-                    objGet = new MySqlCommand(sql, objMySqlCnx);
-                    objGet.ExecuteNonQuery();
                     break;
                 case Helper.Rarity.Uncommon:
-                    sql = "UPDATE users SET Uncommon = Uncommon + 1 WHERE ID = '" + user.ID + "' ;";
                     user.Uncommon += 1;
-                    objGet = new MySqlCommand(sql, objMySqlCnx);
-                    objGet.ExecuteNonQuery();
                     break;
                 case Helper.Rarity.Rare:
-                    sql = "UPDATE users SET Rare = Rare + 1 WHERE ID = '" + user.ID + "' ;";
                     user.Rare += 1;
-                    objGet = new MySqlCommand(sql, objMySqlCnx);
-                    objGet.ExecuteNonQuery();
                     break;
                 case Helper.Rarity.Epic:
-                    sql = "UPDATE users SET Epic = Epic + 1 WHERE ID = '" + user.ID + "' ;";
                     user.Epic += 1;
-                    objGet = new MySqlCommand(sql, objMySqlCnx);
-                    objGet.ExecuteNonQuery();
                     break;
                 default:
                     break;
             }
-            CloseConnection();
 
+            UpdateUserSearch(user);
 
 
             

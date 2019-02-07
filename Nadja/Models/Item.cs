@@ -158,7 +158,7 @@ namespace Nadja.Models
             if (Crafts != null)
             {
                 // Displaying first item needed for craft
-                foreach(Item item in Crafts[0].ItemsNeeded)
+                foreach (Item item in Crafts[0].ItemsNeeded)
                 {
                     aString = item.DisplayLocationItem();
                     if (item.Crafts != null)
@@ -188,7 +188,7 @@ namespace Nadja.Models
                 }
 
                 // If items for crafting the askingItem exists, display it too using this function
-                
+
             }
         }
     }

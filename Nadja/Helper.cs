@@ -52,15 +52,15 @@ namespace Nadja
                     visual = "Fox";
                 switch (numero)
                 {
-                    case (0):
-                        visual += " I"; break;
                     case (1):
-                        visual += " II"; break;
+                        visual += " I"; break;
                     case (2):
-                        visual += " III"; break;
+                        visual += " II"; break;
                     case (3):
-                        visual += " IV"; break;
+                        visual += " III"; break;
                     case (4):
+                        visual += " IV"; break;
+                    case (0):
                         visual += " V"; break;
                     default:
                         visual += " ?"; break;
