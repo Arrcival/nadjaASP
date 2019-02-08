@@ -16,23 +16,25 @@ namespace Nadja.Models
 
         public List<Item> ItemsNeeded { get; set; }
 
-        public void DisplayCraft(EmbedBuilder builder)
+        public void DisplayCraft(EmbedBuilder builder, bool first)
         {
+            if(first)
+                builder.AddField(ItemCrafted.Name, ItemsNeeded[0].Name + " + " + ItemsNeeded[1].Name, false);
+            int count = 0;
             foreach (Item item in ItemsNeeded)
             {
-                builder.AddField("------------------------------------", item.Name);
-
+                bool inline = true;
                 string aString = item.DisplayLocationItem();
-                if (item.Crafts != null)
+                if(item.Craft != null)
                 {
                     if (aString != "")
                     {
                         aString += "OR ";
                     }
-                    for (int j = 0; j < item.Crafts[0].ItemsNeeded.Count; j++)
+                    for (int j = 0; j < item.Craft.ItemsNeeded.Count; j++)
                     {
-                        aString += item.Crafts[0].ItemsNeeded[j].Name;
-                        if (j != item.Crafts[0].ItemsNeeded.Count - 1)
+                        aString += item.Craft.ItemsNeeded[j].Name;
+                        if (j != item.Craft.ItemsNeeded.Count - 1)
                             aString += " + ";
                     }
                 }
@@ -40,9 +42,17 @@ namespace Nadja.Models
                 {
                     aString = "Looks like you can't find this item";
                 }
-                builder.AddField(item.Name, aString, true);
 
-                
+                if (count % 2 == 1)
+                    inline = false;
+                builder.AddField(item.Name, aString, inline);
+
+                if (item.Craft != null)
+                {
+                    item.DisplayItem(builder, false);
+                }
+                count++;
+
             }
         }
     }

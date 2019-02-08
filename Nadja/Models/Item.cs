@@ -17,7 +17,7 @@ namespace Nadja.Models
 
         public List<string> Slangs { get; set; }
 
-        public List<Craft> Crafts { get; set; }
+        public Craft Craft { get; set; }
 
         public List<Found> Founds { get; set; }
 
@@ -125,67 +125,11 @@ namespace Nadja.Models
             builder.AddField($"To find {Name} :", aString, true);
         }
 
-        public void DisplayItem(EmbedBuilder builder, bool firstItem)
+        public void DisplayItem(EmbedBuilder builder, bool first)
         {
-            string aString = "";
-            // If this the first item, just make (craft + craft) or with locations if exists
-            if (firstItem)
+            if (Craft != null)
             {
-                aString = DisplayLocationItem();
-                string tinyStr = "";
-                if (Crafts != null)
-                {
-                    if (aString != "")
-                    {
-                        aString += "OR ";
-                    }
-                    for (int j = 0; j < Crafts[0].ItemsNeeded.Count; j++)
-                    {
-                        aString += Crafts[0].ItemsNeeded[j].Name;
-                        if (j != Crafts[0].ItemsNeeded.Count - 1)
-                            aString += " + ";
-                    }
-                    tinyStr = "(" + Crafts[0].Amount.ToString() + ")";
-                }
-
-                if (aString == "")
-                {
-                    aString = "Looks like you can't find this item";
-                }
-                builder.AddField($"{Name} {tinyStr}", aString);
-            }
-
-            if (Crafts != null)
-            {
-                // Displaying first item needed for craft
-                foreach (Item item in Crafts[0].ItemsNeeded)
-                {
-                    aString = item.DisplayLocationItem();
-                    if (item.Crafts != null)
-                    {
-                        if (aString != "")
-                        {
-                            aString += "OR ";
-                        }
-                        for (int j = 0; j < item.Crafts[0].ItemsNeeded.Count; j++)
-                        {
-                            aString += item.Crafts[0].ItemsNeeded[j].Name;
-                            if (j != item.Crafts[0].ItemsNeeded.Count - 1)
-                                aString += " + ";
-                        }
-                    }
-                    if (aString == "")
-                    {
-                        aString = "Looks like you can't find this item";
-                    }
-                    builder.AddField(item.Name, aString, true);
-
-                    if (item.Crafts != null)
-                    {
-                        builder.AddField("------------------------------------", item.Name + " (" + item.Crafts[0].Amount + ")");
-                        item.DisplayItem(builder, false);
-                    }
-                }
+                Craft.DisplayCraft(builder, first);
 
                 // If items for crafting the askingItem exists, display it too using this function
 

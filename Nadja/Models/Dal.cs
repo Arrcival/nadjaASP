@@ -247,8 +247,8 @@ namespace Nadja.Models
                         craft.ItemsNeeded.Add(GetItem(id, true));
 
                 }
-                if(craft != null)
-                    item.Crafts = new List<Craft>(){craft};
+                if (craft != null)
+                    item.Craft = craft;
             
 
             }
