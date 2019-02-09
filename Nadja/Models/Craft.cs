@@ -33,6 +33,7 @@ namespace Nadja.Models
                     }
                     for (int j = 0; j < item.Craft.ItemsNeeded.Count; j++)
                     {
+                        inline = false;
                         aString += item.Craft.ItemsNeeded[j].Name;
                         if (j != item.Craft.ItemsNeeded.Count - 1)
                             aString += " + ";
@@ -42,9 +43,7 @@ namespace Nadja.Models
                 {
                     aString = "Looks like you can't find this item";
                 }
-
-                if (count % 2 == 1)
-                    inline = false;
+                
                 builder.AddField(item.Name, aString, inline);
 
                 if (item.Craft != null)
