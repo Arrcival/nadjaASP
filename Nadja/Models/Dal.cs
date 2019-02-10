@@ -213,6 +213,25 @@ namespace Nadja.Models
 
             item.Founds = founds;
 
+            
+            DoConnection();
+            List<string> slangs = new List<string>();
+
+            sql = "SELECT Slang " +
+                "FROM slangs " + 
+                "WHERE ItemID = " + item.ID + ";";
+            objGet = new MySqlCommand(sql, objMySqlCnx);
+            objReader = objGet.ExecuteReader();
+            while (objReader.Read())
+            {
+                slangs.Add(objReader.GetValue(0).ToString());
+            }
+
+            item.Slangs = slangs;
+
+            CloseConnection();
+            
+
 
             if (complete)
             {
@@ -356,15 +375,17 @@ namespace Nadja.Models
 
         public static void UpdateUserQuiz(ServerUser serverUser)
         {
+            DoConnection();
             string sql = "UPDATE serverusers " +
-                "SET serverusers.DiscordServerName = @val1" +
-                " SET serverusers.Points = " + serverUser.Points +
+                " SET serverusers.DiscordServerName = @val1" +
+                ", serverusers.Points = " + serverUser.Points +
                 " WHERE serverusers.DiscordID = '" + serverUser.DiscordID + "'" +
                 " AND serverusers.ServerID = '" + serverUser.ServerID + "';";
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
             objGet.Parameters.AddWithValue("@val1", serverUser.ServerNameUser);
             objGet.Prepare();
             objGet.ExecuteNonQuery();
+            CloseConnection();
         }
 
         public static List<double> GetEverySearches()

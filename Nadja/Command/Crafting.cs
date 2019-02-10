@@ -95,6 +95,8 @@ namespace Nadja.Command
                 itemAsked.DisplayOnlyLocationItem(builder);
                 if (itemAsked.Description != "")
                     builder.AddField($"Description :", $"- {itemAsked.Description}");
+
+                builder.WithFooter(DoFooterDesc(itemAsked));
             }
             else
             {
@@ -102,7 +104,6 @@ namespace Nadja.Command
             }
             builder.WithColor(Color.DarkBlue);
 
-            builder.WithFooter(DoFooterDesc(itemAsked));
 
             await ReplyAsync("", false, builder.Build());
         }

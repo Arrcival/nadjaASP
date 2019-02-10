@@ -10,6 +10,7 @@ namespace Nadja
     public static class Helper
     {
         public enum Rarity { Common, Uncommon, Rare, Epic }
+        public enum GameResult { Victory, Timeout, None}
         public static Random rng = new Random();
 
         public static string DiscordPingDelimiter(string testString)

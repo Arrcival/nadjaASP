@@ -23,8 +23,12 @@ namespace Nadja.Models
 
         public bool IsNamed(string way)
         {
-            if (Slangs.Contains(way))
+            if (Name.ToLower() == way.ToLower())
                 return true;
+
+            foreach (string slang in Slangs)
+                if (slang.ToLower() == way.ToLower())
+                    return true;
 
             return false;
         }

@@ -27,6 +27,10 @@ namespace Nadja.Models
             Dal.UpdateUserQuiz(this);
         }
 
+        public void AddPoints(int points)
+        {
+            Points += points;
+        }
 
 
     }

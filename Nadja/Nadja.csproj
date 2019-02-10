@@ -265,7 +265,7 @@
     <Compile Include="Models\Craft.cs" />
     <Compile Include="Models\Dal.cs" />
     <Compile Include="Models\Found.cs" />
-    <Compile Include="Models\Game.cs" />
+    <Compile Include="Models\Quiz.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Legendary.cs" />
     <Compile Include="Models\Location.cs" />
@@ -296,7 +296,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -323,7 +325,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
