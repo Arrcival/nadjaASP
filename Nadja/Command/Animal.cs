@@ -19,7 +19,7 @@ namespace Nadja.Command
             public async Task AnimalDefaultAsync()
             {
                 EmbedBuilder builder = new EmbedBuilder();
-                builder.WithTitle($"Type $animals <animal> to get the info you want");
+                builder.WithTitle($"Type {Bot.prefix}animals <animal> to get the info you want");
                 builder.AddField("List of animals :",
                     "meat crow \n" +
                     "egg crow \n" +

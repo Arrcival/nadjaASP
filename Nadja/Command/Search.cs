@@ -281,6 +281,8 @@ namespace Nadja.Command
         private List<string> uncommonItems = new List<string>{ "Lighter", "Honey", "Ice", "Pill", "Alcohol", "Coffee", "Orange", "Chocolate", "Thick Paper",
             "TV", "Cookie",  "Curry Powder", "Fabric Armor", "Glass Cup", "Ripped Scroll - 1", "Ripped Scroll - 2",  "Buddhist Scripture", "Wooden Fish", "Whetstone", "Ingram MAC-10"};
 
+
+
         [Command("luck")]
         public async Task LootAsync()
         {

@@ -113,6 +113,9 @@ namespace Nadja.Models
             objReader.Close();
             CloseConnection();
 
+            if (serverName == null)
+                return null;
+
             serverUser.ServerNameUser = serverName;
             serverUser.Points = points;
             serverUser.ServerID = idServer;

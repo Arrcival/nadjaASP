@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
+using Nadja.Models;
 
 namespace Nadja.Command
 {
@@ -16,7 +17,7 @@ namespace Nadja.Command
         {
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("Command list")
-                .WithDescription($"Prefix : **$** \n");
+                .WithDescription($"Prefix : **{Bot.prefix}** \n");
 
             string stringBS = "craft + <Item> : Show the craft of the <Item> \n" +
                 "item + <Item> : Get basic infos of the <Item> \n" +
@@ -52,6 +53,8 @@ namespace Nadja.Command
         [Command("info")]
         public async Task WhoAsync()
         {
+            ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
+
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("Nadja BS bot Version 2.0.0")
                 .WithDescription("Developed by Arrcival");
