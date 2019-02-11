@@ -262,10 +262,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
-    <Compile Include="Model\Journal.cs" />
+    <Compile Include="Models\Journal.cs" />
     <Compile Include="Models\Craft.cs" />
     <Compile Include="Models\Dal.cs" />
-    <Compile Include="Model\Log.cs" />
+    <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Found.cs" />
     <Compile Include="Models\Quiz.cs" />
     <Compile Include="Models\Item.cs" />
@@ -287,6 +287,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\Nadja - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

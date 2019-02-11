@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Nadja.Model
+namespace Nadja.Models
 {
     public static class Journal
     {
