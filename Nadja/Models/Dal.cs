@@ -443,10 +443,10 @@ namespace Nadja.Models
                 return location;
             }
 
-            sql = "SELECT items.ID, items.Name, itemLocation.Amount" +
+            sql = "SELECT items.ID, items.Name, itemlocation.Amount" +
                 " FROM itemlocation, items" +
                 " WHERE itemlocation.LocationID = " + location.ID + 
-                " AND items.ID = itemLocation.ItemID;";
+                " AND items.ID = itemlocation.ItemID;";
 
             objGet = new MySqlCommand(sql, objMySqlCnx);
             objReader = objGet.ExecuteReader();
