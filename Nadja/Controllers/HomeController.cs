@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Nadja.Models;
 
 namespace Nadja.Controllers
 {
@@ -15,16 +16,25 @@ namespace Nadja.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "More about Nadja";
 
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Commands()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Commands list";
 
             return View();
         }
+
+        public ActionResult Journal()
+        {
+            ViewBag.Message = "The journal log";
+            ViewBag.Journal = Models.Journal.GetLogs();
+
+            return View();
+        }
+        
     }
 }

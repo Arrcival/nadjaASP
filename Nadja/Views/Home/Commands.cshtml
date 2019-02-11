@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "Commands";
+}
+<h2>@ViewBag.Title</h2>
+
+Not every commands are displayed here.
+
+
+
+<h3>BS Related</h3>
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Command</th>
+                <th>Effect</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>craft (Item)</td>
+            <td>Display the craft of the item selected</td>
+            <td>craft boiling water (shows how to craft boiling water)</td>
+        </tr>
+        <tr>
+            <td>item (Item)</td>
+            <td>Display informations about the item selected (description + places to find the item)</td>
+            <td>item water (shows water description and places to find it)</td>
+        </tr>
+        <tr>
+            <td>what (Location)</td>
+            <td>Display every items you can loot in the location selected</td>
+            <td>what alley (displays everything in alley)</td>
+        </tr>
+        <tr>
+            <td>animal (Animal name)</td>
+            <td>Display informations about the animal selected</td>
+            <td>animal bear (display informations about the bear)</td>
+        </tr>
+        <tr>
+            <td>loot (Place) (Amount = 10) (Rare items probability = 1%)</td>
+            <td>Create a fake loot if you had searched x amounts in the place you input. By default, it displays 10 items and rare items have a 1% chance to appear</td>
+            <td>loot Tunnel 15 2 (Display 15 items found in Tunnel with 2% of finding a rare item)</td>
+        </tr>
+    </table>
+</div>
+
+<h3>Games</h3>
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Command</th>
+                <th>Effect</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>quiz</td>
+            <td>Creates a new quiz, which display a craft with a missing item, the aim is to find the missing item name</td>
+            <td>quiz</td>
+        </tr>
+        <tr>
+            <td>ans (answer)</td>
+            <td>Used to answer the quiz, if the answer is correct, you'll get awarded points. The earlier you answer, the more points you get. (50 -> 10)</td>
+            <td>ans water (answers water)</td>
+        </tr>
+        <tr>
+            <td>ranks</td>
+            <td>Shows the top 10 users in the current server of the quiz game</td>
+            <td>ranks</td>
+        </tr>
+        <tr>
+            <td>search</td>
+            <td>Search a random item, it mimics t!fish from Tatsumaki bot, but with current Black Survival items.</td>
+            <td>search</td>
+        </tr>
+        <tr>
+            <td>profile (Name)</td>
+            <td>Looks at you/someone profile.</td>
+            <td>profile (look at your own profile)</td>
+        </tr>
+    </table>
+</div>
+
+<h3>Basic commands</h3>
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Command</th>
+                <th>Effect</th>
+            </tr>
+        </thead>
+        <tr>
+            <td>help</td>
+            <td>Gives the help command</td>
+        </tr>
+        <tr>
+            <td>info</td>
+            <td>Get the current version about the bot</td>
+        </tr>
+    </table>
+</div>

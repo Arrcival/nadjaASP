@@ -1,0 +1,33 @@
+﻿@using Nadja.Models;
+@{
+    ViewBag.Title = "Commands Journal";
+}
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.Message</h3>
+
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Server</th>
+                <th>Channel</th>
+                <th>Command</th>
+                <th>Error</th>
+            </tr>
+        </thead>
+        @foreach (Log log in ViewBag.Journal)
+        {
+        <tr>
+            <td>@log.Time</td>
+            <td>@log.User</td>
+            <td>@log.Server</td>
+            <td>@log.Channel</td>
+            <td>@log.Command</td>
+            <td>@log.Error</td>
+        </tr>
+        }
+    </table>
+</div>

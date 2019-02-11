@@ -10,6 +10,7 @@ using Discord.WebSocket;
 using Discord.Addons.Interactive;
 using Microsoft.Extensions.DependencyInjection;
 using Nadja.Command;
+using Nadja.Models;
 
 namespace Nadja
 {
@@ -72,6 +73,7 @@ namespace Nadja
                 //else channel = server.TextChannels.Single(tc => tc.Name == "sh-comp-logger");
                 if (channel != null) await channel.SendMessageAsync("Bonjour");
             }
+
         }
 
         private async Task ClientMessageReceived(SocketMessage arg)
@@ -84,12 +86,31 @@ namespace Nadja
 
             if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
+
                 var context = new SocketCommandContext(_client, message);
+
 
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
 
+                string guildName;
+                string channelName;
+                if(context.IsPrivate)
+                {
+                    guildName = "DM";
+                    channelName = "DM";
+                } else
+                {
+                    guildName = context.Guild.Name;
+                    channelName = context.Channel.Name;
+                }
+                string discordTag = context.User.Username + "#" + context.User.Discriminator;
+
                 if (!result.IsSuccess)
-                    await context.Channel.SendMessageAsync(result.ErrorReason);
+                    Journal.AddLog(discordTag, guildName, channelName, message.ToString(), result.ErrorReason);
+                else
+                    Journal.AddLog(discordTag, guildName, channelName, message.ToString());
+
+
 
 
             }

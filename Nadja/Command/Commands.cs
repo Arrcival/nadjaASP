@@ -26,14 +26,11 @@ namespace Nadja.Command
                 "--------- \n" +
                 "quiz : Craft quiz ! \n" +
                 "ans + <answer> : Answer command \n" +
-                "ranks : Top10 no-life people \n" +
+                "ranks : Top10 people on the quiz\n" +
                 "--------- \n" +
                 "loot : Copy in-game loot, with user parameters, helpful for mentors \n" +
                 "--------- \n" +
                 "search : Search for an item ? \n" +
-                "toplucky : Look at your luck coefficient \n" +
-                "topunlucky : Look at top10 luckiest people \n" +
-                "rename : To rename yourself \n" +
                 "profile : To look at your profile \n";
 
             string stringMisc = "help : Show help page \n" +
@@ -53,8 +50,6 @@ namespace Nadja.Command
         [Command("info")]
         public async Task WhoAsync()
         {
-            ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
-
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle("Nadja BS bot Version 2.0.0")
                 .WithDescription("Developed by Arrcival");
