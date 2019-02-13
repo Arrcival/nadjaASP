@@ -11,6 +11,7 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
+        /*
         private static List<Quiz> Games = new List<Quiz>();
 
         [Command("quiz"), RequireContext(ContextType.Guild)]
@@ -114,5 +115,6 @@ namespace Nadja.Command
             return null;
 
         }
+        */
     }
 }
