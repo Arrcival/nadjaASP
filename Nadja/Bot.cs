@@ -58,7 +58,6 @@ namespace Nadja
             _client.MessageReceived += ClientMessageReceived;
 
             await _commands.AddModuleAsync<Commands>(_services);
-
         }
 
         private async Task ClientReady()

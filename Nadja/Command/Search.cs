@@ -14,7 +14,7 @@ namespace Nadja.Command
     {
         private static Stopwatch stopwatch = new Stopwatch();
         private static List<Search> searches = new List<Search>();
-        private readonly int cooldownTime = 1;
+        private readonly int cooldownTime = 30000;
         private int defaultQty = 10;
         private float defaultRarity = 1;
 
@@ -91,7 +91,7 @@ namespace Nadja.Command
                     {
                         builder.WithTitle($":purple_heart:  {Context.User.Username} just found {itemSelected.Name} in {location.Name} !!! An epic item !!! :purple_heart: ")
                             .WithColor(Color.Purple);
-                        Dal.AddItemFound(Helper.Rarity.Epic, user);
+                        Helper.AddItemFound(Helper.Rarity.Epic, user);
                     }
                     else
                     {
@@ -99,7 +99,7 @@ namespace Nadja.Command
                         {
                             builder.WithTitle($":blue_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} !! A rare item !! :blue_heart:")
                             .WithColor(Color.Blue);
-                            Dal.AddItemFound(Helper.Rarity.Rare, user);
+                            Helper.AddItemFound(Helper.Rarity.Rare, user);
                         }
                         else
                         {
@@ -108,14 +108,14 @@ namespace Nadja.Command
 
                                 builder.WithTitle($":green_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} ! An uncommon item :green_heart:")
                                 .WithColor(Color.Green);
-                                Dal.AddItemFound(Helper.Rarity.Uncommon, user);
+                                Helper.AddItemFound(Helper.Rarity.Uncommon, user);
                             }
                             else
                             {
 
                                 builder.WithTitle($"{Context.User.Username} just found {itemSelected.Name} in {location.Name} ...")
                                 .WithColor(Color.LightGrey);
-                                Dal.AddItemFound(Helper.Rarity.Common, user);
+                                Helper.AddItemFound(Helper.Rarity.Common, user);
                             }
                         }
                     }

@@ -92,5 +92,28 @@ namespace Nadja
             return tempList;
 
         }
+
+        public static void AddItemFound(Rarity rarity, User user)
+        {
+            switch (rarity)
+            {
+                case Rarity.Common:
+                    user.Common += 1;
+                    break;
+                case Rarity.Uncommon:
+                    user.Uncommon += 1;
+                    break;
+                case Rarity.Rare:
+                    user.Rare += 1;
+                    break;
+                case Rarity.Epic:
+                    user.Epic += 1;
+                    break;
+                default:
+                    break;
+            }
+
+            Dal.UpdateUserSearch(user);
+        }
     }
 }

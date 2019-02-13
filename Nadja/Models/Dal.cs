@@ -20,7 +20,6 @@ namespace Nadja.Models
             objMySqlCnx = new MySqlConnection(strConnect);
             objMySqlCnx.Open();
         }
-
         private static void CloseConnection()
         {
             objMySqlCnx.Close();
@@ -134,6 +133,9 @@ namespace Nadja.Models
             while (objReader.Read())
                 idUser = objReader.GetValue(0).ToString();
 
+            objReader.Close();
+            CloseConnection();
+
             return idUser;
         }
 
@@ -230,6 +232,7 @@ namespace Nadja.Models
                 slangs.Add(objReader.GetValue(0).ToString());
             }
 
+            objReader.Close();
             item.Slangs = slangs;
 
             CloseConnection();
@@ -504,31 +507,9 @@ namespace Nadja.Models
                 return GetLocation(name);
         }
 
-        public static void AddItemFound(Helper.Rarity rarity, User user)
-        {
-            switch(rarity)
-            {
-                case Helper.Rarity.Common:
-                    user.Common += 1;
-                    break;
-                case Helper.Rarity.Uncommon:
-                    user.Uncommon += 1;
-                    break;
-                case Helper.Rarity.Rare:
-                    user.Rare += 1;
-                    break;
-                case Helper.Rarity.Epic:
-                    user.Epic += 1;
-                    break;
-                default:
-                    break;
-            }
-
-            UpdateUserSearch(user);
+        
 
 
-            
-        }
         public static List<Legendary> GetEveryLegendaries()
         {
             DoConnection();
