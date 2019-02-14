@@ -47,6 +47,21 @@ namespace Nadja.Command
             await ReplyAsync("", false, builder.Build());
         }
 
+        [Command("say"), RequireOwner]
+        public async Task SayAsync(string channel, [Remainder] string text)
+        {
+            var server = Context.Client.Guilds.SingleOrDefault(g => g.Name == "Black Survival");
+            ITextChannel channelsay;
+            if (server != null)
+            {
+                channelsay = server.TextChannels.Single(tc => tc.Name == channel);
+                //if (server.TextChannels.All(tc => tc.Name != "sh-comp-logger"))
+                //    channel = await server.CreateTextChannelAsync("sh-comp-logger");
+                //else channel = server.TextChannels.Single(tc => tc.Name == "sh-comp-logger");
+                if (channel != null) await channelsay.SendMessageAsync(text);
+            }
+        }
+
 
     }
 }

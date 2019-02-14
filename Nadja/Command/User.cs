@@ -18,6 +18,7 @@ namespace Nadja.Command
             ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
             Dal.CloseConnection();
 
+
             EmbedBuilder builder = new EmbedBuilder();
 
             Construct(builder, serverUser);
