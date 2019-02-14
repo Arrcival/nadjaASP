@@ -16,6 +16,7 @@ namespace Nadja.Command
         [Command("craft")]
         public async Task CraftAsync([Remainder] string name)
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
             int itemID = Dal.GetIDItem(name);
 
@@ -73,7 +74,7 @@ namespace Nadja.Command
                 builder.WithTitle("Check the name of your item.");
             }
 
-
+            Dal.CloseConnection();
             builder.WithColor(Color.DarkRed);
 
             //This is the function sending builder (making great visual stuff)
@@ -85,6 +86,7 @@ namespace Nadja.Command
         [Command("item")]
         public async Task WhereAsync([Remainder] string name)
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
             int idItem = Dal.GetIDItem(name);
             Item itemAsked = null;
@@ -102,6 +104,8 @@ namespace Nadja.Command
             {
                 builder.WithTitle("Check the name of your item.");
             }
+
+            Dal.CloseConnection();
             builder.WithColor(Color.DarkBlue);
 
 
@@ -112,6 +116,7 @@ namespace Nadja.Command
         [Command("what")]
         public async Task WhatAsync([Remainder] string name)
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
 
             Location locationAsked = Dal.GetLocation(name);
@@ -121,6 +126,7 @@ namespace Nadja.Command
             else
                 builder.WithTitle("Check the name of your location.");
 
+            Dal.CloseConnection();
             builder.WithColor(Color.DarkGreen);
             await ReplyAsync("", false, builder.Build());
         }
@@ -134,6 +140,7 @@ namespace Nadja.Command
             }
             else
             {
+                Dal.DoConnection();
                 Item item = Dal.GetItem(int.Parse(idItem), false);
                 if (item != null)
                 {
@@ -142,6 +149,7 @@ namespace Nadja.Command
                 }
                 else
                     await ReplyAsync($"No item found to add a slang.", false);
+                Dal.CloseConnection();
             }
 
 

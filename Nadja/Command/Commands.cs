@@ -16,29 +16,11 @@ namespace Nadja.Command
         public async Task HelpAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("Command list")
+            builder.WithTitle("Get the command list on the website !")
                 .WithDescription($"Prefix : **{Bot.prefix}** \n");
 
-            string stringBS = "craft + <Item> : Show the craft of the <Item> \n" +
-                "item + <Item> : Get basic infos of the <Item> \n" +
-                "what + <Location> : Show every items in the <Location> \n" +
-                "animal : Get info about animals \n" +
-                "--------- \n" +
-                "quiz : Craft quiz ! \n" +
-                "ans + <answer> : Answer command \n" +
-                "ranks : Top10 people on the quiz\n" +
-                "--------- \n" +
-                "loot : Copy in-game loot, with user parameters, helpful for mentors \n" +
-                "--------- \n" +
-                "search : Search for an item ? \n" +
-                "profile : To look at your profile \n";
 
-            string stringMisc = "help : Show help page \n" +
-                "info : Get informations about me + Changelog \n" +
-                "And other secret stuff..";
-
-            builder.AddField("BS related", stringBS);
-            builder.AddField("Non BS related", stringMisc);
+            builder.WithUrl("https://nadja.azurewebsites.net");
 
             builder.WithColor(Color.DarkPurple);
             builder.WithFooter("Bot made by Arrcival");
@@ -57,7 +39,7 @@ namespace Nadja.Command
 
 
             builder.AddField("Changelog", "" +
-                "Dank, this is a version 2! \n" +
+                "Dank, this is a version 2 ! \n" +
                 "Removed teehee (for real)\n");
 
             builder.WithColor(Color.DarkBlue);

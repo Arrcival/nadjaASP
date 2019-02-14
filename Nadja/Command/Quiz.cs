@@ -11,12 +11,13 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
-        /*
+        
         private static List<Quiz> Games = new List<Quiz>();
 
         [Command("quiz"), RequireContext(ContextType.Guild)]
         public async Task QuizAsync()
         {
+            Dal.DoConnection();
             bool found = false;
             EmbedBuilder builder = new EmbedBuilder();
             Quiz game = FindGame(Context.Guild.Id.ToString(), Context.Channel.Id.ToString());
@@ -40,6 +41,7 @@ namespace Nadja.Command
                 game.PrintQuiz(builder);
                 await ReplyAsync("", false, builder.Build());
             }
+            Dal.CloseConnection();
         }
 
 
@@ -75,6 +77,7 @@ namespace Nadja.Command
                 EmbedBuilder builder = new EmbedBuilder();
                 if (result == Helper.GameResult.Victory)
                 {
+                    Dal.DoConnection();
                     ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
                     if(serverUser == null)
                     {
@@ -90,6 +93,7 @@ namespace Nadja.Command
                     int points = game.GetPoints();
                     serverUser.AddPoints(points);
                     serverUser.UpdateQuiz();
+                    Dal.CloseConnection();
 
                     builder.AddField($"{Context.User.Username} won in {game.ElapsedTime()}s !", $"Answer was {game.hiddenItem.Name}, ({points}pts)");
                     builder.WithColor(Color.Magenta);
@@ -115,6 +119,6 @@ namespace Nadja.Command
             return null;
 
         }
-        */
+        
     }
 }

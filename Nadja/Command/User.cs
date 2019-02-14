@@ -14,7 +14,9 @@ namespace Nadja.Command
         [Command("profile"), RequireContext(ContextType.Guild)]
         public async Task ProfileAsync()
         {
+            Dal.DoConnection();
             ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
+            Dal.CloseConnection();
 
             EmbedBuilder builder = new EmbedBuilder();
 
@@ -26,6 +28,7 @@ namespace Nadja.Command
         [Command("profile"), RequireContext(ContextType.Guild)]
         public async Task ProfilePlayerAsync([Remainder] string name)
         {
+            Dal.DoConnection();
             name = Helper.DiscordPingDelimiter(name);
 
             string idUser = Dal.GetIdUser(name);
@@ -38,6 +41,7 @@ namespace Nadja.Command
             else
                 serverUser = Dal.GetServerUser(name, Context.Guild.ToString());
 
+            Dal.CloseConnection();
             Construct(builder, serverUser, false);
 
             await ReplyAsync("", false, builder.Build());
@@ -46,6 +50,7 @@ namespace Nadja.Command
         [Command("ranks"), RequireContext(ContextType.Guild)]
         public async Task RanksAsync()
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
             List<ServerUser> listRanks = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
@@ -56,6 +61,7 @@ namespace Nadja.Command
             {
                 aString += Helper.GetRank(i + 1) + " : " + listRanks[i].ServerNameUser + "\n";
             }
+            Dal.CloseConnection();
 
             builder.WithDescription(aString);
 
@@ -78,8 +84,10 @@ namespace Nadja.Command
                 if (ownProfile)
                     builder.WithImageUrl(Context.User.GetAvatarUrl());
             }
-            
+
+            Dal.DoConnection();
             List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
+            Dal.CloseConnection();
 
             string rank = Helper.GetRank(everyServerUsers, serverUser);
             

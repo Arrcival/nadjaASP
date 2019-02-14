@@ -54,6 +54,7 @@ namespace Nadja.Command
             {
                 searches.Add(new Search(idUser, stopwatch.ElapsedMilliseconds));
 
+                Dal.DoConnection();
                 User user = Dal.GetUser(idUser);
                 if (user == null)
                 {
@@ -142,6 +143,7 @@ namespace Nadja.Command
                 await ReplyAsync("", false, builder.Build());
 
 
+                Dal.CloseConnection();
 
 
 
@@ -162,8 +164,10 @@ namespace Nadja.Command
         [Command("loot")]
         public async Task LootDefaultAsync(string place)
         {
+            Dal.DoConnection();
             Location location = Dal.GetLocation(place);
             EmbedBuilder builder = new EmbedBuilder();
+            Dal.CloseConnection();
 
             if (location != null)
                 DoLoot(builder, location, -1, -1);
@@ -176,7 +180,9 @@ namespace Nadja.Command
         [Command("loot")]
         public async Task LootQtyAsync(string place, int qty)
         {
+            Dal.DoConnection();
             Location location = Dal.GetLocation(place);
+            Dal.CloseConnection();
 
             EmbedBuilder builder = new EmbedBuilder();
 
@@ -197,8 +203,10 @@ namespace Nadja.Command
         [Command("loot")]
         public async Task LootQtyRtyAsync(string place, int qty, float rare)
         {
+            Dal.DoConnection();
             Location location = Dal.GetLocation(place);
             EmbedBuilder builder = new EmbedBuilder();
+            Dal.CloseConnection();
 
             if (location != null)
             {
@@ -286,8 +294,10 @@ namespace Nadja.Command
         [Command("luck")]
         public async Task LootAsync()
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
             User user = Dal.GetUser(Context.User.Id.ToString());
+            Dal.CloseConnection();
             builder.WithTitle($"{Context.User.Username}, your luck coefficient is {user.GetLuck()}")
                             .WithColor(Color.DarkGreen);
             await ReplyAsync("", false, builder.Build());
@@ -297,6 +307,7 @@ namespace Nadja.Command
         [Command("luck")]
         public async Task LootPlayerAsync(string name)
         {
+            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
             name = Helper.DiscordPingDelimiter(name);
 
@@ -313,6 +324,7 @@ namespace Nadja.Command
                 builder.WithTitle($"{name} does not exists...")
                     .WithColor(Color.DarkGreen);
             }
+            Dal.CloseConnection();
 
             await ReplyAsync("", false, builder.Build());
         }
