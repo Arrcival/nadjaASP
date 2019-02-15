@@ -507,6 +507,22 @@ namespace Nadja.Models
             
         }
 
+        public static int GetEveryPossess()
+        {
+            int count = -1;
+            string sql = "SELECT COUNT(*) FROM possess;";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objGet.ExecuteReader();
+            while (objReader.Read())
+            {
+                count = int.Parse(objReader.GetValue(0).ToString());
+            }
+
+            objReader.Close();
+            return count;
+
+        }
+
         public static void CreateUser(string idUser, string discordName)
         {
             string sql = "INSERT INTO users(ID, DiscordID, DiscordName, Gems, Common, Uncommon, Rare, Epic) VALUES (NULL, '" + idUser + "', '" + discordName + "', 0, 0, 0, 0, 0);";

@@ -135,7 +135,7 @@ namespace Nadja.Command
 
                 if (totalSearches % 100 == 0)
                 {
-                    int totalLegendaries = Dal.GetEveryLegendaries().Count;
+                    int totalLegendaries = Dal.GetEveryPossess();
                     footer += $" / {totalSearches}th search! {totalLegendaries} legendaries found in total.";
                 }
 
