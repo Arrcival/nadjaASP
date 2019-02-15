@@ -292,20 +292,23 @@ namespace Nadja.Command
 
 
         [Command("luck")]
-        public async Task LootAsync()
+        public async Task LuckAsync()
         {
             Dal.DoConnection();
-            EmbedBuilder builder = new EmbedBuilder();
             User user = Dal.GetUser(Context.User.Id.ToString());
+            if(user != null)
+            {
+                EmbedBuilder builder = new EmbedBuilder();
+                builder.WithTitle($"{Context.User.Username}, your luck coefficient is {user.GetLuck()}")
+                                .WithColor(Color.DarkGreen);
+                await ReplyAsync("", false, builder.Build());
+            }
             Dal.CloseConnection();
-            builder.WithTitle($"{Context.User.Username}, your luck coefficient is {user.GetLuck()}")
-                            .WithColor(Color.DarkGreen);
-            await ReplyAsync("", false, builder.Build());
 
         }
 
         [Command("luck")]
-        public async Task LootPlayerAsync(string name)
+        public async Task LuckPlayerAsync(string name)
         {
             Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();

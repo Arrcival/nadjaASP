@@ -16,12 +16,12 @@ namespace Nadja.Command
         {
             Dal.DoConnection();
             ServerUser serverUser = Dal.GetServerUser(Context.User.Id.ToString(), Context.Guild.Id.ToString());
-            Dal.CloseConnection();
 
 
             EmbedBuilder builder = new EmbedBuilder();
 
-            Construct(builder, serverUser);
+            Construct(builder, serverUser, Context.User.Id.ToString());
+            Dal.CloseConnection();
 
             await ReplyAsync("", false, builder.Build());
         }
@@ -42,8 +42,8 @@ namespace Nadja.Command
             else
                 serverUser = Dal.GetServerUser(name, Context.Guild.ToString());
 
+            Construct(builder, serverUser, idUser, false);
             Dal.CloseConnection();
-            Construct(builder, serverUser, false);
 
             await ReplyAsync("", false, builder.Build());
         }
@@ -70,14 +70,21 @@ namespace Nadja.Command
             await ReplyAsync("", false, builder.Build());
         }
 
-        private void Construct(EmbedBuilder builder, ServerUser serverUser, bool ownProfile = true)
+        private void Construct(EmbedBuilder builder, ServerUser serverUser, string idUser, bool ownProfile = true)
         {
-            Console.WriteLine(71);
             if (serverUser == null)
             {
-                builder.AddField("This user does not exists", "No game played")
+                User user = Dal.GetUser(idUser);
+                if(user == null)
+                {
+                    builder.AddField("This user does not exists", "No game played")
                         .WithColor(Color.DarkerGrey);
-                return;
+                    return;
+                } else
+                {
+                    serverUser = new ServerUser(user);
+                }
+                
 
             }
             else
@@ -85,10 +92,7 @@ namespace Nadja.Command
                 if (ownProfile)
                     builder.WithImageUrl(Context.User.GetAvatarUrl());
             }
-
-            Dal.DoConnection();
             List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
-            Dal.CloseConnection();
 
             string rank = Helper.GetRank(everyServerUsers, serverUser);
             
