@@ -27,11 +27,11 @@ namespace Nadja.Command
 
                 switch (itemAsked.ID)
                 {
-                    case (226): // Petal Torrent
-                        builder.AddField("To craft Petal Torrent", "Frost Venom Dart + Stingburst");
+                    case (226): // Dart of Blood
+                        builder.AddField($"To craft {itemAsked.Name}", "Dart of Souls + Stingburst");
                         builder.WithColor(Color.DarkRed);
                         await ReplyAsync("", false, builder.Build());
-                        BuildItem("Frost Venom Dart", builder = new EmbedBuilder());
+                        BuildItem("Dart of Souls", builder = new EmbedBuilder());
 
                         builder = new EmbedBuilder();
                         Item item = Dal.GetItem(Dal.GetIDItem("Stingburst"), true);
