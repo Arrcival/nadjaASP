@@ -130,8 +130,8 @@ namespace Nadja.Command
                 
                 builder.AddField("Legendary items :", display, true);
 
-                //double luckCoeff = serverUser.GetLuck();
-                //builder.WithFooter($"Luck coefficient : {luckCoeff}");
+                double luckCoeff = serverUser.GetLuck();
+                builder.WithFooter($"Luck coefficient : {luckCoeff}");
             }
             
             builder.WithColor(Color.Gold);

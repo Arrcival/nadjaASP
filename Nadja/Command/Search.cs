@@ -287,7 +287,7 @@ namespace Nadja.Command
             "Cooking Pot", "Kitchen Knife", "Glass Cup", "Carp", "Mudfish", "Saury" , "Cross", "Cassock"};
 
         private List<string> uncommonItems = new List<string>{ "Lighter", "Honey", "Ice", "Pill", "Alcohol", "Coffee", "Orange", "Chocolate", "Thick Paper",
-            "TV", "Cookie",  "Curry Powder", "Fabric Armor", "Glass Cup", "Ripped Scroll - 1", "Ripped Scroll - 2",  "Buddhist Scripture", "Wooden Fish", "Whetstone", "Ingram MAC-10"};
+            "TV", "Cookie",  "Curry Powder", "Fabric Armor", "Glass Cup", "Ripped Scroll - 1", "Ripped Scroll - 2",  "Buddhist Scripture", "Wooden Fish", "Whetstone", "IM-10"};
 
 
 
