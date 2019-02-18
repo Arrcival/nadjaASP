@@ -95,7 +95,7 @@ namespace Nadja.Command
                     serverUser.UpdateQuiz();
                     Dal.CloseConnection();
 
-                    builder.AddField($"{Context.User.Username} won in {game.ElapsedTime()}s !", $"Answer was {game.hiddenItem.Name}, ({points}pts)");
+                    builder.AddField($"{Context.User.Username} won in {game.ElapsedTime()}s !", $"Answer was {game.hiddenItem.Name} ({points}pts)");
                     builder.WithColor(Color.Magenta);
                     Games.Remove(game);
                     await ReplyAsync("", false, builder.Build());
@@ -118,6 +118,14 @@ namespace Nadja.Command
                     return game;
             return null;
 
+        }
+
+        public bool ChannelQuiz(string idChannel)
+        {
+            foreach (Quiz game in Games)
+                if (game.idChannel == idChannel)
+                    return true;
+            return false;
         }
         
     }

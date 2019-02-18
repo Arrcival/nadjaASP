@@ -332,7 +332,19 @@ namespace Nadja.Command
             await ReplyAsync("", false, builder.Build());
         }
 
-        // Get total legendaries found?
+        [Command("legendaries")]
+        public async Task LegendariesAsync()
+        {
+            Dal.DoConnection();
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle($"{Dal.GetEveryPossess()} have been found in total.")
+                .WithColor(Color.DarkGreen);
+            await ReplyAsync("", false, builder.Build());
+
+            Dal.CloseConnection();
+
+        }
+
         // Top lucky players ?
 
         [Command("search rc")]

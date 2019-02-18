@@ -16,69 +16,76 @@ namespace Nadja.Command
         [Command("craft")]
         public async Task CraftAsync([Remainder] string name)
         {
-            Dal.DoConnection();
-            EmbedBuilder builder = new EmbedBuilder();
-            int itemID = Dal.GetIDItem(name);
-
-            if (itemID != -1)
+            if(!ChannelQuiz(Context.Channel.Id.ToString()))
             {
-                Item itemAsked = Dal.GetItem(itemID, true);
-                builder.AddField($"To find/craft : {itemAsked.Name}", $"Desc : { itemAsked.Description}");
+                Dal.DoConnection();
+                EmbedBuilder builder = new EmbedBuilder();
+                int itemID = Dal.GetIDItem(name);
 
-                switch (itemAsked.ID)
+                if (itemID != -1)
                 {
-                    case (226): // Dart of Blood
-                        builder.AddField($"To craft {itemAsked.Name}", "Dart of Souls + Stingburst");
-                        builder.WithColor(Color.DarkRed);
-                        await ReplyAsync("", false, builder.Build());
-                        BuildItem("Dart of Souls", builder = new EmbedBuilder());
+                    Item itemAsked = Dal.GetItem(itemID, true);
+                    builder.AddField($"To find/craft : {itemAsked.Name}", $"Desc : { itemAsked.Description}");
 
-                        builder = new EmbedBuilder();
-                        Item item = Dal.GetItem(Dal.GetIDItem("Stingburst"), true);
-                        item.DisplayItem(builder, true);
-                        break;
-                    case (609): // Network PC
-                        builder.AddField("To craft Network PC", "Cell Phone + Laptop");
-                        builder.WithColor(Color.DarkRed);
-                        await ReplyAsync("", false, builder.Build());
-                        BuildItem("Cellphone", builder);
+                    switch (itemAsked.ID)
+                    {
+                        case (226): // Dart of Blood
+                            builder.AddField($"To craft {itemAsked.Name}", "Dart of Souls + Stingburst");
+                            builder.WithColor(Color.DarkRed);
+                            await ReplyAsync("", false, builder.Build());
+                            BuildItem("Dart of Souls", builder = new EmbedBuilder());
 
-                        builder = new EmbedBuilder();
-                        builder.AddField("To craft Laptop", "Ion battery + Laptop (dead battery)");
+                            builder = new EmbedBuilder();
+                            Item item = Dal.GetItem(Dal.GetIDItem("Stingburst"), true);
+                            item.DisplayItem(builder, true);
+                            break;
+                        case (609): // Network PC
+                            builder.AddField("To craft Network PC", "Cell Phone + Laptop");
+                            builder.WithColor(Color.DarkRed);
+                            await ReplyAsync("", false, builder.Build());
+                            BuildItem("Cellphone", builder);
 
-                        BuildItem("ion battery", builder);
+                            builder = new EmbedBuilder();
+                            builder.AddField("To craft Laptop", "Ion battery + Laptop (dead battery)");
 
-                        builder = new EmbedBuilder();
-                        item = Dal.GetItem(Dal.GetIDItem("Laptop (dead battery)"), true);
-                        item.DisplayItem(builder, true);
-                        break;
-                    case (608): // Laptop
-                        builder.AddField("To craft Laptop", "Ion battery + Laptop (dead battery)");
-                        builder.WithColor(Color.DarkRed);
-                        await ReplyAsync("", false, builder.Build());
-                        BuildItem("Ion Battery", builder = new EmbedBuilder());
+                            BuildItem("ion battery", builder);
 
-                        builder = new EmbedBuilder();
-                        item = Dal.GetItem(Dal.GetIDItem("Laptop (dead battery)"), true);
-                        item.DisplayItem(builder, true);
-                        break;
-                    default:
-                        itemAsked.DisplayItem(builder, true);
-                        break;
+                            builder = new EmbedBuilder();
+                            item = Dal.GetItem(Dal.GetIDItem("Laptop (dead battery)"), true);
+                            item.DisplayItem(builder, true);
+                            break;
+                        case (608): // Laptop
+                            builder.AddField("To craft Laptop", "Ion battery + Laptop (dead battery)");
+                            builder.WithColor(Color.DarkRed);
+                            await ReplyAsync("", false, builder.Build());
+                            BuildItem("Ion Battery", builder = new EmbedBuilder());
+
+                            builder = new EmbedBuilder();
+                            item = Dal.GetItem(Dal.GetIDItem("Laptop (dead battery)"), true);
+                            item.DisplayItem(builder, true);
+                            break;
+                        default:
+                            itemAsked.DisplayItem(builder, true);
+                            break;
+                    }
+                    builder.WithFooter(DoFooterDesc(itemAsked));
+
                 }
-                builder.WithFooter(DoFooterDesc(itemAsked));
+                else
+                {
+                    builder.WithTitle("Check the name of your item.");
+                }
 
-            }
-            else
+                Dal.CloseConnection();
+                builder.WithColor(Color.DarkRed);
+
+                //This is the function sending builder (making great visual stuff)
+                await ReplyAsync("", false, builder.Build());
+            } else
             {
-                builder.WithTitle("Check the name of your item.");
+                await ReplyAsync("You can't find a craft while a quiz is active in the current channel.");
             }
-
-            Dal.CloseConnection();
-            builder.WithColor(Color.DarkRed);
-
-            //This is the function sending builder (making great visual stuff)
-            await ReplyAsync("", false, builder.Build());
+            
         }
 
 
