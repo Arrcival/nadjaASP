@@ -31,7 +31,7 @@ namespace Nadja.Command
                     "wickeline \n" +
                     "meiji \n");
                 builder.WithColor(Color.LightGrey);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // water crow info
@@ -49,7 +49,7 @@ namespace Nadja.Command
                     "Feather \n" +
                     "1 random food", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
             // bread crow info
             [Command("egg crow")]
@@ -66,7 +66,7 @@ namespace Nadja.Command
                     "Feather \n" +
                     "1 random D armor supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // bat info
@@ -84,7 +84,7 @@ namespace Nadja.Command
                     "Bread \n" +
                     "1 random A weapon supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // lighter dog info
@@ -103,7 +103,7 @@ namespace Nadja.Command
                     "1 random A weapon supply \n" +
                     "1 random D armor supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // pen dog info
@@ -122,7 +122,7 @@ namespace Nadja.Command
                     "1 random A weapon supply \n" +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // gorilla info
@@ -141,7 +141,7 @@ namespace Nadja.Command
                     "1 random D armor supply \n" +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // gorilla info
@@ -161,7 +161,7 @@ namespace Nadja.Command
                     "1 random D armor supply \n" +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // wickeline info
@@ -179,7 +179,7 @@ namespace Nadja.Command
                     "1 random D armor supply \n" +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
 
             // meiji info
@@ -195,7 +195,7 @@ namespace Nadja.Command
                     "Cigarettes \n" +
                     "Heartbeat Sensor", false);
                 builder.WithColor(Color.Blue);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
         }
 

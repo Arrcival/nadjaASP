@@ -396,8 +396,8 @@ namespace Nadja.Models
             sql = "SELECT COUNT(*) FROM possess;";
             objSelect = new MySqlCommand(sql, objMySqlCnx);
             objReader = objSelect.ExecuteReader();
-            objReader.Read();
-            searches.Add(int.Parse(objReader.GetValue(0).ToString()));
+            while(objReader.Read())
+                searches.Add(int.Parse(objReader.GetValue(0).ToString()));
 
             objReader.Close();
 

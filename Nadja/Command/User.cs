@@ -48,6 +48,47 @@ namespace Nadja.Command
             await ReplyAsync("", false, builder.Build());
         }
 
+        [Command("p"), RequireContext(ContextType.Guild)]
+        public async Task PrAsync()
+        {
+            string idUser = Context.User.Id.ToString();
+            Dal.DoConnection();
+            ServerUser serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
+            EmbedBuilder builder = new EmbedBuilder();
+
+            if (serverUser == null)
+            {
+                User user = Dal.GetUser(idUser);
+                if (user == null)
+                {
+                    builder.AddField("This user does not exists", "No game played")
+                        .WithColor(Color.DarkerGrey);
+                    await ReplyAsync("", false, builder.Build());
+                }
+                else
+                {
+                    serverUser = new ServerUser(user);
+                }
+
+            }
+
+            if(builder.Fields.Count <= 0)
+            {
+                List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
+                builder.WithTitle($"Profile of {serverUser.DiscordName}");
+                builder.AddField($"Rank : {Helper.GetRank(everyServerUsers, serverUser)}", $"Points : {serverUser.Points}", true);
+                builder.AddField($"Searches : {serverUser.GetTotalSearchs()}", $"Legendaries found : {serverUser.CountLegendaries()}", true);
+                builder.WithColor(Color.DarkOrange);
+            }
+            Dal.CloseConnection();
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+
+
+
+
         [Command("ranks"), RequireContext(ContextType.Guild)]
         public async Task RanksAsync()
         {

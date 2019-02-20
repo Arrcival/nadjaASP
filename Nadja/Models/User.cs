@@ -18,7 +18,7 @@ namespace Nadja.Models
         public int Uncommon { get; set; }
         public int Rare { get; set; }
         public int Epic { get; set; }
-
+        
 
         public List<Legendary> Legendaries { get; set; }
 
@@ -47,17 +47,26 @@ namespace Nadja.Models
             if (GetTotalSearchs() > 0)
             {
                 List<double> allSearches = Dal.GetEverySearches();
-                double allAmount = allSearches[0] + allSearches[1] + allSearches[2] + allSearches[3] + allSearches[4];
+                double allCommon = allSearches[0];
+                double allUncommon = allSearches[1];
+                double allRare = allSearches[2];
+                double allEpic = allSearches[3];
+                double allLegendaries = allSearches[4];
+
+                double userTotal = Common + Uncommon + Rare + Epic + CountLegendaries();
+                double allTotal = allSearches.Sum();
 
                 double coeff = 0;
-                coeff += Math.Pow(((allSearches[0] + 1) / allAmount), -1) * Common;
-                coeff += Math.Pow(((allSearches[1] + 1) / allAmount), -1) * Uncommon;
-                coeff += Math.Pow(((allSearches[2] + 1) / allAmount), -1) * Rare;
-                coeff += Math.Pow(((allSearches[3] + 1) / allAmount), -1) * Epic;
-                coeff += Math.Pow(((allSearches[4] + 1) / allAmount), -1) * CountLegendaries();
-                double total = (coeff - Math.Pow(GetTotalSearchs() / 10, 1.1)) / this.GetTotalSearchs();
+                coeff += Math.Pow(allLegendaries / allTotal, -1) * CountLegendaries();
+                coeff += Math.Pow(allEpic / allTotal, -1) * Epic;
+                coeff += Math.Pow(allRare / allTotal, -1) * Rare;
+                coeff += Math.Pow(allUncommon / allTotal, -1) * Uncommon;
+                coeff += Math.Pow(allCommon / allTotal, -1) * Common;
 
-                return Math.Round(total, 6);
+                double total = (coeff - Math.Pow(userTotal / 10, 1.1)) / userTotal;
+
+
+                return Math.Round(total * 1000, 2);
             }
             else
             {

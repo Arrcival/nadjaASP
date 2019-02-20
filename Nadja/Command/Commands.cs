@@ -25,7 +25,7 @@ namespace Nadja.Command
             builder.WithColor(Color.DarkPurple);
             builder.WithFooter("Bot made by Arrcival");
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
 
         }
 
@@ -33,18 +33,20 @@ namespace Nadja.Command
         public async Task WhoAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("Nadja BS bot Version 2.0.0")
+            builder.WithTitle("Nadja BS bot Version 2.1")
                 .WithDescription("Developed by Arrcival");
 
 
 
             builder.AddField("Changelog", "" +
-                "Dank, this is a version 2 ! \n" +
-                "Removed teehee (for real)\n");
+                "Added p, a lighter profile \n" +
+                "Added back luckrank, to see who is the luckiest ! \n" +
+                "Fixed many bugs or weird stuff\n" +
+                "Fixed a lot of items in the database\n");
 
             builder.WithColor(Color.DarkBlue);
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("say"), RequireOwner]

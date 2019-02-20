@@ -123,7 +123,8 @@ namespace Nadja.Command
 
                 }
 
-                int totalSearches = user.GetTotalSearchs();
+                List<double> allSearches = Dal.GetEverySearches();
+                int totalSearches = (int)allSearches.Sum();
                 double afterLuck = user.GetLuck();
                 double luckModifier = Math.Round(afterLuck - beforeLuck, 6);
                 string footer = "";
@@ -140,7 +141,7 @@ namespace Nadja.Command
                 }
 
                 builder.WithFooter(footer);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
 
 
                 Dal.CloseConnection();
@@ -157,7 +158,7 @@ namespace Nadja.Command
             EmbedBuilder builder = new EmbedBuilder();
             builder.AddField("To use command loot :", "-loot <location> [1 < quantity (default 10) < 25] [0 < rare item % (default 1) < 100]");
             builder.WithColor(Color.DarkRed);
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
 
         }
 
@@ -174,7 +175,7 @@ namespace Nadja.Command
             else
                 builder.WithTitle("Check the name of your location.");
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("loot")]
@@ -197,7 +198,7 @@ namespace Nadja.Command
             else
                 builder.WithTitle("Check the name of your location.");
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("loot")]
@@ -223,7 +224,7 @@ namespace Nadja.Command
                 builder.WithTitle("Check the name of your location.");
             }
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         public void DoLoot(EmbedBuilder builder, Location location, int quantity, float rarity)
@@ -329,7 +330,7 @@ namespace Nadja.Command
             }
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("legendaries")]
@@ -339,13 +340,54 @@ namespace Nadja.Command
             EmbedBuilder builder = new EmbedBuilder();
             builder.WithTitle($"{Dal.GetEveryPossess()} have been found in total.")
                 .WithColor(Color.DarkGreen);
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
 
             Dal.CloseConnection();
 
         }
 
         // Top lucky players ?
+        [Command("luckrank")]
+        public async Task LuckRankAsync()
+        {
+            Dal.DoConnection();
+            List<ServerUser> everyUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
+
+            EmbedBuilder builder = new EmbedBuilder();
+            string aString = "";
+
+            int max = 10;
+            if (everyUsers.Count < 10)
+                max = everyUsers.Count;
+
+            for(int i = 1; i <= max; i++)
+            {
+                double maxLuck = -1;
+                ServerUser tempUser = null;
+
+                foreach(ServerUser user in everyUsers)
+                {
+                    if (user.GetLuck() > maxLuck)
+                    {
+                        tempUser = user;
+                        maxLuck = user.GetLuck();
+                    }
+                }
+
+                if(tempUser != null)
+                    aString += $"#{i} : {tempUser.ServerNameUser} with {tempUser.GetLuck()}\n";
+
+                everyUsers.Remove(tempUser);
+            }
+
+            builder.AddField($"Top 10 luckiest players in {Context.Guild.Name}", aString);
+            builder.WithColor(Color.DarkGreen);
+            
+            Dal.CloseConnection();
+
+            await ReplyAsync(embed: builder.Build());
+        }
+
 
         [Command("search rc")]
         public async Task SearchRCAsync()
