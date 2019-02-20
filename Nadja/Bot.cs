@@ -70,7 +70,7 @@ namespace Nadja
                 //if (server.TextChannels.All(tc => tc.Name != "sh-comp-logger"))
                 //    channel = await server.CreateTextChannelAsync("sh-comp-logger");
                 //else channel = server.TextChannels.Single(tc => tc.Name == "sh-comp-logger");
-                if (channel != null) await channel.SendMessageAsync("Bonjour");
+                if (channel != null) await channel.SendMessageAsync("Hello, I'm on !");
             }
 
         }

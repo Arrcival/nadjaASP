@@ -78,6 +78,7 @@ namespace Nadja.Command
                 builder.WithTitle($"Profile of {serverUser.DiscordName}");
                 builder.AddField($"Rank : {Helper.GetRank(everyServerUsers, serverUser)}", $"Points : {serverUser.Points}", true);
                 builder.AddField($"Searches : {serverUser.GetTotalSearchs()}", $"Legendaries found : {serverUser.CountLegendaries()}", true);
+                builder.WithFooter($"Luck coefficient : {serverUser.GetLuck()}");
                 builder.WithColor(Color.DarkOrange);
             }
             Dal.CloseConnection();
