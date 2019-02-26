@@ -18,11 +18,15 @@ namespace Nadja.Models
         public int Uncommon { get; set; }
         public int Rare { get; set; }
         public int Epic { get; set; }
+
+        public double LastTimeSearch { get; set; }
+
+        private readonly double coefficient = 60 * 60 * 24;
         
 
         public List<Legendary> Legendaries { get; set; }
 
-        public User(int id, string discordID, string discordName, int gems, int common, int uncommon, int rare, int epic, List<Legendary> legendaries)
+        public User(int id, string discordID, string discordName, int gems, int common, int uncommon, int rare, int epic, List<Legendary> legendaries, double lastTime)
         {
             ID = id;
             DiscordID = discordID;
@@ -33,9 +37,10 @@ namespace Nadja.Models
             Rare = rare;
             Epic = epic;
             Legendaries = legendaries;
+            LastTimeSearch = lastTime;
         }
 
-        public User(User user) : this(user.ID, user.DiscordID, user.DiscordName, user.Gems, user.Common, user.Uncommon, user.Rare, user.Epic, user.Legendaries) { }
+        public User(User user) : this(user.ID, user.DiscordID, user.DiscordName, user.Gems, user.Common, user.Uncommon, user.Rare, user.Epic, user.Legendaries, user.LastTimeSearch) { }
 
         public int GetTotalSearchs()
         {
@@ -64,6 +69,12 @@ namespace Nadja.Models
                 coeff += Math.Pow(allCommon / allTotal, -1) * Common;
 
                 double total = (coeff - Math.Pow(userTotal / 10, 1.1)) / userTotal;
+                
+                DateTime now = DateTime.Now.ToUniversalTime(); // Convert to "Coordinated Universal Time"
+                TimeSpan difference = now - Helper.Origin;
+
+                
+                total /= (1 + ((difference.TotalSeconds - LastTimeSearch) / coefficient));
 
 
                 return Math.Round(total * 1000, 2);

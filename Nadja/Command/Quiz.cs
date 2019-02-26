@@ -18,12 +18,10 @@ namespace Nadja.Command
         public async Task QuizAsync()
         {
             Dal.DoConnection();
-            bool found = false;
             EmbedBuilder builder = new EmbedBuilder();
             Quiz game = FindGame(Context.Guild.Id.ToString(), Context.Channel.Id.ToString());
             if(game != null)
             {
-                found = true;
                 if (game.TimedOut())
                 {
                     builder.AddField("Sorry, but the game is over.", $"Answer was {game.hiddenItem.Name}");

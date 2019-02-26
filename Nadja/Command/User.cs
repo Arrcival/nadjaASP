@@ -66,9 +66,7 @@ namespace Nadja.Command
                     await ReplyAsync("", false, builder.Build());
                 }
                 else
-                {
                     serverUser = new ServerUser(user);
-                }
 
             }
 
@@ -98,7 +96,7 @@ namespace Nadja.Command
             List<ServerUser> listRanks = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             listRanks = Helper.GetRanking(listRanks);
-            builder.WithTitle($"TOP 10 PLAYERS ON { Context.Guild.Name} \n ");
+            builder.WithTitle($"TOP 10 PLAYERS ON {Context.Guild.Name} \n ");
             string aString = "";
             for (int i = 0; i < listRanks.Count; i++)
             {
@@ -171,9 +169,10 @@ namespace Nadja.Command
                 }
                 
                 builder.AddField("Legendary items :", display, true);
-
+                
                 double luckCoeff = serverUser.GetLuck();
-                builder.WithFooter($"Luck coefficient : {luckCoeff}");
+                DateTime lastSearch = Helper.Origin.AddSeconds(serverUser.LastTimeSearch);
+                builder.WithFooter($"Luck coefficient : {luckCoeff} / Last search : {lastSearch.ToString()}");
             }
             
             builder.WithColor(Color.Gold);

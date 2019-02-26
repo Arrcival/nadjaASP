@@ -13,6 +13,8 @@ namespace Nadja
         public enum GameResult { Victory, Timeout, None}
         public static Random rng = new Random();
 
+        public static DateTime Origin = new DateTime(2000, 1, 1);
+
         public static string DiscordPingDelimiter(string testString)
         {
             char delimiter = '!';
@@ -95,6 +97,11 @@ namespace Nadja
 
         public static void AddItemFound(Rarity rarity, User user)
         {
+            DateTime origin = new DateTime(2000, 1, 1);
+            DateTime now = DateTime.Now.ToUniversalTime(); // Convert to "Coordinated Universal Time"
+            TimeSpan difference = now - origin;
+
+            user.LastTimeSearch = difference.TotalSeconds;
             switch (rarity)
             {
                 case Rarity.Common:

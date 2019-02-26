@@ -28,7 +28,7 @@ namespace Nadja.Models
         public static User GetUser(string idUser)
         {
             User user = null;
-            string sql = @"SELECT users.ID, users.DiscordName, users.Gems, users.Common, users.Uncommon, users.Rare, users.Epic 
+            string sql = @"SELECT users.ID, users.DiscordName, users.Gems, users.Common, users.Uncommon, users.Rare, users.Epic, users.LastSearch 
                 FROM users
                 WHERE DiscordID = @val1;";
 
@@ -39,6 +39,7 @@ namespace Nadja.Models
             int ID = -1;
             string nameDiscord = null;
             int gems = 0, common = 0, uncommon = 0, rare = 0, epic = 0;
+            double lastSearch = 0;
             
             while (objReader.Read())
             {
@@ -49,6 +50,7 @@ namespace Nadja.Models
                 uncommon = int.Parse(objReader.GetValue(4).ToString());
                 rare = int.Parse(objReader.GetValue(5).ToString());
                 epic = int.Parse(objReader.GetValue(6).ToString());
+                lastSearch = double.Parse(objReader.GetValue(7).ToString());
             }
 
 
@@ -58,7 +60,7 @@ namespace Nadja.Models
                 return null;
             
 
-            user = new User(ID, idUser, nameDiscord, gems, common, uncommon, rare, epic, new List<Legendary>());
+            user = new User(ID, idUser, nameDiscord, gems, common, uncommon, rare, epic, new List<Legendary>(), lastSearch);
 
             List<Legendary> legendaries = new List<Legendary>();
 
@@ -360,6 +362,7 @@ namespace Nadja.Models
                 ", users.Uncommon = " + user.Uncommon +
                 ", users.Rare = " + user.Rare +
                 ", users.Epic = " + user.Epic +
+                ", users.LastSearch = " + user.LastTimeSearch +
                 " WHERE users.ID = '" + user.ID + "';";
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
             objGet.Parameters.AddWithValue("@val1", user.DiscordName);

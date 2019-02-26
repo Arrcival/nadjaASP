@@ -18,7 +18,7 @@ namespace Nadja.Models
             ServerID = "NONE";
         }
 
-        public ServerUser(int id, string DiscordID, string discordName, int gems, int common, int uncommon, int rare, int epic, string serverNameUser, int points, string serverID, List<Legendary> legendaries) : base(id, DiscordID, discordName, gems, common, uncommon, rare, epic, legendaries)
+        public ServerUser(int id, string DiscordID, string discordName, int gems, int common, int uncommon, int rare, int epic, string serverNameUser, int points, string serverID, List<Legendary> legendaries, double lastTime) : base(id, DiscordID, discordName, gems, common, uncommon, rare, epic, legendaries, lastTime)
         {
             Points = points;
             ServerNameUser = serverNameUser;

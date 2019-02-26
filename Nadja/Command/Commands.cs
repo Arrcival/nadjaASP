@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
 using Nadja.Models;
+using Nadja;
 
 namespace Nadja.Command
 {
@@ -63,6 +64,14 @@ namespace Nadja.Command
                 if (channel != null) await channelsay.SendMessageAsync(text);
             }
         }
+
+        [Command("reset"), RequireOwner]
+        public async Task ResetAsync()
+        {
+            
+        }
+
+
 
 
     }

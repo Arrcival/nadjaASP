@@ -36,7 +36,7 @@ namespace Nadja.Command
 
             // water crow info
             [Command("meat crow")]
-            public async Task AnimalWCrowAsync()
+            public async Task AnimalMCrowAsync()
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Meat Crow");
