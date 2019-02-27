@@ -309,7 +309,7 @@ namespace Nadja.Command
         }
 
         [Command("luck")]
-        public async Task LuckPlayerAsync(string name)
+        public async Task LuckPlayerAsync([Remainder] string name)
         {
             Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
