@@ -347,8 +347,8 @@ namespace Nadja.Command
         }
 
         // Top lucky players ?
-        [Command("luckrank")]
-        public async Task LuckRankAsync()
+        [Command("luckranks")]
+        public async Task LuckRanksAsync()
         {
             Dal.DoConnection();
             List<ServerUser> everyUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
@@ -375,12 +375,12 @@ namespace Nadja.Command
                 }
 
                 if(tempUser != null)
-                    aString += $"#{i} : {tempUser.ServerNameUser} with {tempUser.GetLuck()}\n";
+                    aString += $"#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}\n";
 
                 everyUsers.Remove(tempUser);
             }
 
-            builder.AddField($"Top 10 luckiest players in {Context.Guild.Name}", aString);
+            builder.AddField($"Top 10 luckiest players", aString);
             builder.WithColor(Color.DarkGreen);
             
             Dal.CloseConnection();

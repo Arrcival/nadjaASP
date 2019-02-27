@@ -311,6 +311,38 @@ namespace Nadja.Models
             return listUsers;
 
         }
+
+        public static List<User> GetEveryUserSearch()
+        {
+            List<User> listUser = new List<User>();
+            string sql = "SELECT users.*, COUNT(possess.UserID) FROM users LEFT OUTER JOIN possess ON users.Id = possess.UserID " + "" +
+                "GROUP BY users.ID, users.DiscordID, users.DiscordName, users.Gems, users.Common, users.Uncommon, users.Rare, users.Epic, users.LastSearch";
+            MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objSelect.ExecuteReader();
+            while(objReader.Read())
+            {
+                User user = new User(
+                    int.Parse(objReader.GetValue(0).ToString()),
+                    objReader.GetValue(1).ToString(),
+                    objReader.GetValue(2).ToString(),
+                    int.Parse(objReader.GetValue(3).ToString()),
+                    int.Parse(objReader.GetValue(4).ToString()),
+                    int.Parse(objReader.GetValue(5).ToString()),
+                    int.Parse(objReader.GetValue(6).ToString()),
+                    int.Parse(objReader.GetValue(7).ToString()),
+                    null,
+                    double.Parse(objReader.GetValue(8).ToString()),
+                    int.Parse(objReader.GetValue(9).ToString())
+                    );
+
+                listUser.Add(user);
+            }
+
+            objReader.Close();
+            return listUser;
+
+        }
+
         public static Craft GetRandomCraft()
         {
             List<int> listIDcrafts = new List<int>();

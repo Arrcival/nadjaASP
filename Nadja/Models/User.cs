@@ -26,7 +26,9 @@ namespace Nadja.Models
 
         public List<Legendary> Legendaries { get; set; }
 
-        public User(int id, string discordID, string discordName, int gems, int common, int uncommon, int rare, int epic, List<Legendary> legendaries, double lastTime)
+        private int legendariesCount = 0;
+
+        public User(int id, string discordID, string discordName, int gems, int common, int uncommon, int rare, int epic, List<Legendary> legendaries, double lastTime, int LegendariesCount = 0)
         {
             ID = id;
             DiscordID = discordID;
@@ -38,6 +40,7 @@ namespace Nadja.Models
             Epic = epic;
             Legendaries = legendaries;
             LastTimeSearch = lastTime;
+            legendariesCount = LegendariesCount;
         }
 
         public User(User user) : this(user.ID, user.DiscordID, user.DiscordName, user.Gems, user.Common, user.Uncommon, user.Rare, user.Epic, user.Legendaries, user.LastTimeSearch) { }
@@ -74,7 +77,7 @@ namespace Nadja.Models
                 TimeSpan difference = now - Helper.Origin;
 
                 
-                total /= (1 + ((difference.TotalSeconds - LastTimeSearch) / coefficient));
+                total /= 1 + ((difference.TotalSeconds - LastTimeSearch) / coefficient);
 
 
                 return Math.Round(total * 1000, 2);
@@ -93,8 +96,8 @@ namespace Nadja.Models
         
         public int CountLegendaries()
         {
-            if (Legendaries == null )
-                return 0;
+            if (Legendaries == null)
+                return legendariesCount;
             else
                 return Legendaries.Count;
         }

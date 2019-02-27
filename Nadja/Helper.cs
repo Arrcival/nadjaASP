@@ -97,9 +97,8 @@ namespace Nadja
 
         public static void AddItemFound(Rarity rarity, User user)
         {
-            DateTime origin = new DateTime(2000, 1, 1);
             DateTime now = DateTime.Now.ToUniversalTime(); // Convert to "Coordinated Universal Time"
-            TimeSpan difference = now - origin;
+            TimeSpan difference = now - Origin;
 
             user.LastTimeSearch = difference.TotalSeconds;
             switch (rarity)
