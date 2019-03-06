@@ -20,7 +20,7 @@ namespace Nadja.Models
         public Craft Craft { get; set; }
 
         public List<Found> Founds { get; set; }
-
+        
         public bool IsNamed(string way)
         {
             if (Name.ToLower() == way.ToLower())

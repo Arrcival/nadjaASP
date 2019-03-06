@@ -560,15 +560,19 @@ namespace Nadja.Models
 
         public static void CreateUser(string idUser, string discordName)
         {
-            string sql = "INSERT INTO users(ID, DiscordID, DiscordName, Gems, Common, Uncommon, Rare, Epic) VALUES (NULL, '" + idUser + "', '" + discordName + "', 0, 0, 0, 0, 0);";
+            string sql = "INSERT INTO users(ID, DiscordID, DiscordName, Gems, Common, Uncommon, Rare, Epic) VALUES (NULL, '" + idUser + "', @val1, 0, 0, 0, 0, 0);";
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", discordName);
+            objGet.Prepare();
             objGet.ExecuteNonQuery();
         }
 
         public static void CreateServerUser(User user, string serverID)
         {
-            string sql = "INSERT INTO serverusers(ID, DiscordID, ServerID, DiscordServerName, Points) VALUES (NULL, '" + user.DiscordID + "', '" + serverID + "', '" + user.DiscordName + "', 0);";
+            string sql = "INSERT INTO serverusers(ID, DiscordID, ServerID, DiscordServerName, Points) VALUES (NULL, '" + user.DiscordID + "', '" + serverID + "', @val1, 0);";
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", user.DiscordName);
+            objGet.Prepare();
             objGet.ExecuteNonQuery();
         }
 

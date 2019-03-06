@@ -102,7 +102,7 @@ namespace Nadja
                     guildName = context.Guild.Name;
                     channelName = context.Channel.Name;
                 }
-                string discordTag = context.User.Username + "#" + context.User.Discriminator;
+                string discordTag = context.User.ToString();
 
                 if (!result.IsSuccess)
                     Journal.AddLog(discordTag, guildName, channelName, message.ToString(), result.ErrorReason);
