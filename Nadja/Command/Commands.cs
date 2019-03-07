@@ -12,6 +12,8 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
+        private readonly string VERSION = "2.2";
+
         //Help function
         [Command("help")]
         public async Task HelpAsync()
@@ -24,7 +26,7 @@ namespace Nadja.Command
             builder.WithUrl("https://nadja.azurewebsites.net");
 
             builder.WithColor(Color.DarkPurple);
-            builder.WithFooter("Bot made by Arrcival");
+            builder.WithFooter("Bot made by Arrcival, V" + VERSION);
 
             await ReplyAsync(embed: builder.Build());
 
@@ -34,16 +36,18 @@ namespace Nadja.Command
         public async Task WhoAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle("Nadja BS bot Version 2.1")
+            builder.WithTitle("Nadja BS bot V" + VERSION)
                 .WithDescription("Developed by Arrcival");
 
 
 
             builder.AddField("Changelog", "" +
-                "Added p, a lighter profile \n" +
-                "Added back luckrank, to see who is the luckiest ! \n" +
-                "Fixed many bugs or weird stuff\n" +
-                "Fixed a lot of items in the database\n");
+                "Fixed profile for points\n" +
+                "Added p (user) for other players\n" +
+                "Fixed many database old items\n" +
+                "The database is way more faster and efficient\n" +
+                "Fixed some graphic issues\n" + 
+                "Optimized some old code");
 
             builder.WithColor(Color.DarkBlue);
 
@@ -64,13 +68,7 @@ namespace Nadja.Command
                 if (channel != null) await channelsay.SendMessageAsync(text);
             }
         }
-
-        [Command("reset"), RequireOwner]
-        public async Task ResetAsync()
-        {
-            
-        }
-
+        
 
 
 

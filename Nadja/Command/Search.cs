@@ -15,8 +15,6 @@ namespace Nadja.Command
         private static Stopwatch stopwatch = new Stopwatch();
         private static List<Search> searches = new List<Search>();
         private readonly int cooldownTime = 30000;
-        private int defaultQty = 10;
-        private float defaultRarity = 1;
 
 
 
@@ -171,7 +169,7 @@ namespace Nadja.Command
             Dal.CloseConnection();
 
             if (location != null)
-                DoLoot(builder, location, -1, -1);
+                DoLoot(builder, location);
             else
                 builder.WithTitle("Check the name of your location.");
 
@@ -190,7 +188,7 @@ namespace Nadja.Command
             if (location != null)
             {
                 if (qty > 0 && qty <= 25)
-                    DoLoot(builder, location, qty, -1);
+                    DoLoot(builder, location, qty);
                 else
                     builder.WithTitle("Quantity have to be between 1 and 25.");
 
@@ -227,24 +225,19 @@ namespace Nadja.Command
             await ReplyAsync(embed: builder.Build());
         }
 
-        public void DoLoot(EmbedBuilder builder, Location location, int quantity, float rarity)
+        public void DoLoot(EmbedBuilder builder, Location location, int quantity = 10, float rarity = 1)
         {
-            Random rng = new Random();
             string items = "";
             List<int> itemAlreadyPicked = new List<int>();
-            if (quantity == -1)
-                quantity = defaultQty;
             for (int i = 0; i < quantity; i++)
             {
-                if (rarity == -1)
-                    rarity = defaultRarity;
 
-                if (rng.NextDouble() * 100 <= 100 - rarity)
+                if (Helper.rng.NextDouble() * 100 <= 100 - rarity)
                 {
-                    int idItemSelected = rng.Next(1, location.GetTotalItemsInArea() + 1);
+                    int idItemSelected = Helper.rng.Next(1, location.GetTotalItemsInArea() + 1);
                     while (itemAlreadyPicked.Contains(idItemSelected))
                     {
-                        idItemSelected = rng.Next(1, location.GetTotalItemsInArea() + 1);
+                        idItemSelected = Helper.rng.Next(1, location.GetTotalItemsInArea() + 1);
                     }
 
                     Item itemSelected = new Item();
@@ -262,18 +255,12 @@ namespace Nadja.Command
 
                 }
                 else
-                    items += randomItems[rng.Next(0, randomItems.Count)] + " \n";
+                    items += randomItems[Helper.rng.Next(0, randomItems.Count)] + " \n";
             }
 
-            if (quantity == 0)
-                builder.AddField($"{defaultQty} items in {location.Name} (Rare item : {defaultRarity}%)", items);
-            else
-            {
-                if (rarity == -1)
-                    builder.AddField($"{quantity} items in {location.Name} (Rare item : {defaultRarity}%)", items);
-                else
-                    builder.AddField($"{quantity} items in {location.Name} (Rare item : {rarity}%)", items);
-            }
+            
+            builder.AddField($"{quantity} items in {location.Name} (Rare item : {rarity}%)", items);
+            
             builder.WithColor(Color.DarkRed);
         }
 

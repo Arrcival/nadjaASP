@@ -38,9 +38,9 @@ namespace Nadja.Command
             ServerUser serverUser = null;
 
             if (idUser != null)
-                serverUser = Dal.GetServerUser(idUser, Context.Guild.ToString());
+                serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
             else
-                serverUser = Dal.GetServerUser(name, Context.Guild.ToString());
+                serverUser = Dal.GetServerUser(name, Context.Guild.Id.ToString());
 
             Construct(builder, serverUser, idUser, false);
             Dal.CloseConnection();
@@ -56,29 +56,36 @@ namespace Nadja.Command
             ServerUser serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
             EmbedBuilder builder = new EmbedBuilder();
 
-            if (serverUser == null)
-            {
-                User user = Dal.GetUser(idUser);
-                if (user == null)
-                {
-                    builder.AddField("This user does not exists", "No game played")
-                        .WithColor(Color.DarkerGrey);
-                    await ReplyAsync("", false, builder.Build());
-                }
-                else
-                    serverUser = new ServerUser(user);
+            ConstructSmall(builder, serverUser, idUser);
 
-            }
 
-            if(builder.Fields.Count <= 0)
-            {
-                List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
-                builder.WithTitle($"Profile of {serverUser.DiscordName}");
-                builder.AddField($"Rank : {Helper.GetRank(everyServerUsers, serverUser)}", $"Points : {serverUser.Points}", true);
-                builder.AddField($"Searches : {serverUser.GetTotalSearchs()}", $"Legendaries found : {serverUser.CountLegendaries()}", true);
-                builder.WithFooter($"Luck coefficient : {serverUser.GetLuck()}");
-                builder.WithColor(Color.DarkOrange);
-            }
+
+            Dal.CloseConnection();
+
+            await ReplyAsync("", false, builder.Build());
+        }
+
+        [Command("p"), RequireContext(ContextType.Guild)]
+        public async Task PrOtherAsync([Remainder] string name)
+        {
+            Dal.DoConnection();
+            name = Helper.DiscordPingDelimiter(name);
+
+            string idUser = Dal.GetIdUser(name);
+
+            EmbedBuilder builder = new EmbedBuilder();
+            ServerUser serverUser = null;
+
+            if (idUser != null)
+                serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
+            else
+                serverUser = Dal.GetServerUser(name, Context.Guild.Id.ToString());
+            
+
+            ConstructSmall(builder, serverUser, idUser);
+
+
+
             Dal.CloseConnection();
 
             await ReplyAsync("", false, builder.Build());
@@ -114,24 +121,20 @@ namespace Nadja.Command
         {
             if (serverUser == null)
             {
-                User user = Dal.GetUser(idUser);
-                if(user == null)
+                serverUser = GetServerUser(idUser);
+                if (serverUser == null)
                 {
-                    builder.AddField("This user does not exists", "No game played")
-                        .WithColor(Color.DarkerGrey);
+                    builder.WithTitle("This user does not exists.")
+                        .WithColor(Color.DarkGrey);
                     return;
-                } else
-                {
-                    serverUser = new ServerUser(user);
                 }
-                
-
             }
             else
             {
                 if (ownProfile)
                     builder.WithImageUrl(Context.User.GetAvatarUrl());
             }
+
             List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             string rank = Helper.GetRank(everyServerUsers, serverUser);
@@ -176,6 +179,38 @@ namespace Nadja.Command
             }
             
             builder.WithColor(Color.Gold);
+        }
+
+        private void ConstructSmall(EmbedBuilder builder, ServerUser serverUser, string idUser)
+        {
+            if (serverUser == null)
+            {
+                serverUser = GetServerUser(idUser);
+                if (serverUser == null)
+                {
+                    builder.WithTitle("This user does not exists.")
+                        .WithColor(Color.DarkGrey);
+                    return;
+                }
+            }
+
+            List<ServerUser> everyServerUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
+            builder.WithTitle($"Profile of {serverUser.DiscordName}");
+            builder.AddField($"Rank : {Helper.GetRank(everyServerUsers, serverUser)}", $"Points : {serverUser.Points}", true);
+            builder.AddField($"Searches : {serverUser.GetTotalSearchs()}", $"Legendaries found : {serverUser.CountLegendaries()}", true);
+            builder.WithFooter($"Luck coefficient : {serverUser.GetLuck()}");
+            builder.WithColor(Color.DarkOrange);
+
+    }
+
+        private ServerUser GetServerUser(string idUser)
+        {
+            
+            User user = Dal.GetUser(idUser);
+            if (user == null)
+                return null;
+            else
+                return new ServerUser(user);
         }
 
 

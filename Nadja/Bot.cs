@@ -54,7 +54,7 @@ namespace Nadja
 
         public async Task RegisterCommandsAsync()
         {
-            _client.Ready += ClientReady;
+            //_client.Ready += ClientReady;
             _client.MessageReceived += ClientMessageReceived;
 
             await _commands.AddModuleAsync<Commands>(_services);

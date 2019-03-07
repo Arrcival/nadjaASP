@@ -30,7 +30,8 @@ namespace Nadja.Models
             User user = null;
             string sql = @"SELECT users.ID, users.DiscordName, users.Gems, users.Common, users.Uncommon, users.Rare, users.Epic, users.LastSearch 
                 FROM users
-                WHERE DiscordID = @val1;";
+                WHERE DiscordID = @val1
+                OR DiscordName LIKE @val1;";
 
             MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
             objSelect.Parameters.AddWithValue("@val1", idUser);
@@ -92,36 +93,38 @@ namespace Nadja.Models
         {
             User user = GetUser(idUser);
 
+
             if (user == null)
                 return null;
 
-            ServerUser serverUser = new ServerUser(user);
-            
+
+
             string sql = @"SELECT serverusers.DiscordServerName, serverusers.Points FROM serverusers
-                WHERE serverusers.DiscordID = @val1
+                WHERE (serverusers.DiscordID = @val1
+                OR serverusers.DiscordServerName LIKE @val1)
                 AND serverusers.ServerID = @val2;";
 
+            string serverName = "";
+            int points = 0;
+            
             MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
-            objSelect.Parameters.AddWithValue("@val1", idUser);
+            objSelect.Parameters.AddWithValue("@val1", user.DiscordID);
             objSelect.Parameters.AddWithValue("@val2", idServer);
             objSelect.Prepare();
             MySqlDataReader objReader = objSelect.ExecuteReader();
-            string serverName = null;
-            int points = 0;
             while (objReader.Read())
             {
                 serverName = objReader.GetValue(0).ToString();
                 points = int.Parse(objReader.GetValue(1).ToString());
             }
-            objReader.Close();
 
-            if (serverName == null)
+            objReader.Close();
+            
+            if (serverName == "")
                 return null;
 
-            serverUser.ServerNameUser = serverName;
-            serverUser.Points = points;
-            serverUser.ServerID = idServer;
-
+            ServerUser serverUser = new ServerUser(user, points, idServer);
+            
             return serverUser;
         }
 
@@ -452,7 +455,7 @@ namespace Nadja.Models
             {
                 int ID = int.Parse(objReader.GetValue(0).ToString());
                 string Name = objReader.GetValue(1).ToString();
-                location = new Location(ID, name);
+                location = new Location(ID, Name);
             }
 
             objReader.Close();

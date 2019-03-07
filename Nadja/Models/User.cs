@@ -101,5 +101,15 @@ namespace Nadja.Models
             else
                 return Legendaries.Count;
         }
+
+        public override string ToString()
+        {
+            
+            return $@"USER
+                      ID : {ID}
+                      DiscordID : {DiscordID}
+                      Name : {DiscordName}
+                      Searches : {GetTotalSearchs()}";
+        }
     }
 }
