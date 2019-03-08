@@ -98,7 +98,22 @@ namespace Nadja
             int argPos = 0;
 
             var context = new SocketCommandContext(_client, message);
-            
+
+            string guildName;
+            string channelName;
+            if (context.IsPrivate)
+            {
+                guildName = "DM";
+                channelName = "DM";
+            }
+            else
+            {
+                guildName = context.Guild.Name;
+                channelName = context.Channel.Name;
+            }
+            string discordTag = context.User.ToString();
+
+
             if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 
@@ -122,18 +137,6 @@ namespace Nadja
 
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
 
-                string guildName;
-                string channelName;
-                if(context.IsPrivate)
-                {
-                    guildName = "DM";
-                    channelName = "DM";
-                } else
-                {
-                    guildName = context.Guild.Name;
-                    channelName = context.Channel.Name;
-                }
-                string discordTag = context.User.ToString();
 
                 if (!result.IsSuccess)
                     Journal.AddLog(discordTag, guildName, channelName, message.ToString(), result.ErrorReason);
@@ -158,6 +161,8 @@ namespace Nadja
                             ITextChannel channel = GetCurrentChannel(context.Guild.Id, context.Channel.Id);
                             if (channel != null && builder != null)
                                 await channel.SendMessageAsync(embed: builder.Build());
+
+                            Journal.AddLog(discordTag, guildName, channelName, message.ToString(), result.ToString());
                         }
 
                     }
