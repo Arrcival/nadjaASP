@@ -8,7 +8,7 @@ using Discord;
 
 namespace Nadja.Models
 {
-    public class Quiz
+    public class Game
     {
 
         public string idServer;
@@ -52,7 +52,7 @@ namespace Nadja.Models
                 return false;
         }
 
-        public Quiz(string idServer, string idChannel)
+        public Game(string idServer, string idChannel)
         {
             stopwatch = new Stopwatch();
             this.idServer = idServer;

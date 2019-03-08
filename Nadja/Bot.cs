@@ -77,6 +77,18 @@ namespace Nadja
 
         }
 
+        private ITextChannel GetCurrentChannel(ulong idServer, ulong idChannel)
+        {
+            var server = _client.Guilds.SingleOrDefault(g => g.Id == (ulong)idServer);
+            ITextChannel channel;
+            if (server != null)
+            {
+                channel = server.TextChannels.Single(tc => tc.Id == idChannel);
+                return channel;
+            }
+            return null;
+        }
+
         private async Task ClientMessageReceived(SocketMessage arg)
         {
             var message = arg as SocketUserMessage;
@@ -85,6 +97,8 @@ namespace Nadja
 
             int argPos = 0;
 
+            var context = new SocketCommandContext(_client, message);
+            
             if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
                 
@@ -104,7 +118,6 @@ namespace Nadja
                 }
 
 
-                var context = new SocketCommandContext(_client, message);
 
 
                 var result = await _commands.ExecuteAsync(context, argPos, _services);
@@ -130,6 +143,25 @@ namespace Nadja
 
 
 
+            }
+            else if(!context.IsPrivate && Helper.Games != null)
+            {
+                foreach (Nadja.Models.Game game in Helper.Games)
+                {
+                    if(game.idChannel == context.Channel.Id.ToString())
+                    {
+                        Helper.GameResult result = game.Guess(message.ToString());
+                        if (result != Helper.GameResult.None)
+                        {
+
+                            EmbedBuilder builder = Helper.ResolveQuiz(game, result, context.User.Id.ToString(), context.Guild.Id.ToString(), context.User.Username);
+                            ITextChannel channel = GetCurrentChannel(context.Guild.Id, context.Channel.Id);
+                            if (channel != null && builder != null)
+                                await channel.SendMessageAsync(embed: builder.Build());
+                        }
+
+                    }
+                }
             }
 
         }

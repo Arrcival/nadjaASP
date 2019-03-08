@@ -12,7 +12,7 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
-        private readonly string VERSION = "2.2";
+        private readonly string VERSION = "2.3";
 
         //Help function
         [Command("help")]
@@ -42,12 +42,14 @@ namespace Nadja.Command
 
 
             builder.AddField("Changelog", "" +
-                "Fixed profile for points\n" +
+                "2.2 : Fixed profile for points\n" +
                 "Added p (user) for other players\n" +
                 "Fixed many database old items\n" +
                 "The database is way more faster and efficient\n" +
                 "Fixed some graphic issues\n" + 
-                "Optimized some old code");
+                "Optimized some old code\n" +
+                "2.3 : Removed ans, now you can answer without using ans\n" +
+                "Added daily update that remove 5% of your points each day");
 
             builder.WithColor(Color.DarkBlue);
 
