@@ -21,6 +21,8 @@ namespace Nadja
         private IServiceProvider _services;
         private InteractiveService _internalService;
         public static readonly string prefix = "-";
+        private static double lastDailyUpdate = 0;
+        private static readonly double DAY = 60 * 60 * 24;
 
         public Bot()
         {
@@ -85,6 +87,22 @@ namespace Nadja
 
             if (message.HasStringPrefix(prefix, ref argPos) || message.HasMentionPrefix(_client.CurrentUser, ref argPos))
             {
+                
+                if(lastDailyUpdate == 0)
+                {
+                    Dal.DoConnection();
+                    lastDailyUpdate = Dal.GetLastDailyUpdate();
+                    Dal.CloseConnection();
+                }
+
+                if(lastDailyUpdate + DAY < Helper.GetCurrentTime())
+                {
+                    Dal.DoConnection();
+                    Dal.DailyUpdate();
+                    Dal.CloseConnection();
+                    lastDailyUpdate = Helper.GetCurrentTime();
+                }
+
 
                 var context = new SocketCommandContext(_client, message);
 

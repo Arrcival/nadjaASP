@@ -9,6 +9,8 @@ namespace Nadja
 {
     public static class Helper
     {
+        public static readonly double PointPercentKeptEachDay = 0.95;
+
         public enum Rarity { Common, Uncommon, Rare, Epic }
         public enum GameResult { Victory, Timeout, None}
         public static Random rng = new Random();
@@ -95,12 +97,14 @@ namespace Nadja
 
         }
 
+        public static double GetCurrentTime()
+        {
+            return (DateTime.Now.ToUniversalTime() - Origin).TotalSeconds;
+        }
+
         public static void AddItemFound(Rarity rarity, User user)
         {
-            DateTime now = DateTime.Now.ToUniversalTime(); // Convert to "Coordinated Universal Time"
-            TimeSpan difference = now - Origin;
-
-            user.LastTimeSearch = difference.TotalSeconds;
+            user.LastTimeSearch = GetCurrentTime();
             switch (rarity)
             {
                 case Rarity.Common:

@@ -593,6 +593,38 @@ namespace Nadja.Models
             objGet.ExecuteNonQuery();
         }
 
+        public static double GetLastDailyUpdate()
+        {
+            string sql = "SELECT Value FROM informations WHERE Info = 'LastDailyUpdate'";
+            double result = 0;
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objGet.ExecuteReader();
+
+            while (objReader.Read())
+                result = double.Parse(objReader.GetValue(0).ToString());
+
+            objReader.Close();
+            return result;
+        }
+
+        public static void DailyUpdate()
+        {
+            string sql = "UPDATE informations " +
+                " SET Value = @val1" +
+                " WHERE Info = 'LastDailyUpdate';";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", Helper.GetCurrentTime());
+            objGet.Prepare();
+            objGet.ExecuteNonQuery();
+
+            sql = "UPDATE serverusers " +
+                " SET Points = Points * @val1";
+            objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", Helper.PointPercentKeptEachDay);
+            objGet.Prepare();
+            objGet.ExecuteNonQuery();
+        }
+
         private static List<List<object>> Read(MySqlDataReader objReader)
         {
             List<List<object>> everyItems = new List<List<object>>();
@@ -608,6 +640,7 @@ namespace Nadja.Models
             objReader.Close();
             return everyItems;
         }
+        
 
         
 
