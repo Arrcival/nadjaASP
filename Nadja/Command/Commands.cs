@@ -12,7 +12,7 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
-        private readonly string VERSION = "2.3";
+        private readonly string VERSION = "2.4";
 
         //Help function
         [Command("help")]
@@ -40,18 +40,23 @@ namespace Nadja.Command
                 .WithDescription("Developed by Arrcival");
 
 
-
-            builder.AddField("Changelog", "" +
-                "2.2 : Fixed profile for points\n" +
-                "Added p (user) for other players\n" +
-                "Fixed many database old items\n" +
-                "The database is way more faster and efficient\n" +
-                "Fixed some graphic issues\n" + 
-                "Optimized some old code\n" +
-                "2.3 : Removed ans, now you can answer without using ans\n" +
-                "Added daily update that remove 5% of your points each day");
+            builder.WithUrl("https://nadja.azurewebsites.net/Home/Changelog");
 
             builder.WithColor(Color.DarkBlue);
+
+            await ReplyAsync(embed: builder.Build());
+        }
+
+        [Command("slangs")]
+        public async Task SlangsAsync()
+        {
+            EmbedBuilder builder = new EmbedBuilder();
+            builder.WithTitle("Get the slang list on the website !");
+
+
+            builder.WithUrl("https://nadja.azurewebsites.net/Home/Slangs");
+
+            builder.WithColor(Color.Magenta);
 
             await ReplyAsync(embed: builder.Build());
         }
@@ -70,9 +75,9 @@ namespace Nadja.Command
                 if (channel != null) await channelsay.SendMessageAsync(text);
             }
         }
+
         
-
-
-
+        
+        
     }
 }

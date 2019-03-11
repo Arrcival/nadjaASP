@@ -316,6 +316,10 @@
     <Content Include="Views\Home\Commands.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Journal.cshtml" />
+    <Content Include="Views\Home\Changelog.cshtml" />
+    <Content Include="Views\Home\Slangs.cshtml" />
+    <Content Include="Views\Home\Ranks.cshtml" />
+    <Content Include="Views\Home\LuckRanks.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

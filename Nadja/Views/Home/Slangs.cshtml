@@ -1,0 +1,30 @@
+﻿@using Nadja.Models;
+@{
+    ViewBag.Title = "Slangs";
+}
+
+<h2>Slangs list</h2>
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Slangs</th>
+            </tr>
+        </thead>
+        @foreach (Item item in ViewBag.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    @foreach (string slang in item.Slangs)
+                    {
+                        @slang<br />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+

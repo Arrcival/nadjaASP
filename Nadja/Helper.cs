@@ -79,13 +79,12 @@ namespace Nadja
                 return "Not ranked";
         }
 
-        public static List<ServerUser> GetRanking(List<ServerUser> serverUsers)
+        public static List<ServerUser> GetRanking(List<ServerUser> serverUsers, int amount = 10)
         {
             List<ServerUser> tempList = new List<ServerUser>();
-            int maxTable = 10;
-            if (serverUsers.Count < 10)
-                maxTable = serverUsers.Count;
-            for (int i = 1; i <= maxTable; i++)
+            if (serverUsers.Count < amount)
+                amount = serverUsers.Count;
+            for (int i = 1; i <= amount; i++)
             {
                 ServerUser maxUser = serverUsers[0];
                 foreach (ServerUser serverUser in serverUsers)

@@ -128,6 +128,43 @@ namespace Nadja.Models
             return serverUser;
         }
 
+        public static ServerUser GetServerUser(string idUser)
+        {
+            User user = GetUser(idUser);
+
+
+            if (user == null)
+                return null;
+
+
+
+            string sql = @"SELECT serverusers.DiscordServerName, serverusers.Points FROM serverusers
+                WHERE (serverusers.DiscordID = @val1
+                OR serverusers.DiscordServerName LIKE @val1);";
+
+            string serverName = "";
+            int points = 0;
+
+            MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
+            objSelect.Parameters.AddWithValue("@val1", user.DiscordID);
+            objSelect.Prepare();
+            MySqlDataReader objReader = objSelect.ExecuteReader();
+            while (objReader.Read())
+            {
+                serverName = objReader.GetValue(0).ToString();
+                points = int.Parse(objReader.GetValue(1).ToString());
+            }
+
+            objReader.Close();
+
+            if (serverName == "")
+                return null;
+
+            ServerUser serverUser = new ServerUser(user, points);
+
+            return serverUser;
+        }
+
         public static string GetIdUser(string name)
         {
             string sql = @"SELECT users.DiscordID FROM users
@@ -314,6 +351,27 @@ namespace Nadja.Models
             return listUsers;
 
         }
+
+        public static List<ServerUser> GetEveryUser()
+        {
+            List<string> idUsers = new List<string>();
+            string sql = "SELECT serverusers.DiscordID FROM serverusers;";
+            MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objSelect.ExecuteReader();
+            while (objReader.Read())
+                idUsers.Add(objReader.GetValue(0).ToString());
+
+            objReader.Close();
+
+            List<ServerUser> listUsers = new List<ServerUser>();
+            for (int i = 0; i < idUsers.Count; i++)
+                listUsers.Add(GetServerUser(idUsers[i]));
+
+            return listUsers;
+
+        }
+
+
 
         public static List<User> GetEveryUserSearch()
         {
@@ -623,6 +681,41 @@ namespace Nadja.Models
             objGet.Parameters.AddWithValue("@val1", Helper.PointPercentKeptEachDay);
             objGet.Prepare();
             objGet.ExecuteNonQuery();
+        }
+
+        public static List<Item> GetEveryItemWithSlang()
+        {
+            List<Item> Items = new List<Item>();
+            string sql = "SELECT items.ID, items.Name FROM items, slangs WHERE items.ID = slangs.ItemID GROUP BY items.ID, items.Name HAVING COUNT(slangs.ItemID) > 0";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objGet.ExecuteReader();
+            while (objReader.Read())
+            {
+                Items.Add(new Item()
+                {
+                    ID = int.Parse(objReader.GetValue(0).ToString()),
+                    Name = objReader.GetValue(1).ToString(),
+                });
+            }
+
+            objReader.Close();
+
+            foreach(Item item in Items)
+            {
+                List<string> slangs = new List<string>();
+                sql = "SELECT Slang FROM slangs WHERE slangs.ItemID = " + item.ID + ";";
+                objGet = new MySqlCommand(sql, objMySqlCnx);
+                objReader = objGet.ExecuteReader();
+                while (objReader.Read())
+                    slangs.Add(objReader.GetValue(0).ToString());
+                objReader.Close();
+
+                item.Slangs = slangs;
+
+            }
+
+            return Items;
+
         }
 
         private static List<List<object>> Read(MySqlDataReader objReader)

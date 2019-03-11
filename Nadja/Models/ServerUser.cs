@@ -19,6 +19,12 @@ namespace Nadja.Models
             ServerID = "NONE";
         }
 
+        public ServerUser(User user, int points) : base(user)
+        {
+            Points = points;
+            ServerNameUser = user.DiscordName;
+        }
+
         public ServerUser(User user, int points, string serverID) : base(user) {
             Points = points;
             ServerNameUser = user.DiscordName;

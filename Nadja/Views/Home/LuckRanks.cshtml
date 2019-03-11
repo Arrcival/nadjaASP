@@ -1,0 +1,35 @@
+﻿@using Nadja.Models;
+@{
+    ViewBag.Title = "LuckRanks";
+}
+<h2>Luck Ranks</h2>
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Luck</th>
+            </tr>
+        </thead>
+        @{
+            int i = 1;
+            
+            Dal.DoConnection();
+        }
+
+        @foreach (ServerUser user in ViewBag.Users)
+        {
+            <tr>
+                <td>@i</td>
+                <td>@user.DiscordName</td>
+                <td>@Math.Round(user.GetLuck(), 0)</td>
+            </tr>
+            i++;
+        }
+        @{Dal.CloseConnection();
+        }
+    </table>
+</div>
+

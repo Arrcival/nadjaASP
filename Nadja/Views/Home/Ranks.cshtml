@@ -1,0 +1,27 @@
+﻿@using Nadja.Models;
+@{
+    ViewBag.Title = "Ranks";
+}
+<?xml version="1.0" encoding="utf-8" ?>
+
+<h2>Ranks</h2>
+
+<div class="datagrid">
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        @for(int i = 0; i < ViewBag.Users.Count; i++)
+        {
+            <tr>
+                <td>@Helper.GetRank(ViewBag.Users, ViewBag.Users[i])</td>
+                <td>@ViewBag.Users[i].ServerNameUser</td>
+                <td>@ViewBag.Users[i].Points</td>
+            </tr>
+        }
+    </table>
+</div>
