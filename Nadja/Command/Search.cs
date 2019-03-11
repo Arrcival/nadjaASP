@@ -312,8 +312,17 @@ namespace Nadja.Command
             }
             else
             {
-                builder.WithTitle($"{name} does not exists...")
+                User user = Dal.GetUser(name);
+                if(user == null)
+                {
+                    builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
                     .WithColor(Color.DarkGreen);
+                } else
+                {
+                    builder.WithTitle($"{name} does not exists...")
+                        .WithColor(Color.DarkGreen);
+
+                }
             }
             Dal.CloseConnection();
 
