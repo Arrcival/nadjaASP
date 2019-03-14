@@ -107,7 +107,10 @@ namespace Nadja.Command
             string aString = "";
             for (int i = 0; i < listRanks.Count; i++)
             {
-                aString += Helper.GetRank(i + 1) + " : " + listRanks[i].ServerNameUser + "\n";
+                if(listRanks[i].DiscordID == Context.User.Id.ToString())
+                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}**\n";
+                else
+                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}\n";
             }
             Dal.CloseConnection();
 

@@ -371,7 +371,14 @@ namespace Nadja.Command
                 }
 
                 if(tempUser != null)
-                    aString += $"#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}\n";
+                {
+                    if (tempUser.DiscordID == Context.User.Id.ToString())
+                        aString += $"**#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}**\n";
+                    else
+                        aString += $"#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}\n";
+
+
+                }
 
                 everyUsers.Remove(tempUser);
             }
