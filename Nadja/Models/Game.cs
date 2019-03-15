@@ -97,7 +97,7 @@ namespace Nadja.Models
 
         public void PrintQuiz(EmbedBuilder builder)
         {
-            string aString = $"{RemainingTime()} seconds to answer, ({Bot.prefix}ans <answer> to answer)";
+            string aString = $"{RemainingTime()} seconds to answer (Type the answer in chat !)";
 
             switch(hidden)
             {

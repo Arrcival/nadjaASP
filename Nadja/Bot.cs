@@ -23,6 +23,8 @@ namespace Nadja
         public static readonly string prefix = "-";
         private static double lastDailyUpdate = 0;
         private static readonly double DAY = 60 * 60 * 24;
+        private ulong ServerID = 0;
+        private ulong ChannelID = 0;
 
         public Bot()
         {
@@ -42,6 +44,12 @@ namespace Nadja
             Task.Run(async () => { await StartAsync(); });
         }
 
+        public Bot(ulong ServerID, ulong ChannelID) : base()
+        {
+            this.ServerID = ServerID;
+            this.ChannelID = ChannelID;
+        }
+
         private async Task StartAsync()
         {
             
@@ -56,7 +64,8 @@ namespace Nadja
 
         public async Task RegisterCommandsAsync()
         {
-            //_client.Ready += ClientReady;
+            if(ChannelID != 0 && ServerID != 0)
+                _client.Ready += ClientReady;
             _client.MessageReceived += ClientMessageReceived;
 
             await _commands.AddModuleAsync<Commands>(_services);
@@ -64,15 +73,15 @@ namespace Nadja
 
         private async Task ClientReady()
         {
-            var server = _client.Guilds.SingleOrDefault(g => g.Name == "Black Survival");
+            var server = _client.Guilds.SingleOrDefault(g => g.Id == ServerID);
             ITextChannel channel;
             if (server != null)
             {
-                channel = server.TextChannels.Single(tc => tc.Name == "bot_testing");
+                channel = server.TextChannels.Single(tc => tc.Id == ChannelID);
                 //if (server.TextChannels.All(tc => tc.Name != "sh-comp-logger"))
                 //    channel = await server.CreateTextChannelAsync("sh-comp-logger");
                 //else channel = server.TextChannels.Single(tc => tc.Name == "sh-comp-logger");
-                if (channel != null) await channel.SendMessageAsync("Hello, I'm on !");
+                if (channel != null) await channel.SendMessageAsync("Bot restarted !");
             }
 
         }
