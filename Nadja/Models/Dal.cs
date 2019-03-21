@@ -41,7 +41,7 @@ namespace Nadja.Models
             string nameDiscord = null;
             int gems = 0, common = 0, uncommon = 0, rare = 0, epic = 0;
             double lastSearch = 0;
-            
+
             while (objReader.Read())
             {
                 ID = int.Parse(objReader.GetValue(0).ToString());
@@ -59,14 +59,14 @@ namespace Nadja.Models
 
             if (ID == -1)
                 return null;
-            
+
 
             user = new User(ID, idUser, nameDiscord, gems, common, uncommon, rare, epic, new List<Legendary>(), lastSearch);
 
             List<Legendary> legendaries = new List<Legendary>();
 
             sql = "SELECT possess.LegendaryID, legendaries.Name FROM possess, legendaries WHERE possess.LegendaryID = legendaries.ID AND possess.UserID = @val1;";
-            
+
             objSelect = new MySqlCommand(sql, objMySqlCnx);
             objSelect.Parameters.AddWithValue("@val1", user.ID);
             objSelect.Prepare();
@@ -106,7 +106,7 @@ namespace Nadja.Models
 
             string serverName = "";
             int points = 0;
-            
+
             MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
             objSelect.Parameters.AddWithValue("@val1", user.DiscordID);
             objSelect.Parameters.AddWithValue("@val2", idServer);
@@ -119,12 +119,12 @@ namespace Nadja.Models
             }
 
             objReader.Close();
-            
+
             if (serverName == "")
                 return null;
 
             ServerUser serverUser = new ServerUser(user, points, idServer);
-            
+
             return serverUser;
         }
 
@@ -230,7 +230,7 @@ namespace Nadja.Models
 
             if (item == null)
                 return null;
-            
+
             sql = @"SELECT locations.ID, locations.Name, itemlocation.Amount FROM itemlocation, locations
                 WHERE itemlocation.LocationID = locations.ID
                 AND itemlocation.ItemID = @val1;";
@@ -258,7 +258,7 @@ namespace Nadja.Models
 
             item.Founds = founds;
 
-            
+
             List<string> slangs = new List<string>();
 
             sql = @"SELECT Slang FROM slangs  
@@ -274,7 +274,7 @@ namespace Nadja.Models
 
             objReader.Close();
             item.Slangs = slangs;
-            
+
 
 
             if (complete)
@@ -312,7 +312,7 @@ namespace Nadja.Models
                 }
                 if (craft != null)
                     item.Craft = craft;
-            
+
 
             }
 
@@ -380,7 +380,7 @@ namespace Nadja.Models
                 "GROUP BY users.ID, users.DiscordID, users.DiscordName, users.Gems, users.Common, users.Uncommon, users.Rare, users.Epic, users.LastSearch";
             MySqlCommand objSelect = new MySqlCommand(sql, objMySqlCnx);
             MySqlDataReader objReader = objSelect.ExecuteReader();
-            while(objReader.Read())
+            while (objReader.Read())
             {
                 User user = new User(
                     int.Parse(objReader.GetValue(0).ToString()),
@@ -492,7 +492,7 @@ namespace Nadja.Models
             sql = "SELECT COUNT(*) FROM possess;";
             objSelect = new MySqlCommand(sql, objMySqlCnx);
             objReader = objSelect.ExecuteReader();
-            while(objReader.Read())
+            while (objReader.Read())
                 searches.Add(int.Parse(objReader.GetValue(0).ToString()));
 
             objReader.Close();
@@ -524,7 +524,7 @@ namespace Nadja.Models
 
             sql = "SELECT items.ID, items.Name, itemlocation.Amount" +
                 " FROM itemlocation, items" +
-                " WHERE itemlocation.LocationID = " + location.ID + 
+                " WHERE itemlocation.LocationID = " + location.ID +
                 " AND items.ID = itemlocation.ItemID;";
 
             objGet = new MySqlCommand(sql, objMySqlCnx);
@@ -579,15 +579,17 @@ namespace Nadja.Models
                 return GetLocation(name);
         }
 
-        
+
 
 
         public static List<Legendary> GetEveryLegendaries()
         {
-            List<Legendary> legendaries = new List<Legendary>();
             string sql = "SELECT * FROM legendaries;";
+
             MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
             MySqlDataReader objReader = objGet.ExecuteReader();
+            List<Legendary> legendaries = new List<Legendary>();
+
             while(objReader.Read())
             {
                 Legendary legendary = new Legendary
@@ -600,7 +602,6 @@ namespace Nadja.Models
 
             objReader.Close();
             return legendaries;
-            
         }
 
         public static int GetEveryPossess()
@@ -683,6 +684,33 @@ namespace Nadja.Models
             objGet.ExecuteNonQuery();
         }
 
+        public static void GivePoints(string idUser, int points)
+        {
+            string sql = "UPDATE civil SET Points = Points + @val1 WHERE DiscordID = @val2;";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            objGet.Parameters.AddWithValue("@val1", points);
+            objGet.Parameters.AddWithValue("@val2", idUser);
+            objGet.Prepare();
+            objGet.ExecuteNonQuery();
+
+        }
+
+        public static List<Civil> GetEveryCivilUsers()
+        {
+            string sql = "SELECT Name, Points FROM civil;";
+            MySqlCommand objGet = new MySqlCommand(sql, objMySqlCnx);
+            MySqlDataReader objReader = objGet.ExecuteReader();
+            List<Civil> civils = new List<Civil>();
+            while (objReader.Read())
+            {
+                Civil civil = new Civil(objReader.GetValue(0).ToString(), int.Parse(objReader.GetValue(1).ToString()));
+                civils.Add(civil);
+            }
+
+            objReader.Close();
+            return civils;
+        }
+
         public static List<Item> GetEveryItemWithSlang()
         {
             List<Item> Items = new List<Item>();
@@ -700,7 +728,7 @@ namespace Nadja.Models
 
             objReader.Close();
 
-            foreach(Item item in Items)
+            foreach (Item item in Items)
             {
                 List<string> slangs = new List<string>();
                 sql = "SELECT Slang FROM slangs WHERE slangs.ItemID = " + item.ID + ";";
@@ -718,21 +746,7 @@ namespace Nadja.Models
 
         }
 
-        private static List<List<object>> Read(MySqlDataReader objReader)
-        {
-            List<List<object>> everyItems = new List<List<object>>();
-            while(objReader.Read())
-            {
-                List<object> item = new List<object>();
 
-                for(int i = 0; i < objReader.FieldCount; i++)
-                    item.Add(objReader.GetValue(i));
-
-                everyItems.Add(item);
-            }
-            objReader.Close();
-            return everyItems;
-        }
         
 
         

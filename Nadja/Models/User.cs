@@ -27,7 +27,7 @@ namespace Nadja.Models
         public List<Legendary> Legendaries { get; set; }
 
         private int legendariesCount = 0;
-
+        
         public User(int id, string discordID, string discordName, int gems, int common, int uncommon, int rare, int epic, List<Legendary> legendaries, double lastTime, int LegendariesCount = 0)
         {
             ID = id;

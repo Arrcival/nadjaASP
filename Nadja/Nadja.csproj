@@ -256,6 +256,7 @@
     <Compile Include="Command\Crafting.cs" />
     <Compile Include="Command\Commands.cs" />
     <Compile Include="Command\Misc.cs" />
+    <Compile Include="Command\Perso.cs" />
     <Compile Include="Command\Quiz.cs" />
     <Compile Include="Command\Search.cs" />
     <Compile Include="Command\UserInfo.cs" />
@@ -264,6 +265,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper.cs" />
+    <Compile Include="Models\Civil.cs" />
     <Compile Include="Models\Journal.cs" />
     <Compile Include="Models\Craft.cs" />
     <Compile Include="Models\Dal.cs" />

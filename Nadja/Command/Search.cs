@@ -63,7 +63,7 @@ namespace Nadja.Command
                 double beforeLuck = user.GetLuck();
                 EmbedBuilder builder = new EmbedBuilder();
                 int dice = Helper.rng.Next(1, 1001); // 0.1% to loot a legendary item
-                List<Legendary> legendariesList = Dal.GetEveryLegendaries();
+                List<Legendary> legendariesList = Dal.GetEveryLegendaries().ToList();
 
                 if(dice <= 1)
                 {
