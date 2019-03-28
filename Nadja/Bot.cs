@@ -67,6 +67,7 @@ namespace Nadja
             if(ChannelID != 0 && ServerID != 0)
                 _client.Ready += ClientReady;
             _client.MessageReceived += ClientMessageReceived;
+            _client.UserJoined += AnnounceJoinedUser;
 
             await _commands.AddModuleAsync<Commands>(_services);
         }
@@ -89,7 +90,7 @@ namespace Nadja
         public async Task AnnounceJoinedUser(SocketGuildUser user) //Welcomes the new user
         {
             var channel = _client.GetChannel(384853151712411648) as SocketTextChannel; // Gets the channel to send the message in
-            await channel.SendMessageAsync($"Welcome to Black Survival ! Please read <#451026647601119263> to get yourself started, grab some roles and check out our hidden mentoring channels! Feel free to write a short introduction at <#466852624855990275> ~"); //Welcomes the new user
+            await channel.SendMessageAsync($"Welcome to Black Survival {user.Mention}! Please read <#451026647601119263> to get yourself started, grab some roles and check out our hidden mentoring channels! Feel free to write a short introduction at <#466852624855990275> ~"); //Welcomes the new user
         }
 
         private ITextChannel GetCurrentChannel(ulong idServer, ulong idChannel)
