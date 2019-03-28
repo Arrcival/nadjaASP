@@ -386,25 +386,8 @@ namespace Nadja.Command
         {
             await ReplyAsync("Is this really a secret command? Maybe a dumb one.");
         }
-
-        [Command("commands")]
-        public async Task CommandsAsync()
-        {
-            await ReplyAsync("Nah. The command is '-help', not '-commands' you baka.");
-        }
-
-        [Command("command")]
-        public async Task CommandAsync()
-        {
-            await ReplyAsync("Are you dumb or what?");
-        }
-
-        [Command("ez")]
-        public async Task EzAsync()
-        {
-            await ReplyAsync($"Like your mother {Context.User.Mention} ?");
-        }
-
+        
+        
         [Command("bot")]
         public async Task BotAsync()
         {

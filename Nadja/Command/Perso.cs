@@ -18,16 +18,21 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 string str = "" +
-                    "\nQueue de poisson : 5"+
-                    "\nGandalf : 7"+
-                    "\nAutotamponneuse : 8"+
-                    "\nTrain : 3 (combo ciseaux x2)"+
-                    "\n180 no scope : 5"+
-                    "\nAnglais : 2"+
-                    "\nEnfumeur : 10 (combo contexte jusqu'a x5)"+
-                    "\nPoteau : 2"+
-                    "\nIndécis : 1 (combo nombre de gens x5)";
-                builder.AddField("Points :", str);
+                    "\nIndécis : 1 (combo nombre de gens x5)" +
+                    "\nPoteau : 2" +
+                    "\nPiéton : 2" +
+                    "\nAnglais : 2" +
+                    "\nTrain : 3 (combo ciseaux x2)" +
+                    "\nSerpent : 4" +
+                    "\n180 no scope : 5" +
+                    "\nDemi-Orange : 5" +
+                    "\nPoisson : 5" +
+                    "\nAutotamponneuse : 6" +
+                    "\nGandalf : 7" +
+                    "\nRugbymen : 8" +
+                    "\nCRS : 10 (combo contexte jusqu'a x5)" +
+                    "";
+                builder.AddField("Incivilité :", str);
                 await ReplyAsync(embed: builder.Build());
             }
         }

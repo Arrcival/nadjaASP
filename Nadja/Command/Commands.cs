@@ -61,10 +61,16 @@ namespace Nadja.Command
             await ReplyAsync(embed: builder.Build());
         }
 
+        [Command("mentoring")]
+        public async Task MentorAsync()
+        {            
+            await ReplyAsync("Go to <#451026647601119263> and select the book emote to get access for the mentoring section.");
+        }
+
         [Command("say"), RequireOwner]
         public async Task SayAsync(string channel, [Remainder] string text)
         {
-            var server = Context.Client.Guilds.SingleOrDefault(g => g.Name == "Black Survival");
+            var server = Context.Client.Guilds.SingleOrDefault(g => g.Id == Context.Guild.Id);
             ITextChannel channelsay;
             if (server != null)
             {
@@ -75,7 +81,7 @@ namespace Nadja.Command
                 if (channel != null) await channelsay.SendMessageAsync(text);
             }
         }
-
+        
         
         
         
