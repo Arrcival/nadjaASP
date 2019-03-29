@@ -259,6 +259,7 @@
     <Compile Include="Command\Perso.cs" />
     <Compile Include="Command\Quiz.cs" />
     <Compile Include="Command\Search.cs" />
+    <Compile Include="Command\Supply.cs" />
     <Compile Include="Command\UserInfo.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
