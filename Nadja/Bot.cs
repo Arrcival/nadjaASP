@@ -64,8 +64,8 @@ namespace Nadja
 
         public async Task RegisterCommandsAsync()
         {
-            if(ChannelID != 0 && ServerID != 0)
-                _client.Ready += ClientReady;
+            /*if(ChannelID != 0 && ServerID != 0)
+                _client.Ready += ClientReady;*/
             _client.MessageReceived += ClientMessageReceived;
             _client.UserJoined += AnnounceJoinedUser;
             _client.UserLeft += AnnounceLeftUser;
@@ -97,7 +97,7 @@ namespace Nadja
         public async Task AnnounceLeftUser(SocketGuildUser user) //Welcomes the new user
         {
             var channel = _client.GetChannel(384853151712411648) as SocketTextChannel; // Gets the channel to send the message in
-            await channel.SendMessageAsync($"{user.Mention} ({user.Username} has left **{channel.Guild.Name}**! :("); 
+            await channel.SendMessageAsync($"{user.Mention} ({user.Username}) has left **{channel.Guild.Name}**! :("); 
         }
 
 

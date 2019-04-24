@@ -12,6 +12,7 @@ namespace Nadja.Command
     {
         //Group command
         [Group("supply")]
+        [Alias("sp")]
         public class Supply : ModuleBase<SocketCommandContext>
         {
             // Default thing to display it nothing is inputed after -meme

@@ -12,6 +12,7 @@ namespace Nadja.Command
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
         [Command("profile"), RequireContext(ContextType.Guild)]
+        [Alias("pr")]
         public async Task ProfileAsync()
         {
             Dal.DoConnection();
@@ -27,6 +28,7 @@ namespace Nadja.Command
         }
 
         [Command("profile"), RequireContext(ContextType.Guild)]
+        [Alias("pr")]
         public async Task ProfilePlayerAsync([Remainder] string name)
         {
             Dal.DoConnection();
@@ -96,6 +98,7 @@ namespace Nadja.Command
 
 
         [Command("ranks"), RequireContext(ContextType.Guild)]
+        [Alias("r")]
         public async Task RanksAsync()
         {
             Dal.DoConnection();
@@ -103,7 +106,7 @@ namespace Nadja.Command
             List<ServerUser> listRanks = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             listRanks = Helper.GetRanking(listRanks);
-            builder.WithTitle($"TOP 10 PLAYERS ON {Context.Guild.Name} \n ");
+            builder.WithTitle($"Top 10 players ({Context.Guild.Name}) \n ");
             string aString = "";
             for (int i = 0; i < listRanks.Count; i++)
             {
@@ -127,7 +130,7 @@ namespace Nadja.Command
                 serverUser = GetServerUser(idUser);
                 if (serverUser == null)
                 {
-                    builder.WithTitle("This user does not exists.")
+                    builder.WithTitle("This user doesn't exists.")
                         .WithColor(Color.DarkGrey);
                     return;
                 }

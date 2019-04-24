@@ -20,27 +20,13 @@ namespace Nadja.Command
             await ReplyAsync(embed: builder.Build());
         }
 
-        [Command("q")]
-        public async Task QAsync()
-        {
-            EmbedBuilder builder = BuildQueue();
-
-            await ReplyAsync(embed: builder.Build());
-        }
-
         [Command("queue"), RequireUserPermission(GuildPermission.DeafenMembers)]
         public async Task QueueAsync([Remainder] string name)
         {
             Queue.Add(name);
             await ReplyAsync($"**{name}** queued !");
         }
-
-        [Command("q"), RequireUserPermission(GuildPermission.DeafenMembers)]
-        public async Task QAsync([Remainder] string name)
-        {
-            string str = Queuing(name);
-            await ReplyAsync(str);
-        }
+        
 
         public string Queuing(string name)
         {
@@ -66,7 +52,7 @@ namespace Nadja.Command
                 Queue.Remove(Queue[0]);
             } else
             {
-                await ReplyAsync($"There is no one in queue...");
+                await ReplyAsync($"The queue is empty.");
             }
         }
 

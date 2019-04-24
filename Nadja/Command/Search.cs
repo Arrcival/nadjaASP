@@ -20,6 +20,7 @@ namespace Nadja.Command
 
         //-search command
         [Command("search")]
+        [Alias("s")]
         public async Task SearchAsync()
         {
 
@@ -43,7 +44,7 @@ namespace Nadja.Command
                     } else
                     {
                         valid = false;
-                        await ReplyAsync($"**{Context.User.Username}**, you have to wait **{(int)((cooldownTime - (stopwatch.ElapsedMilliseconds - search.Time)) / 1000)}** secs before using this command again.", false);
+                        await ReplyAsync($"**{Context.User.Username}**, please wait **{(int)((cooldownTime - (stopwatch.ElapsedMilliseconds - search.Time)) / 1000 + 1)}** seconds before using this command again.", false);
                     }
                 }
             }
@@ -280,6 +281,7 @@ namespace Nadja.Command
 
 
         [Command("luck")]
+        [Alias("l")]
         public async Task LuckAsync()
         {
             Dal.DoConnection();
@@ -296,6 +298,7 @@ namespace Nadja.Command
         }
 
         [Command("luck")]
+        [Alias("l")]
         public async Task LuckPlayerAsync([Remainder] string name)
         {
             Dal.DoConnection();
@@ -307,7 +310,7 @@ namespace Nadja.Command
             if (idUser != null)
             {
                 User user = Dal.GetUser(idUser);
-                builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
+                builder.WithTitle($"The luck of {user.DiscordName} is {user.GetLuck()}")
                     .WithColor(Color.DarkGreen);
             }
             else
@@ -315,11 +318,11 @@ namespace Nadja.Command
                 User user = Dal.GetUser(name);
                 if(user == null)
                 {
-                    builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
+                    builder.WithTitle($"The luck of {user.DiscordName} is {user.GetLuck()}")
                     .WithColor(Color.DarkGreen);
                 } else
                 {
-                    builder.WithTitle($"{name} does not exists...")
+                    builder.WithTitle($"{name} doesn't exists...")
                         .WithColor(Color.DarkGreen);
 
                 }
@@ -344,6 +347,7 @@ namespace Nadja.Command
 
         // Top lucky players ?
         [Command("luckranks")]
+        [Alias("lr")]
         public async Task LuckRanksAsync()
         {
             Dal.DoConnection();
@@ -416,7 +420,7 @@ namespace Nadja.Command
         public async Task SearchLegAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found a super legendary item !!!!! No seriously you really think this command work ? :clap: :yellow_heart: :clap:")
+            builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found a super legendary item !!!!! Nice joke man :clap: :yellow_heart: :clap:")
                             .WithColor(Color.Gold);
             await ReplyAsync("", false, builder.Build());
 

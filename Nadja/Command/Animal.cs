@@ -12,6 +12,7 @@ namespace Nadja.Command
     {
         //-craft command
         [Group("animals")]
+        [Alias("a")]
         public class Animals : ModuleBase<SocketCommandContext>
         {
             // Default thing to display it nothing is inputed after -meme

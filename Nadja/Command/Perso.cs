@@ -65,5 +65,18 @@ namespace Nadja.Command
                 await ReplyAsync($"**{points}** points ajoutés à {Context.User.Username}");
             }
         }
+
+        [Command("uinfo")]
+        public async Task TaskAsync(IGuildUser user)
+        {
+            await ReplyAsync($@"
+Name : {user.Nickname}
+Discord Name : {user.Username}
+ID : {user.Id}
+Mention : {user.Mention}
+User : {user.ToString()}
+                ");
+        }
+
     }
 }
