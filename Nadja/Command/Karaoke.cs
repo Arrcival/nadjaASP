@@ -13,6 +13,7 @@ namespace Nadja.Command
         public static List<string> Queue = new List<string>();
 
         [Command("queue")]
+        [Alias("qu")]
         public async Task QueueAsync()
         {
             EmbedBuilder builder = BuildQueue();
@@ -21,6 +22,7 @@ namespace Nadja.Command
         }
 
         [Command("queue"), RequireUserPermission(GuildPermission.DeafenMembers)]
+        [Alias("qu")]
         public async Task QueueAsync([Remainder] string name)
         {
             Queue.Add(name);
@@ -62,16 +64,16 @@ namespace Nadja.Command
             builder.WithTitle("Karaoke Queue");
             if (Queue.Count == 0)
             {
-                builder.WithDescription("The queue is currently empty... \nIt might be sav turn !");
+                builder.WithDescription("The queue is currently empty..." + Environment.NewLine + "It might be sav turn !");
             }
             else
             {
                 string str = $"Currently singing : **{Queue[0]}**";
                 for (int i = 1; i < Queue.Count; i++)
                 {
-                    str += $"\n{Queue[i]}";
+                    str += Environment.NewLine + Queue[i];
                 }
-                str += $"\nSav";
+                str += Environment.NewLine + "Sav";
                 builder.WithDescription(str);
             }
 

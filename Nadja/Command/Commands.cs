@@ -12,7 +12,7 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
-        private readonly string VERSION = "2.5";
+        private readonly string VERSION = "2.6.1";
 
         //Help function
         [Command("help")]

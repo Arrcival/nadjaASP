@@ -174,7 +174,7 @@ namespace Nadja
             }
             else if(!context.IsPrivate && Helper.Games != null)
             {
-                foreach (Nadja.Models.Game game in Helper.Games)
+                foreach (Models.Game game in Helper.Games)
                 {
                     if(game.idChannel == context.Channel.Id.ToString())
                     {

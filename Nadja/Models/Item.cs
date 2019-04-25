@@ -49,13 +49,13 @@ namespace Nadja.Models
                     if (percentage >= maxPercentage)
                     {
                         tempFind = find;
-                        tempString = $"{find.Location.Name} ({find.Amount} / {find.Location.GetTotalItemsInArea()}) = {percentage}%\n";
+                        tempString = $"{find.Location.Name} ({find.Amount} / {find.Location.GetTotalItemsInArea()}) = {percentage}%" + Environment.NewLine;
                         maxPercentage = percentage;
                     }
                     if (find.Location.Name == "Random")
                     {
                         tempFind = find;
-                        tempString = $"Random\n";
+                        tempString = $"Random" + Environment.NewLine;
                         break;
                     }
                 }
@@ -68,50 +68,50 @@ namespace Nadja.Models
             switch (Name)
             {
                 case ("Bird Egg"):
-                    result += "Egg Crow\n";
+                    result += "Egg Crow" + Environment.NewLine;
                     break;
                 case ("Bird Meat"):
-                    result += "Meat Crow\n";
+                    result += "Meat Crow" + Environment.NewLine;
                     break;
                 case ("Flower"):
-                    result += "Bear \n";
+                    result += "Bear" + Environment.NewLine;
                     break;
                 case ("Garlic"):
-                    result += "Bear \n";
+                    result += "Bear" + Environment.NewLine;
                     break;
                 case ("Burdock"):
-                    result += "Gorilla \n";
+                    result += "Gorilla" + Environment.NewLine;
                     break;
                 case ("Fertilizer"):
-                    result += "Gorilla \n";
+                    result += "Gorilla" + Environment.NewLine;
                     break;
                 case ("First Aid Box"):
-                    result += "Dr. Wickeline \n";
+                    result += "Dr. Wickeline" + Environment.NewLine;
                     break;
                 case ("Holy Blood"):
-                    result += "Dr. Wickeline \n";
+                    result += "Dr. Wickeline" + Environment.NewLine;
                     break;
                 case ("Cigarettes"):
-                    result += "Dr. Meiji \n";
+                    result += "Dr. Meiji" + Environment.NewLine;
                     break;
                 case ("Bull Intestine"):
-                    result += "Dr. Meiji \n";
+                    result += "Dr. Meiji" + Environment.NewLine;
                     break;
                 case ("Heartbeat Sensor"):
-                    result += "Dr. Meiji \n";
+                    result += "Dr. Meiji" + Environment.NewLine;
                     break;
                 case ("Feather"):
-                    result += "Water crow \n" +
-                        "Bread crow \n";
+                    result += "Water crow" + Environment.NewLine +
+                        "Bread crow" + Environment.NewLine;
                     break;
                 case ("Leather"):
-                    result += "Dog \n";
+                    result += "Dog" + Environment.NewLine;
                     break;
                 case ("Fountain Pen"):
-                    result += "Pen dog \n";
+                    result += "Pen dog" + Environment.NewLine;
                     break;
                 case ("Lighter"):
-                    result += "Lighter dog \n";
+                    result += "Lighter dog" + Environment.NewLine;
                     break;
             }
 

@@ -131,7 +131,7 @@ namespace Nadja
         public static EmbedBuilder ResolveQuiz(Models.Game game, GameResult result, string idUser, string idServer, string name)
         {
             EmbedBuilder builder = new EmbedBuilder();
-            if (result == Helper.GameResult.Victory)
+            if (result == GameResult.Victory)
             {
                 Dal.DoConnection();
                 ServerUser serverUser = GetServerUser(idUser, idServer, name);
@@ -140,14 +140,14 @@ namespace Nadja
                 serverUser.UpdateQuiz();
                 Dal.CloseConnection();
 
-                builder.AddField($"{serverUser.DiscordName} won in {game.ElapsedTime()}s !", $"Answer was {game.hiddenItem.Name} ({points}pts)");
+                builder.AddField($"**{serverUser.DiscordName}** won in *{game.ElapsedTime()}*s !", $"Answer was **{game.hiddenItem.Name}** (*{points}*pts)");
                 builder.WithColor(Color.Magenta);
                 Games.Remove(game);
                 return builder;
             }
-            else if (result == Helper.GameResult.Timeout)
+            else if (result == GameResult.Timeout)
             {
-                builder.AddField("Sorry, but the game is over.", $"Answer was {game.hiddenItem.Name}");
+                builder.AddField("Time out !", $"Answer was **{game.hiddenItem.Name}**");
                 Games.Remove(game);
                 return builder;
             }

@@ -66,12 +66,19 @@ namespace Nadja.Command
                 int dice = Helper.rng.Next(1, 1001); // 0.1% to loot a legendary item
                 List<Legendary> legendariesList = Dal.GetEveryLegendaries().ToList();
 
-                if(dice <= 1)
+                user.LastTimeSearch = Helper.GetCurrentTime();
+                user.Update();
+
+                double luckAfterInactivity = user.GetLuck();
+
+                string title = "";
+
+                if (dice <= 1)
                 {
                     int itemFound = Helper.rng.Next(0, legendariesList.Count);
                     Legendary legendary = legendariesList[itemFound];
-                    builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found {legendary.Name} !!! A legendary item !!!!! :clap: :yellow_heart: :clap:")
-                            .WithColor(Color.Gold);
+                    title = $":clap: :yellow_heart: :clap: {Context.User.Username} just found {legendary.Name} !!! A legendary item !!!!! :clap: :yellow_heart: :clap:";
+                    builder.WithColor(Color.Gold);
 
                     Dal.AddLegendary(user, legendary);
                 }
@@ -85,36 +92,35 @@ namespace Nadja.Command
                     int amount = Helper.rng.Next(location.GetEveryItems().Count);
 
 
+
                     Item itemSelected = everyItems[amount];
 
                     if (epicItems.Contains(itemSelected.Name))
                     {
-                        builder.WithTitle($":purple_heart:  {Context.User.Username} just found {itemSelected.Name} in {location.Name} !!! An epic item !!! :purple_heart: ")
-                            .WithColor(Color.Purple);
+                        title = $":purple_heart:  {Context.User.Username} just found {itemSelected.Name} in {location.Name} !!! An epic item !!! :purple_heart: ";
+                        builder.WithColor(Color.Purple);
                         Helper.AddItemFound(Helper.Rarity.Epic, user);
                     }
                     else
                     {
                         if (rareItems.Contains(itemSelected.Name))
                         {
-                            builder.WithTitle($":blue_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} !! A rare item !! :blue_heart:")
-                            .WithColor(Color.Blue);
+                            title = $":blue_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} !! A rare item !! :blue_heart:";
+                            builder.WithColor(Color.Blue);
                             Helper.AddItemFound(Helper.Rarity.Rare, user);
                         }
                         else
                         {
                             if (uncommonItems.Contains(itemSelected.Name))
                             {
-
-                                builder.WithTitle($":green_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} ! An uncommon item :green_heart:")
-                                .WithColor(Color.Green);
+                                title = $":green_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} ! An uncommon item :green_heart:";
+                                builder.WithColor(Color.Green);
                                 Helper.AddItemFound(Helper.Rarity.Uncommon, user);
                             }
                             else
                             {
-
-                                builder.WithTitle($"{Context.User.Username} just found {itemSelected.Name} in {location.Name} ...")
-                                .WithColor(Color.LightGrey);
+                                title = $"{Context.User.Username} just found {itemSelected.Name} in {location.Name} ...";
+                                builder.WithColor(Color.LightGrey);
                                 Helper.AddItemFound(Helper.Rarity.Common, user);
                             }
                         }
@@ -122,24 +128,33 @@ namespace Nadja.Command
 
                 }
 
+
                 List<double> allSearches = Dal.GetEverySearches();
                 int totalSearches = (int)allSearches.Sum();
                 double afterLuck = user.GetLuck();
-                double luckModifier = Math.Round(afterLuck - beforeLuck, 6);
+                double luckModifierSearch = Math.Round(afterLuck - luckAfterInactivity, 6);
                 string footer = "";
+                double final = Math.Round(afterLuck - beforeLuck, 6);
 
-                if (luckModifier > 0)
+                if (final > 0)
                     footer += "+";
 
-                footer += $"{luckModifier}";
+                footer += $"**{final}** luck" + Environment.NewLine +
+                    $"*+{Math.Round(luckAfterInactivity - beforeLuck, 6)} from inactivity regained" + Environment.NewLine;
+
+                if (luckModifierSearch > 0)
+                    footer += "+";
+
+                footer += $"{luckModifierSearch} from the search*";
+                
 
                 if (totalSearches % 100 == 0)
                 {
                     int totalLegendaries = Dal.GetEveryPossess();
-                    footer += $" / {totalSearches}th search! {totalLegendaries} legendaries found in total.";
+                    footer += Environment.NewLine + $"{totalSearches}th search! {totalLegendaries} legendaries found in total."; // May break
                 }
 
-                builder.WithFooter(footer);
+                builder.AddField(title, footer);
                 await ReplyAsync(embed: builder.Build());
 
 
@@ -252,7 +267,7 @@ namespace Nadja.Command
 
                     itemAlreadyPicked.Add(idItemSelected);
 
-                    items += itemSelected.Name + " \n";
+                    items += itemSelected.Name + Environment.NewLine;
 
                 }
                 else

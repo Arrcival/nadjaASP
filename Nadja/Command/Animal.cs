@@ -22,15 +22,15 @@ namespace Nadja.Command
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle($"Type {Bot.prefix}animals <animal> to get the info you want");
                 builder.AddField("List of animals :",
-                    "meat crow \n" +
-                    "egg crow \n" +
-                    "bat \n" +
-                    "pen dog \n" +
-                    "lighter dog \n" +
-                    "bear \n" +
-                    "gorilla \n" +
-                    "wickeline \n" +
-                    "meiji \n");
+                    "meat crow" + Environment.NewLine +
+                    "egg crow" + Environment.NewLine +
+                    "bat" + Environment.NewLine +
+                    "pen dog" + Environment.NewLine +
+                    "lighter dog" + Environment.NewLine +
+                    "bear" + Environment.NewLine +
+                    "gorilla" + Environment.NewLine +
+                    "wickeline" + Environment.NewLine +
+                    "meiji");
                 builder.WithColor(Color.LightGrey);
                 await ReplyAsync(embed: builder.Build());
             }
@@ -41,13 +41,13 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Meat Crow");
-                builder.AddField("Locations", "Forest \n" +
-                    "Trail \n" +
+                builder.AddField("Locations", "Forest" + Environment.NewLine +
+                    "Trail" + Environment.NewLine +
                     "Pond", false);
                 builder.AddField("First Apparition", "180 secs", true);
                 builder.AddField("Respawn Time", "110 secs", true);
-                builder.AddField("Items", "Bird Meat \n" +
-                    "Feather \n" +
+                builder.AddField("Items", "Bird Meat" + Environment.NewLine +
+                    "Feather" + Environment.NewLine +
                     "1 random food", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -58,13 +58,13 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Egg Crow");
-                builder.AddField("Locations", "Dock \n" +
-                    "Beach \n" +
+                builder.AddField("Locations", "Dock" + Environment.NewLine +
+                    "Beach" + Environment.NewLine +
                     "Lighthouse", false);
                 builder.AddField("First Apparition", "180 secs", true);
                 builder.AddField("Respawn Time", "110 secs", true);
-                builder.AddField("Items", "Bird Eggs \n" +
-                    "Feather \n" +
+                builder.AddField("Items", "Bird Eggs" + Environment.NewLine +
+                    "Feather" + Environment.NewLine +
                     "1 random D armor supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -76,13 +76,13 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Bat");
-                builder.AddField("Locations", "Tunnel \n" +
-                    "Temple \n" +
+                builder.AddField("Locations", "Tunnel" + Environment.NewLine +
+                    "Temple" + Environment.NewLine +
                     "Chapel", false);
                 builder.AddField("First Apparition", "180 secs", true);
                 builder.AddField("Respawn Time", "110 secs", true);
-                builder.AddField("Items", "Water \n" +
-                    "Bread \n" +
+                builder.AddField("Items", "Water" + Environment.NewLine +
+                    "Bread" + Environment.NewLine +
                     "1 random A weapon supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -94,14 +94,14 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Lighter Dog");
-                builder.AddField("Locations", "Town Hall \n" +
-                    "Hotel \n" +
+                builder.AddField("Locations", "Town Hall" + Environment.NewLine +
+                    "Hotel" + Environment.NewLine +
                     "Uptown", false);
                 builder.AddField("First Apparition", "180 secs", true);
                 builder.AddField("Respawn Time", "140 secs", true);
-                builder.AddField("Items", "Lighter \n" +
-                    "Leather \n" +
-                    "1 random A weapon supply \n" +
+                builder.AddField("Items", "Lighter" + Environment.NewLine +
+                    "Leather" + Environment.NewLine +
+                    "1 random A weapon supply" + Environment.NewLine +
                     "1 random D armor supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -113,14 +113,14 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Pen Dog");
-                builder.AddField("Locations", "School \n" +
-                    "Slum \n" +
+                builder.AddField("Locations", "School" + Environment.NewLine +
+                    "Slum" + Environment.NewLine +
                     "Alley", false);
                 builder.AddField("First Apparition", "180 secs", true);
                 builder.AddField("Respawn Time", "140 secs", true);
-                builder.AddField("Items", "Fountain Pen \n" +
-                    "Leather \n" +
-                    "1 random A weapon supply \n" +
+                builder.AddField("Items", "Fountain Pen" + Environment.NewLine +
+                    "Leather" + Environment.NewLine +
+                    "1 random A weapon supply" + Environment.NewLine +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -132,14 +132,14 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Gorilla");
-                builder.AddField("Locations", "Factory \n" +
-                    "Fire Station \n" +
-                    "Archery Range \n", false);
+                builder.AddField("Locations", "Factory" + Environment.NewLine +
+                    "Fire Station" + Environment.NewLine +
+                    "Archery Range", false);
                 builder.AddField("First Apparition", "360 secs", true);
                 builder.AddField("Respawn Time", "170 secs", true);
-                builder.AddField("Items", "Burdock \n" +
-                    "Fertilizer \n" +
-                    "1 random D armor supply \n" +
+                builder.AddField("Items", "Burdock" + Environment.NewLine +
+                    "Fertilizer" + Environment.NewLine +
+                    "1 random D armor supply" + Environment.NewLine +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -151,15 +151,15 @@ namespace Nadja.Command
             {
                 EmbedBuilder builder = new EmbedBuilder();
                 builder.WithTitle("Info of Bear");
-                builder.AddField("Locations", "Hospital \n" +
-                    "Cemetary \n" +
+                builder.AddField("Locations", "Hospital" + Environment.NewLine +
+                    "Cemetary" + Environment.NewLine +
                     "Well", false);
                 builder.AddField("First Apparition", "360 secs", true);
                 builder.AddField("Respawn Time", "170 secs", true);
-                builder.AddField("Items", "Garlic \n" +
-                    "Flower \n" +
-                    "1 random A weapon supply \n" +
-                    "1 random D armor supply \n" +
+                builder.AddField("Items", "Garlic" + Environment.NewLine +
+                    "Flower" + Environment.NewLine +
+                    "1 random A weapon supply" + Environment.NewLine +
+                    "1 random D armor supply" + Environment.NewLine +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -174,10 +174,10 @@ namespace Nadja.Command
                 builder.AddField("Locations", "Random open area", false);
                 builder.AddField("First Apparition", "540 secs", true);
                 builder.AddField("Respawn Time", "None", true);
-                builder.AddField("Items", "Holy Blood \n" +
-                    "First Aid Box \n" +
-                    "1 random A weapon supply \n" +
-                    "1 random D armor supply \n" +
+                builder.AddField("Items", "Holy Blood" + Environment.NewLine +
+                    "First Aid Box" + Environment.NewLine +
+                    "1 random A weapon supply" + Environment.NewLine +
+                    "1 random D armor supply" + Environment.NewLine +
                     "1 random icebox supply", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());
@@ -192,8 +192,8 @@ namespace Nadja.Command
                 builder.AddField("Locations", "Research Center", false);
                 builder.AddField("First Apparition", "None", true);
                 builder.AddField("Respawn Time", "None", true);
-                builder.AddField("Items", "Bull Intestine \n" +
-                    "Cigarettes \n" +
+                builder.AddField("Items", "Bull Intestine" + Environment.NewLine +
+                    "Cigarettes" + Environment.NewLine +
                     "Heartbeat Sensor", false);
                 builder.WithColor(Color.Blue);
                 await ReplyAsync(embed: builder.Build());

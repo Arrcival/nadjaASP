@@ -30,14 +30,14 @@ namespace Nadja.Command
                 {
                     game.PrintQuiz(builder);
                 }
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
 
             } else 
             {
                 game = new Models.Game(Context.Guild.Id.ToString(), Context.Channel.Id.ToString());
                 Helper.Games.Add(game);
                 game.PrintQuiz(builder);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
             Dal.CloseConnection();
         }
