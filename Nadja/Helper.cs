@@ -111,63 +111,79 @@ namespace Nadja
 
         public static List<ServerUser> SortByPoints(List<ServerUser> everyUsers)
         {
-            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> newList = new List<ServerUser>();
             if (everyUsers.Count == 0)
-                return tempList;
-            
+                return newList;
 
-            tempList.Add(everyUsers[0]);
+            int count = everyUsers.Count;
+
+            newList.Add(everyUsers[0]);
             everyUsers.Remove(everyUsers[0]);
-            while (everyUsers.Count > 0)
+
+            while (newList.Count < count)
             {
-                for (int i = 0; i < tempList.Count; i++)
+                int i = 0;
+                bool found = false;
+                while (!found)
                 {
-                    if(tempList[i].Points < everyUsers[0].Points)
+                    if (everyUsers[0].Points > newList[i].Points)
                     {
-                        tempList.Insert(i, everyUsers[0]);
-                        everyUsers.Remove(everyUsers[0]);
-                        break;
-                    }else if (i == tempList.Count - 1)
+                        i++;
+                        if (i == newList.Count)
+                        {
+                            found = true;
+                        }
+                    }
+                    else
                     {
-                        tempList.Add(everyUsers[0]);
-                        everyUsers.Remove(everyUsers[0]);
+                        found = true;
                     }
                 }
+                newList.Insert(i, everyUsers[0]);
+                everyUsers.Remove(everyUsers[0]);
             }
 
-            return tempList;
+            newList.Reverse();
+            return newList;
         }
 
 
 
         public static List<ServerUser> SortByLuck(List<ServerUser> everyUsers)
         {
-            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> newList = new List<ServerUser>();
             if (everyUsers.Count == 0)
-                return tempList;
+                return newList;
 
+            int count = everyUsers.Count;
 
-            tempList.Add(everyUsers[0]);
+            newList.Add(everyUsers[0]);
             everyUsers.Remove(everyUsers[0]);
-            while (everyUsers.Count > 0)
+            while (newList.Count < count)
             {
-                for (int i = 0; i < tempList.Count; i++)
+                int i = 0;
+                bool found = false;
+                while (!found)
                 {
-                    if (tempList[i].GetLuck() < everyUsers[0].GetLuck())
+                    if (everyUsers[0].GetLuck() > newList[i].GetLuck())
                     {
-                        tempList.Insert(i, everyUsers[0]);
-                        everyUsers.Remove(everyUsers[0]);
-                        break;
+                        i++;
+                        if (i == newList.Count)
+                        {
+                            found = true;
+                        }
                     }
-                    else if (i == tempList.Count - 1)
+                    else
                     {
-                        tempList.Add(everyUsers[0]);
-                        everyUsers.Remove(everyUsers[0]);
+                        found = true;
                     }
                 }
+                newList.Insert(i, everyUsers[0]);
+                everyUsers.Remove(everyUsers[0]);
             }
 
-            return tempList;
+            newList.Reverse();
+            return newList;
         }
 
         public static double GetCurrentTime()

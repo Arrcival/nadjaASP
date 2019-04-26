@@ -81,5 +81,24 @@ namespace Nadja.Command
 
             return builder;
         }
+
+        [Command("remove"), RequireUserPermission(GuildPermission.DeafenMembers)]
+        public async Task RemoveAsync([Remainder] string name)
+        {
+            if (Queue.Contains(name))
+            {
+                Queue.Remove(name);
+                await ReplyAsync($"*{name}* removed...");
+            }
+            else
+            {
+                await ReplyAsync($"No one is called *{name}* in the current queue.");
+            }
+        }
+
+
+
     }
+
+    
 }

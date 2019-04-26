@@ -98,7 +98,7 @@ namespace Nadja.Command
             for (int i = 0; i < listRanks.Count; i++)
             {
                 if(listRanks[i].DiscordID == Context.User.Id.ToString())
-                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser} with {listRanks[i].Points}** points";
+                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}** with {listRanks[i].Points} points";
                 else
                     aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser} with {listRanks[i].Points} points";
 
