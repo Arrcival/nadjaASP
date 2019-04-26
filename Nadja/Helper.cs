@@ -81,22 +81,93 @@ namespace Nadja
 
         public static List<ServerUser> GetRanking(List<ServerUser> serverUsers, int amount = 10)
         {
-            List<ServerUser> tempList = new List<ServerUser>();
             if (serverUsers.Count < amount)
                 amount = serverUsers.Count;
-            for (int i = 1; i <= amount; i++)
-            {
-                ServerUser maxUser = serverUsers[0];
-                foreach (ServerUser serverUser in serverUsers)
-                    if (serverUser.Points > maxUser.Points)
-                        maxUser = serverUser;
 
-                tempList.Add(maxUser);
-                serverUsers.Remove(maxUser);
-            }
+            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> usersSorted = SortByPoints(serverUsers);
+
+            for (int i = 0; i < amount; i++)
+                tempList.Add(usersSorted[i]);
 
             return tempList;
 
+        }
+
+        public static List<ServerUser> GetLuckRanking(List<ServerUser> serverUsers, int amount = 10)
+        {
+            if (serverUsers.Count < amount)
+                amount = serverUsers.Count;
+
+            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> usersSorted = SortByLuck(serverUsers);
+
+            for (int i = 0; i < amount; i++)
+                tempList.Add(usersSorted[i]);
+
+            return tempList;
+
+        }
+
+        public static List<ServerUser> SortByPoints(List<ServerUser> everyUsers)
+        {
+            List<ServerUser> tempList = new List<ServerUser>();
+            if (everyUsers.Count == 0)
+                return tempList;
+            
+
+            tempList.Add(everyUsers[0]);
+            everyUsers.Remove(everyUsers[0]);
+            while (everyUsers.Count > 0)
+            {
+                for (int i = 0; i < tempList.Count; i++)
+                {
+                    if(tempList[i].Points < everyUsers[0].Points)
+                    {
+                        tempList.Insert(i, everyUsers[0]);
+                        everyUsers.Remove(everyUsers[0]);
+                        break;
+                    }else if (i == tempList.Count - 1)
+                    {
+                        tempList.Add(everyUsers[0]);
+                        everyUsers.Remove(everyUsers[0]);
+                    }
+                }
+            }
+
+            return tempList;
+        }
+
+
+
+        public static List<ServerUser> SortByLuck(List<ServerUser> everyUsers)
+        {
+            List<ServerUser> tempList = new List<ServerUser>();
+            if (everyUsers.Count == 0)
+                return tempList;
+
+
+            tempList.Add(everyUsers[0]);
+            everyUsers.Remove(everyUsers[0]);
+            while (everyUsers.Count > 0)
+            {
+                for (int i = 0; i < tempList.Count; i++)
+                {
+                    if (tempList[i].GetLuck() < everyUsers[0].GetLuck())
+                    {
+                        tempList.Insert(i, everyUsers[0]);
+                        everyUsers.Remove(everyUsers[0]);
+                        break;
+                    }
+                    else if (i == tempList.Count - 1)
+                    {
+                        tempList.Add(everyUsers[0]);
+                        everyUsers.Remove(everyUsers[0]);
+                    }
+                }
+            }
+
+            return tempList;
         }
 
         public static double GetCurrentTime()

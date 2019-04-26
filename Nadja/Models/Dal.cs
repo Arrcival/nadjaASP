@@ -372,7 +372,7 @@ namespace Nadja.Models
         }
 
 
-
+        //Is slower than GetEveryUser() for no reason
         public static List<User> GetEveryUserSearch()
         {
             List<User> listUser = new List<User>();

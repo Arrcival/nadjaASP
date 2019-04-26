@@ -314,35 +314,25 @@ namespace Nadja.Command
 
         [Command("luck")]
         [Alias("l")]
-        public async Task LuckPlayerAsync([Remainder] string name)
+        public async Task LuckPlayerAsync(IGuildUser guildUser)
         {
-            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
-            name = Helper.DiscordPingDelimiter(name);
 
-            string idUser = Dal.GetIdUser(name);
+            Dal.DoConnection();
+            User user = Dal.GetUser(guildUser.Id.ToString());
+            Dal.CloseConnection();
 
-            if (idUser != null)
+            if (user == null)
             {
-                User user = Dal.GetUser(idUser);
-                builder.WithTitle($"The luck of {user.DiscordName} is {user.GetLuck()}")
-                    .WithColor(Color.DarkGreen);
+                builder.WithTitle($"The luck of {guildUser.Username} is {user.GetLuck()}")
+                .WithColor(Color.DarkGreen);
             }
             else
             {
-                User user = Dal.GetUser(name);
-                if(user == null)
-                {
-                    builder.WithTitle($"The luck of {user.DiscordName} is {user.GetLuck()}")
+                builder.WithTitle($"{guildUser.Username} doesn't exists...")
                     .WithColor(Color.DarkGreen);
-                } else
-                {
-                    builder.WithTitle($"{name} doesn't exists...")
-                        .WithColor(Color.DarkGreen);
 
-                }
             }
-            Dal.CloseConnection();
 
             await ReplyAsync(embed: builder.Build());
         }
@@ -366,40 +356,20 @@ namespace Nadja.Command
         public async Task LuckRanksAsync()
         {
             Dal.DoConnection();
+
             List<ServerUser> everyUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             EmbedBuilder builder = new EmbedBuilder();
             string aString = "";
 
-            int max = 10;
-            if (everyUsers.Count < 10)
-                max = everyUsers.Count;
+            List<ServerUser> sorted = Helper.GetLuckRanking(everyUsers);
 
-            for(int i = 1; i <= max; i++)
+            for(int i = 0; i < sorted.Count; i++)
             {
-                double maxLuck = -1;
-                ServerUser tempUser = null;
-
-                foreach(ServerUser user in everyUsers)
-                {
-                    if (user.GetLuck() > maxLuck)
-                    {
-                        tempUser = user;
-                        maxLuck = user.GetLuck();
-                    }
-                }
-
-                if(tempUser != null)
-                {
-                    if (tempUser.DiscordID == Context.User.Id.ToString())
-                        aString += $"**#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}**\n";
-                    else
-                        aString += $"#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}\n";
-
-
-                }
-
-                everyUsers.Remove(tempUser);
+                if(sorted[i].DiscordID == Context.User.Id.ToString())
+                    aString += $"**#{i + 1} : {sorted[i].DiscordName} with {sorted[i].GetLuck()}**" + Environment.NewLine;
+                else
+                    aString += $"#{i + 1} : {sorted[i].DiscordName} with {sorted[i].GetLuck()}" + Environment.NewLine;
             }
 
             builder.AddField($"Top 10 luckiest players", aString);

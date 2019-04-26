@@ -98,9 +98,14 @@ namespace Nadja.Command
             for (int i = 0; i < listRanks.Count; i++)
             {
                 if(listRanks[i].DiscordID == Context.User.Id.ToString())
-                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}**" + Environment.NewLine;
+                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser} with {listRanks[i].Points}** points";
                 else
-                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}" + Environment.NewLine;
+                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser} with {listRanks[i].Points} points";
+
+                if (i != 0)
+                    aString += $" *({listRanks[i].Points - listRanks[i - 1].Points})*" + Environment.NewLine;
+                else
+                    aString += Environment.NewLine;
             }
             Dal.CloseConnection();
 

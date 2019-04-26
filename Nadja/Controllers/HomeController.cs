@@ -71,30 +71,11 @@ namespace Nadja.Controllers
             List<ServerUser> everyUsers = Dal.GetEveryUser();
             
             int max = 25;
-            if (everyUsers.Count < 10)
+            if (everyUsers.Count < max)
                 max = everyUsers.Count;
 
-            List<ServerUser> sorted = new List<ServerUser>();
-
-            for (int i = 1; i <= max; i++)
-            {
-                double maxLuck = -1;
-                ServerUser tempUser = null;
-
-                foreach (ServerUser user in everyUsers)
-                {
-                    if (user.GetLuck() > maxLuck)
-                    {
-                        tempUser = user;
-                        maxLuck = user.GetLuck();
-                    }
-                }
-
-                sorted.Add(tempUser);
-
-                everyUsers.Remove(tempUser);
-            }
-            
+            List<ServerUser> sorted = Helper.GetLuckRanking(everyUsers, max);
+                        
 
             Dal.CloseConnection();
             
