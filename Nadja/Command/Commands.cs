@@ -62,6 +62,14 @@ namespace Nadja.Command
             await ReplyAsync(embed: builder.Build());
         }
 
+        [Command("wiki")]
+        public async Task WikiAsync()
+        {
+            await ReplyAsync("https://blacksurvival.gamepedia.com/Black_Survival_Wiki");
+        }
+
+        
+
         [Command("mentoring")]
         public async Task MentorAsync()
         {            

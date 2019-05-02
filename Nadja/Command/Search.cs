@@ -67,7 +67,6 @@ namespace Nadja.Command
                 List<Legendary> legendariesList = Dal.GetEveryLegendaries().ToList();
 
                 user.LastTimeSearch = Helper.GetCurrentTime();
-                user.Update();
 
                 double luckAfterInactivity = user.GetLuck();
 

@@ -25,8 +25,8 @@ namespace Nadja.Command
         [Alias("qu")]
         public async Task QueueAsync([Remainder] string name)
         {
-            Queue.Add(name);
-            await ReplyAsync($"**{name}** queued !");
+            string rep = Queuing(name);
+            await ReplyAsync(rep);
         }
         
 
