@@ -86,7 +86,7 @@ namespace Nadja
 
             List<ServerUser> tempList = new List<ServerUser>();
             List<ServerUser> usersSorted = SortByPoints(serverUsers);
-
+            
             for (int i = 0; i < amount; i++)
                 tempList.Add(usersSorted[i]);
 
@@ -106,7 +106,6 @@ namespace Nadja
                 tempList.Add(usersSorted[i]);
 
             return tempList;
-
         }
 
         public static List<ServerUser> SortByPoints(List<ServerUser> everyUsers)

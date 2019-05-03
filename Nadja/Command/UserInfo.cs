@@ -24,7 +24,7 @@ namespace Nadja.Command
             Construct(builder, serverUser, Context.User.Id.ToString());
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("profile"), RequireContext(ContextType.Guild)]
@@ -41,7 +41,7 @@ namespace Nadja.Command
             Construct(builder, serverUser, user.Id.ToString(), false);
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("p"), RequireContext(ContextType.Guild)]
@@ -58,7 +58,7 @@ namespace Nadja.Command
 
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("p"), RequireContext(ContextType.Guild)]
@@ -77,7 +77,7 @@ namespace Nadja.Command
             
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
 
@@ -98,9 +98,9 @@ namespace Nadja.Command
             for (int i = 0; i < listRanks.Count; i++)
             {
                 if(listRanks[i].DiscordID == Context.User.Id.ToString())
-                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}** with {listRanks[i].Points} points";
+                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].DiscordName}** with {listRanks[i].Points} points";
                 else
-                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser} with {listRanks[i].Points} points";
+                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].DiscordName} with {listRanks[i].Points} points";
 
                 if (i != 0)
                     aString += $" *({listRanks[i].Points - listRanks[i - 1].Points})*" + Environment.NewLine;
@@ -112,7 +112,7 @@ namespace Nadja.Command
             builder.WithDescription(aString);
 
             builder.WithColor(Color.DarkTeal);
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         private void Construct(EmbedBuilder builder, ServerUser serverUser, string idUser, bool ownProfile = true)
