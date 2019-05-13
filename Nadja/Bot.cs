@@ -93,6 +93,13 @@ namespace Nadja
             await channel.SendMessageAsync($"Welcome to Black Survival {user.Mention}! Please read <#451026647601119263> to get yourself started, grab some roles and check out our hidden mentoring channels! Feel free to write a short introduction at <#466852624855990275> ~"); //Welcomes the new user
         }
 
+        public async Task AnnounceLeftUser(SocketGuildUser user)
+        {
+            var channel = _client.GetChannel(384853151712411648) as SocketTextChannel; // Gets the channel to send the message in
+            await channel.SendMessageAsync($"{user.Mention} ({user.Username} has left **Black Survival**."); 
+        }
+    }
+
         private ITextChannel GetCurrentChannel(ulong idServer, ulong idChannel)
         {
             var server = _client.Guilds.SingleOrDefault(g => g.Id == idServer);
