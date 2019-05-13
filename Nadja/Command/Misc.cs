@@ -85,31 +85,7 @@ namespace Nadja.Command
         {
             await ReplyAsync(":flag_fr: :french_bread: :french_bread: VIVE :french_bread: LES :french_bread: BAGUETTES :french_bread: :french_bread: :flag_fr: ");
         }
-
-        [Command("arrcival")]
-        public async Task ArrcivalAsync()
-        {
-            EmbedBuilder builder = new EmbedBuilder();
-
-            builder.AddField($"{Context.User.Username} you really don't know who is Arrcival!?", "Let me explain you");
-            builder.AddField("But I have no time for it", "Sorry.", true);
-            builder.WithColor(Color.DarkOrange);
-            await ReplyAsync("", false, builder.Build());
-        }
-
-        [Command("love")]
-        public async Task LoveAsync()
-        {
-            if (Context.User.Id == 88011881498812416)
-            {
-                await ReplyAsync("I love you too master.");
-            }
-            else
-            {
-                await ReplyAsync("Why do you love me? I hate you.");
-            }
-        }
-
+        
         [Command("cupcake")]
         public async Task CupcakeAsync()
         {
@@ -148,20 +124,7 @@ namespace Nadja.Command
                 await ReplyAsync("Hello shitposter.");
             }
         }
-
-        [Command("boop")]
-        public async Task BoopAsync()
-        {
-            if (Context.User.Id == 334712599096590346)
-            {
-                await ReplyAsync($"Boop {Context.User.Mention}");
-            }
-            else
-            {
-                await ReplyAsync("Boop is only for Wonina");
-            }
-        }
-
+        
         [Command("easter")]
         public async Task EasterAsync()
         {
@@ -225,120 +188,42 @@ namespace Nadja.Command
         public async Task BellyrubAsync()
         {
             Random rng = new Random();
-            int number = rng.Next(9);
-            switch (number)
+            List<string> links = new List<string>()
             {
-                case (0):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387654223506046977/Im-ready-Rub-the-belly.png");
-                        break;
-                    }
-                case (1):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387654799321202698/belly-rub-animals-45__605.png");
-                        break;
-                    }
-                case (2):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387655883087282176/y2rYleP.png");
-                        break;
-                    }
-                case (3):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387656139740938241/tummy-rubs-for-the-spikey-boi-28319965.png");
-                        break;
-                    }
-                case (4):
-                    {
-                        await ReplyAsync("https://media.giphy.com/media/NaITrcf0yQE0w/giphy.gif");
-                        break;
-                    }
-                case (5):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387657314359967775/3F090ED500000578-4389528-image-a-1_1491562337782.png");
-                        break;
-                    }
-                case (6):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387657682204622859/8a7778f451709473decfe230cadba790.png");
-                        break;
-                    }
-                case (7):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387657870738718722/ZEBRA_SHARK_GETS_BELLY_RUB_v3_1280x720_12398661535.png");
-                        break;
-                    }
-                case (8):
-                    {
-                        await ReplyAsync("https://static.boredpanda.com/blog/wp-content/uploads/2015/08/seal-belly-rub-diver-gary-grayson-6.gif");
-                        break;
-                    }
-                default:
-                    {
-                        await ReplyAsync("No bellyrub for you");
-                        break;
-                    }
-            }
+                "https://cdn.discordapp.com/attachments/380456463396765696/387654223506046977/Im-ready-Rub-the-belly.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387654799321202698/belly-rub-animals-45__605.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387655883087282176/y2rYleP.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387656139740938241/tummy-rubs-for-the-spikey-boi-28319965.png",
+                "https://media.giphy.com/media/NaITrcf0yQE0w/giphy.gif",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387657314359967775/3F090ED500000578-4389528-image-a-1_1491562337782.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387657682204622859/8a7778f451709473decfe230cadba790.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387657870738718722/ZEBRA_SHARK_GETS_BELLY_RUB_v3_1280x720_12398661535.png",
+                "https://static.boredpanda.com/blog/wp-content/uploads/2015/08/seal-belly-rub-diver-gary-grayson-6.gif"
+            };
+            await ReplyAsync(links[rng.Next(links.Count)]);
+            
         }
 
         [Command("hug")]
         public async Task HugAsync()
         {
             Random rng = new Random();
-            int number = rng.Next(8);
-            switch (number)
+            List<string> links = new List<string>()
             {
-                case (0):
-                    {
-                        await ReplyAsync("https://tenor.com/view/hug-hugs-ghost-hug-its-there-gif-4951192");
-                        break;
-                    }
-                case (1):
-                    {
-                        await ReplyAsync("https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif");
-                        break;
-                    }
-                case (2):
-                    {
-                        await ReplyAsync("https://tenor.com/view/loading-hug-smile-love-virtual-hug-gif-5512591");
-                        break;
-                    }
-                case (3):
-                    {
-                        await ReplyAsync("https://media.giphy.com/media/jMGxhWR7rtTNu/giphy.gif");
-                        break;
-                    }
-                case (4):
-                    {
-                        await ReplyAsync("https://media.giphy.com/media/INUsrrxQW4et2/giphy.gif");
-                        break;
-                    }
-                case (5):
-                    {
-                        await ReplyAsync("https://tenor.com/view/hug-gif-8935008https://tenor.com/view/hug-gif-8935008");
-                        break;
-                    }
-                case (6):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387657682204622859/8a7778f451709473decfe230cadba790.png");
-                        break;
-                    }
-                case (7):
-                    {
-                        await ReplyAsync("https://cdn.discordapp.com/attachments/380456463396765696/387657870738718722/ZEBRA_SHARK_GETS_BELLY_RUB_v3_1280x720_12398661535.png");
-                        break;
-                    }
-                case (8):
-                    {
-                        await ReplyAsync("https://static.boredpanda.com/blog/wp-content/uploads/2015/08/seal-belly-rub-diver-gary-grayson-6.gif");
-                        break;
-                    }
-                default:
-                    {
-                        await ReplyAsync("No hug for you");
-                        break;
-                    }
-            }
+                "https://tenor.com/view/hug-hugs-ghost-hug-its-there-gif-4951192",
+                "https://media.giphy.com/media/l4FGpP4lxGGgK5CBW/giphy.gif",
+                "https://tenor.com/view/loading-hug-smile-love-virtual-hug-gif-5512591",
+                "https://media.giphy.com/media/jMGxhWR7rtTNu/giphy.gif",
+
+                "https://media.giphy.com/media/INUsrrxQW4et2/giphy.gif",
+
+                "https://tenor.com/view/hug-gif-8935008https://tenor.com/view/hug-gif-8935008",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387657682204622859/8a7778f451709473decfe230cadba790.png",
+                "https://cdn.discordapp.com/attachments/380456463396765696/387657870738718722/ZEBRA_SHARK_GETS_BELLY_RUB_v3_1280x720_12398661535.png",
+                "https://static.boredpanda.com/blog/wp-content/uploads/2015/08/seal-belly-rub-diver-gary-grayson-6.gif"
+            };
+            await ReplyAsync(links[rng.Next(links.Count)]);
+            
         }
 
 
@@ -433,8 +318,8 @@ namespace Nadja.Command
         {
             await ReplyAsync("https://cdn.discordapp.com/attachments/385134869245853707/387353276489924612/9k.png");
         }
-
-        //Group command
+        
+        /*
         [Group("meme")]
         public class Meme : ModuleBase<SocketCommandContext>
         {
@@ -451,6 +336,6 @@ namespace Nadja.Command
             {
                 await ReplyAsync("JP is not hackerman.");
             }
-        }
+        }*/
     }
 }

@@ -12,10 +12,11 @@ namespace Nadja.Command
 {
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
-        private readonly string VERSION = "2.4";
+        private readonly string VERSION = "2.6.2";
 
         //Help function
         [Command("help")]
+        [Alias("h")]
         public async Task HelpAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
@@ -23,7 +24,7 @@ namespace Nadja.Command
                 .WithDescription($"Prefix : **{Bot.prefix}** \n");
 
 
-            builder.WithUrl("https://nadja.azurewebsites.net");
+            builder.WithUrl("https://nadja.azurewebsites.net/Home/Commands");
 
             builder.WithColor(Color.DarkPurple);
             builder.WithFooter("Bot made by Arrcival, V" + VERSION);
@@ -60,6 +61,14 @@ namespace Nadja.Command
 
             await ReplyAsync(embed: builder.Build());
         }
+
+        [Command("wiki")]
+        public async Task WikiAsync()
+        {
+            await ReplyAsync("https://blacksurvival.gamepedia.com/Black_Survival_Wiki");
+        }
+
+        
 
         [Command("mentoring")]
         public async Task MentorAsync()

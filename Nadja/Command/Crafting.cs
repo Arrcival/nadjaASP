@@ -14,6 +14,7 @@ namespace Nadja.Command
 
         //-craft command
         [Command("craft")]
+        [Alias("c")]
         public async Task CraftAsync([Remainder] string name)
         {
             if(!ChannelQuiz(Context.Channel.Id.ToString()))
@@ -91,6 +92,7 @@ namespace Nadja.Command
 
         //-where command
         [Command("item")]
+        [Alias("i")]
         public async Task WhereAsync([Remainder] string name)
         {
             Dal.DoConnection();
@@ -109,7 +111,7 @@ namespace Nadja.Command
             }
             else
             {
-                builder.WithTitle("Check the name of your item.");
+                builder.WithTitle("Item not found.");
             }
 
             Dal.CloseConnection();
@@ -121,6 +123,7 @@ namespace Nadja.Command
 
         //-what command
         [Command("what")]
+        [Alias("w")]
         public async Task WhatAsync([Remainder] string name)
         {
             Dal.DoConnection();
@@ -131,7 +134,7 @@ namespace Nadja.Command
             if (locationAsked != null)
                 locationAsked.DisplayItemsLocation(builder);
             else
-                builder.WithTitle("Check the name of your location.");
+                builder.WithTitle("Location not found.");
 
             Dal.CloseConnection();
             builder.WithColor(Color.DarkGreen);
@@ -155,7 +158,7 @@ namespace Nadja.Command
                     await ReplyAsync($"Slang {slang} added for {item.Name}", false);
                 }
                 else
-                    await ReplyAsync($"No item found to add a slang.", false);
+                    await ReplyAsync($"ID not found", false);
                 Dal.CloseConnection();
             }
 

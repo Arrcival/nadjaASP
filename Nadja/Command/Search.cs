@@ -20,6 +20,7 @@ namespace Nadja.Command
 
         //-search command
         [Command("search")]
+        [Alias("s")]
         public async Task SearchAsync()
         {
 
@@ -43,7 +44,7 @@ namespace Nadja.Command
                     } else
                     {
                         valid = false;
-                        await ReplyAsync($"**{Context.User.Username}**, you have to wait **{(int)((cooldownTime - (stopwatch.ElapsedMilliseconds - search.Time)) / 1000)}** secs before using this command again.", false);
+                        await ReplyAsync($"**{Context.User.Username}**, please wait **{(int)((cooldownTime - (stopwatch.ElapsedMilliseconds - search.Time)) / 1000 + 1)}** seconds before using this command again.", false);
                     }
                 }
             }
@@ -65,12 +66,18 @@ namespace Nadja.Command
                 int dice = Helper.rng.Next(1, 1001); // 0.1% to loot a legendary item
                 List<Legendary> legendariesList = Dal.GetEveryLegendaries().ToList();
 
-                if(dice <= 1)
+                user.LastTimeSearch = Helper.GetCurrentTime();
+
+                double luckAfterInactivity = user.GetLuck();
+
+                string title = "";
+
+                if (dice <= 1)
                 {
                     int itemFound = Helper.rng.Next(0, legendariesList.Count);
                     Legendary legendary = legendariesList[itemFound];
-                    builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found {legendary.Name} !!! A legendary item !!!!! :clap: :yellow_heart: :clap:")
-                            .WithColor(Color.Gold);
+                    title = $":clap: :yellow_heart: :clap: {Context.User.Username} just found {legendary.Name} !!! A legendary item !!!!! :clap: :yellow_heart: :clap:";
+                    builder.WithColor(Color.Gold);
 
                     Dal.AddLegendary(user, legendary);
                 }
@@ -84,36 +91,35 @@ namespace Nadja.Command
                     int amount = Helper.rng.Next(location.GetEveryItems().Count);
 
 
+
                     Item itemSelected = everyItems[amount];
 
                     if (epicItems.Contains(itemSelected.Name))
                     {
-                        builder.WithTitle($":purple_heart:  {Context.User.Username} just found {itemSelected.Name} in {location.Name} !!! An epic item !!! :purple_heart: ")
-                            .WithColor(Color.Purple);
+                        title = $":purple_heart:  {Context.User.Username} just found {itemSelected.Name} in {location.Name} !!! An epic item !!! :purple_heart: ";
+                        builder.WithColor(Color.Purple);
                         Helper.AddItemFound(Helper.Rarity.Epic, user);
                     }
                     else
                     {
                         if (rareItems.Contains(itemSelected.Name))
                         {
-                            builder.WithTitle($":blue_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} !! A rare item !! :blue_heart:")
-                            .WithColor(Color.Blue);
+                            title = $":blue_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} !! A rare item !! :blue_heart:";
+                            builder.WithColor(Color.Blue);
                             Helper.AddItemFound(Helper.Rarity.Rare, user);
                         }
                         else
                         {
                             if (uncommonItems.Contains(itemSelected.Name))
                             {
-
-                                builder.WithTitle($":green_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} ! An uncommon item :green_heart:")
-                                .WithColor(Color.Green);
+                                title = $":green_heart: {Context.User.Username} just found {itemSelected.Name} in {location.Name} ! An uncommon item :green_heart:";
+                                builder.WithColor(Color.Green);
                                 Helper.AddItemFound(Helper.Rarity.Uncommon, user);
                             }
                             else
                             {
-
-                                builder.WithTitle($"{Context.User.Username} just found {itemSelected.Name} in {location.Name} ...")
-                                .WithColor(Color.LightGrey);
+                                title = $"{Context.User.Username} just found {itemSelected.Name} in {location.Name} ...";
+                                builder.WithColor(Color.LightGrey);
                                 Helper.AddItemFound(Helper.Rarity.Common, user);
                             }
                         }
@@ -121,24 +127,33 @@ namespace Nadja.Command
 
                 }
 
+
                 List<double> allSearches = Dal.GetEverySearches();
                 int totalSearches = (int)allSearches.Sum();
                 double afterLuck = user.GetLuck();
-                double luckModifier = Math.Round(afterLuck - beforeLuck, 6);
+                double luckModifierSearch = Math.Round(afterLuck - luckAfterInactivity, 6);
                 string footer = "";
+                double final = Math.Round(afterLuck - beforeLuck, 6);
 
-                if (luckModifier > 0)
+                if (final > 0)
                     footer += "+";
 
-                footer += $"{luckModifier}";
+                footer += $"**{final}** luck" + Environment.NewLine +
+                    $"*+{Math.Round(luckAfterInactivity - beforeLuck, 6)} from inactivity regained" + Environment.NewLine;
+
+                if (luckModifierSearch > 0)
+                    footer += "+";
+
+                footer += $"{luckModifierSearch} from the search*";
+                
 
                 if (totalSearches % 100 == 0)
                 {
                     int totalLegendaries = Dal.GetEveryPossess();
-                    footer += $" / {totalSearches}th search! {totalLegendaries} legendaries found in total.";
+                    footer += Environment.NewLine + $"{totalSearches}th search! {totalLegendaries} legendaries found in total."; // May break
                 }
 
-                builder.WithFooter(footer);
+                builder.AddField(title, footer);
                 await ReplyAsync(embed: builder.Build());
 
 
@@ -251,7 +266,7 @@ namespace Nadja.Command
 
                     itemAlreadyPicked.Add(idItemSelected);
 
-                    items += itemSelected.Name + " \n";
+                    items += itemSelected.Name + Environment.NewLine;
 
                 }
                 else
@@ -280,6 +295,7 @@ namespace Nadja.Command
 
 
         [Command("luck")]
+        [Alias("l")]
         public async Task LuckAsync()
         {
             Dal.DoConnection();
@@ -296,35 +312,26 @@ namespace Nadja.Command
         }
 
         [Command("luck")]
-        public async Task LuckPlayerAsync([Remainder] string name)
+        [Alias("l")]
+        public async Task LuckPlayerAsync(IGuildUser guildUser)
         {
-            Dal.DoConnection();
             EmbedBuilder builder = new EmbedBuilder();
-            name = Helper.DiscordPingDelimiter(name);
 
-            string idUser = Dal.GetIdUser(name);
+            Dal.DoConnection();
+            User user = Dal.GetUser(guildUser.Id.ToString());
+            Dal.CloseConnection();
 
-            if (idUser != null)
+            if (user == null)
             {
-                User user = Dal.GetUser(idUser);
-                builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
-                    .WithColor(Color.DarkGreen);
+                builder.WithTitle($"The luck of {guildUser.Username} is {user.GetLuck()}")
+                .WithColor(Color.DarkGreen);
             }
             else
             {
-                User user = Dal.GetUser(name);
-                if(user == null)
-                {
-                    builder.WithTitle($"The luck coefficient of {user.DiscordName} is {user.GetLuck()}")
+                builder.WithTitle($"{guildUser.Username} doesn't exists...")
                     .WithColor(Color.DarkGreen);
-                } else
-                {
-                    builder.WithTitle($"{name} does not exists...")
-                        .WithColor(Color.DarkGreen);
 
-                }
             }
-            Dal.CloseConnection();
 
             await ReplyAsync(embed: builder.Build());
         }
@@ -344,43 +351,24 @@ namespace Nadja.Command
 
         // Top lucky players ?
         [Command("luckranks")]
+        [Alias("lr")]
         public async Task LuckRanksAsync()
         {
             Dal.DoConnection();
+
             List<ServerUser> everyUsers = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             EmbedBuilder builder = new EmbedBuilder();
             string aString = "";
 
-            int max = 10;
-            if (everyUsers.Count < 10)
-                max = everyUsers.Count;
+            List<ServerUser> sorted = Helper.GetLuckRanking(everyUsers);
 
-            for(int i = 1; i <= max; i++)
+            for(int i = 0; i < sorted.Count; i++)
             {
-                double maxLuck = -1;
-                ServerUser tempUser = null;
-
-                foreach(ServerUser user in everyUsers)
-                {
-                    if (user.GetLuck() > maxLuck)
-                    {
-                        tempUser = user;
-                        maxLuck = user.GetLuck();
-                    }
-                }
-
-                if(tempUser != null)
-                {
-                    if (tempUser.DiscordID == Context.User.Id.ToString())
-                        aString += $"**#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}**\n";
-                    else
-                        aString += $"#{i} : {tempUser.DiscordName} with {tempUser.GetLuck()}\n";
-
-
-                }
-
-                everyUsers.Remove(tempUser);
+                if(sorted[i].DiscordID == Context.User.Id.ToString())
+                    aString += $"**#{i + 1} : {sorted[i].DiscordName} with {sorted[i].GetLuck()}**" + Environment.NewLine;
+                else
+                    aString += $"#{i + 1} : {sorted[i].DiscordName} with {sorted[i].GetLuck()}" + Environment.NewLine;
             }
 
             builder.AddField($"Top 10 luckiest players", aString);
@@ -416,7 +404,7 @@ namespace Nadja.Command
         public async Task SearchLegAsync()
         {
             EmbedBuilder builder = new EmbedBuilder();
-            builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found a super legendary item !!!!! No seriously you really think this command work ? :clap: :yellow_heart: :clap:")
+            builder.WithTitle($":clap: :yellow_heart: :clap: {Context.User.Username} just found a super legendary item !!!!! Nice joke man :clap: :yellow_heart: :clap:")
                             .WithColor(Color.Gold);
             await ReplyAsync("", false, builder.Build());
 

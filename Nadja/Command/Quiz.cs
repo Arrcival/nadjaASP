@@ -14,6 +14,7 @@ namespace Nadja.Command
         
 
         [Command("quiz"), RequireContext(ContextType.Guild)]
+        [Alias("q")]
         public async Task QuizAsync()
         {
             Dal.DoConnection();
@@ -23,20 +24,20 @@ namespace Nadja.Command
             {
                 if (game.TimedOut())
                 {
-                    builder.AddField("Sorry, but the game is over.", $"Answer was {game.hiddenItem.Name}");
+                    builder.AddField("Time out !", $"The answer was **{game.hiddenItem.Name}**");
                     Helper.Games.Remove(game);
                 } else
                 {
                     game.PrintQuiz(builder);
                 }
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
 
             } else 
             {
                 game = new Models.Game(Context.Guild.Id.ToString(), Context.Channel.Id.ToString());
                 Helper.Games.Add(game);
                 game.PrintQuiz(builder);
-                await ReplyAsync("", false, builder.Build());
+                await ReplyAsync(embed: builder.Build());
             }
             Dal.CloseConnection();
         }

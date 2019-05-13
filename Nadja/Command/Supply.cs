@@ -12,6 +12,7 @@ namespace Nadja.Command
     {
         //Group command
         [Group("supply")]
+        [Alias("sp")]
         public class Supply : ModuleBase<SocketCommandContext>
         {
             // Default thing to display it nothing is inputed after -meme
@@ -84,7 +85,7 @@ namespace Nadja.Command
 
             private List<string> DSupply = new List<string>
             {
-            "Motorcycle Helmet","Safety Helmet","Fire Helmet","Hairband","Hiking Hat","Hat","Glasses","Monk's Robe","Bunker Jacket","Fabric Armor",
+            "Motorcycle Helmet","Safety Helmet","Fire Helmet","Hairband","Hiking Hat","Glasses","Monk's Robe","Bunker Jacket","Fabric Armor",
             "Full Body Swimsuit","Windbreaker","Doctor's Gown","Cassock","Wrist Band","Bracer","Arm Warmers","Watch","Reserve Armband","Bracelet",
             "Thimble","Feather Boots","Boots","Hiking Shoes","Wooden Shoes","Tights","Running Shoes","Sniping Scope","Belt","Doll","Quiver",
             "Magazine","Ribbon","Flower","Binoculars","Cross"

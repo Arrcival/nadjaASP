@@ -12,6 +12,7 @@ namespace Nadja.Command
     public partial class Commands : ModuleBase<SocketCommandContext>
     {
         [Command("profile"), RequireContext(ContextType.Guild)]
+        [Alias("pr")]
         public async Task ProfileAsync()
         {
             Dal.DoConnection();
@@ -23,29 +24,24 @@ namespace Nadja.Command
             Construct(builder, serverUser, Context.User.Id.ToString());
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("profile"), RequireContext(ContextType.Guild)]
-        public async Task ProfilePlayerAsync([Remainder] string name)
+        [Alias("pr")]
+        public async Task ProfilePlayerAsync(IGuildUser user)
         {
             Dal.DoConnection();
-            name = Helper.DiscordPingDelimiter(name);
-
-            string idUser = Dal.GetIdUser(name);
-
+            
             EmbedBuilder builder = new EmbedBuilder();
             ServerUser serverUser = null;
+            
+            serverUser = Dal.GetServerUser(user.Id.ToString(), Context.Guild.Id.ToString());
 
-            if (idUser != null)
-                serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
-            else
-                serverUser = Dal.GetServerUser(name, Context.Guild.Id.ToString());
-
-            Construct(builder, serverUser, idUser, false);
+            Construct(builder, serverUser, user.Id.ToString(), false);
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("p"), RequireContext(ContextType.Guild)]
@@ -62,33 +58,26 @@ namespace Nadja.Command
 
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         [Command("p"), RequireContext(ContextType.Guild)]
-        public async Task PrOtherAsync([Remainder] string name)
+        public async Task PrOtherAsync(IGuildUser user)
         {
             Dal.DoConnection();
-            name = Helper.DiscordPingDelimiter(name);
-
-            string idUser = Dal.GetIdUser(name);
+            
 
             EmbedBuilder builder = new EmbedBuilder();
             ServerUser serverUser = null;
-
-            if (idUser != null)
-                serverUser = Dal.GetServerUser(idUser, Context.Guild.Id.ToString());
-            else
-                serverUser = Dal.GetServerUser(name, Context.Guild.Id.ToString());
+            
+            serverUser = Dal.GetServerUser(user.Id.ToString(), Context.Guild.Id.ToString());
             
 
-            ConstructSmall(builder, serverUser, idUser);
-
-
-
+            ConstructSmall(builder, serverUser, user.Id.ToString());
+            
             Dal.CloseConnection();
 
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
 
@@ -96,6 +85,7 @@ namespace Nadja.Command
 
 
         [Command("ranks"), RequireContext(ContextType.Guild)]
+        [Alias("r")]
         public async Task RanksAsync()
         {
             Dal.DoConnection();
@@ -103,21 +93,26 @@ namespace Nadja.Command
             List<ServerUser> listRanks = Dal.GetEveryUser(Context.Guild.Id.ToString());
 
             listRanks = Helper.GetRanking(listRanks);
-            builder.WithTitle($"TOP 10 PLAYERS ON {Context.Guild.Name} \n ");
+            builder.WithTitle($"Top 10 players ({Context.Guild.Name})" + Environment.NewLine);
             string aString = "";
             for (int i = 0; i < listRanks.Count; i++)
             {
                 if(listRanks[i].DiscordID == Context.User.Id.ToString())
-                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}**\n";
+                    aString += $"**{Helper.GetRank(i + 1)} : {listRanks[i].DiscordName}** with {listRanks[i].Points} points";
                 else
-                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].ServerNameUser}\n";
+                    aString += $"{Helper.GetRank(i + 1)} : {listRanks[i].DiscordName} with {listRanks[i].Points} points";
+
+                if (i != 0)
+                    aString += $" *({listRanks[i].Points - listRanks[i - 1].Points})*" + Environment.NewLine;
+                else
+                    aString += Environment.NewLine;
             }
             Dal.CloseConnection();
 
             builder.WithDescription(aString);
 
             builder.WithColor(Color.DarkTeal);
-            await ReplyAsync("", false, builder.Build());
+            await ReplyAsync(embed: builder.Build());
         }
 
         private void Construct(EmbedBuilder builder, ServerUser serverUser, string idUser, bool ownProfile = true)
@@ -127,7 +122,7 @@ namespace Nadja.Command
                 serverUser = GetServerUser(idUser);
                 if (serverUser == null)
                 {
-                    builder.WithTitle("This user does not exists.")
+                    builder.WithTitle("This user doesn't exists.")
                         .WithColor(Color.DarkGrey);
                     return;
                 }
@@ -159,11 +154,11 @@ namespace Nadja.Command
             if (serverUser.GetTotalSearchs() > 0)
             {
                 builder.AddField("Items found :",
-                    ":black_heart: Common items : " + serverUser.Common +
-                    "\n:green_heart: Uncommon items : " + serverUser.Uncommon +
-                    "\n:blue_heart: Rare items : " + serverUser.Rare +
-                    "\n:purple_heart: Epic items : " + serverUser.Epic +
-                    "\n:yellow_heart: Legendary items : " + serverUser.CountLegendaries(), true);
+                    ":black_heart: Common items : " + serverUser.Common + Environment.NewLine +
+                    ":green_heart: Uncommon items : " + serverUser.Uncommon + Environment.NewLine +
+                    ":blue_heart: Rare items : " + serverUser.Rare + Environment.NewLine +
+                    ":purple_heart: Epic items : " + serverUser.Epic + Environment.NewLine +
+                    ":yellow_heart: Legendary items : " + serverUser.CountLegendaries(), true);
                 
                 string display = "";
                 if (serverUser.CountLegendaries() <= 0)
@@ -171,7 +166,7 @@ namespace Nadja.Command
                 else
                 {
                     for (int i = 0; i < serverUser.CountLegendaries(); i++)
-                        display += serverUser.Legendaries[i].Name + " \n";
+                        display += serverUser.Legendaries[i].Name + Environment.NewLine;
                 }
                 
                 builder.AddField("Legendary items :", display, true);

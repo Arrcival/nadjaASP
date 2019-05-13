@@ -81,22 +81,108 @@ namespace Nadja
 
         public static List<ServerUser> GetRanking(List<ServerUser> serverUsers, int amount = 10)
         {
-            List<ServerUser> tempList = new List<ServerUser>();
             if (serverUsers.Count < amount)
                 amount = serverUsers.Count;
-            for (int i = 1; i <= amount; i++)
-            {
-                ServerUser maxUser = serverUsers[0];
-                foreach (ServerUser serverUser in serverUsers)
-                    if (serverUser.Points > maxUser.Points)
-                        maxUser = serverUser;
 
-                tempList.Add(maxUser);
-                serverUsers.Remove(maxUser);
-            }
+            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> usersSorted = SortByPoints(serverUsers);
+            
+            for (int i = 0; i < amount; i++)
+                tempList.Add(usersSorted[i]);
 
             return tempList;
 
+        }
+
+        public static List<ServerUser> GetLuckRanking(List<ServerUser> serverUsers, int amount = 10)
+        {
+            if (serverUsers.Count < amount)
+                amount = serverUsers.Count;
+
+            List<ServerUser> tempList = new List<ServerUser>();
+            List<ServerUser> usersSorted = SortByLuck(serverUsers);
+
+            for (int i = 0; i < amount; i++)
+                tempList.Add(usersSorted[i]);
+
+            return tempList;
+        }
+
+        public static List<ServerUser> SortByPoints(List<ServerUser> everyUsers)
+        {
+            List<ServerUser> newList = new List<ServerUser>();
+            if (everyUsers.Count == 0)
+                return newList;
+
+            int count = everyUsers.Count;
+
+            newList.Add(everyUsers[0]);
+            everyUsers.Remove(everyUsers[0]);
+
+            while (newList.Count < count)
+            {
+                int i = 0;
+                bool found = false;
+                while (!found)
+                {
+                    if (everyUsers[0].Points > newList[i].Points)
+                    {
+                        i++;
+                        if (i == newList.Count)
+                        {
+                            found = true;
+                        }
+                    }
+                    else
+                    {
+                        found = true;
+                    }
+                }
+                newList.Insert(i, everyUsers[0]);
+                everyUsers.Remove(everyUsers[0]);
+            }
+
+            newList.Reverse();
+            return newList;
+        }
+
+
+
+        public static List<ServerUser> SortByLuck(List<ServerUser> everyUsers)
+        {
+            List<ServerUser> newList = new List<ServerUser>();
+            if (everyUsers.Count == 0)
+                return newList;
+
+            int count = everyUsers.Count;
+
+            newList.Add(everyUsers[0]);
+            everyUsers.Remove(everyUsers[0]);
+            while (newList.Count < count)
+            {
+                int i = 0;
+                bool found = false;
+                while (!found)
+                {
+                    if (everyUsers[0].GetLuck() > newList[i].GetLuck())
+                    {
+                        i++;
+                        if (i == newList.Count)
+                        {
+                            found = true;
+                        }
+                    }
+                    else
+                    {
+                        found = true;
+                    }
+                }
+                newList.Insert(i, everyUsers[0]);
+                everyUsers.Remove(everyUsers[0]);
+            }
+
+            newList.Reverse();
+            return newList;
         }
 
         public static double GetCurrentTime()
@@ -131,7 +217,7 @@ namespace Nadja
         public static EmbedBuilder ResolveQuiz(Models.Game game, GameResult result, string idUser, string idServer, string name)
         {
             EmbedBuilder builder = new EmbedBuilder();
-            if (result == Helper.GameResult.Victory)
+            if (result == GameResult.Victory)
             {
                 Dal.DoConnection();
                 ServerUser serverUser = GetServerUser(idUser, idServer, name);
@@ -140,14 +226,14 @@ namespace Nadja
                 serverUser.UpdateQuiz();
                 Dal.CloseConnection();
 
-                builder.AddField($"{serverUser.DiscordName} won in {game.ElapsedTime()}s !", $"Answer was {game.hiddenItem.Name} ({points}pts)");
+                builder.AddField($"**{serverUser.DiscordName}** won in *{game.ElapsedTime()}*s !", $"Answer was **{game.hiddenItem.Name}** (*{points}*pts)");
                 builder.WithColor(Color.Magenta);
                 Games.Remove(game);
                 return builder;
             }
-            else if (result == Helper.GameResult.Timeout)
+            else if (result == GameResult.Timeout)
             {
-                builder.AddField("Sorry, but the game is over.", $"Answer was {game.hiddenItem.Name}");
+                builder.AddField("Time out !", $"Answer was **{game.hiddenItem.Name}**");
                 Games.Remove(game);
                 return builder;
             }
