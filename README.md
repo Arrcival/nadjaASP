@@ -1,4 +1,7 @@
 # Nadja ASP
+
+**This is an outdated project. I totally rewrote the bot back to a .NET console for hosting issues, with an important performance and database interaction gains.**
+
 A discord bot made in ASP.NET for [Black Survival](https://store.steampowered.com/app/690510/Immortal_Soul_Black_Survival/)
 
 *Nadja is the name of the NPC's tutorial*
